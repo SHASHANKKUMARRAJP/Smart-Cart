@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Style Your Outfit - AI Fashion Assistant</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #030712;
+            color: #f3f4f6;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .aurora-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background: #030712;
+            overflow: hidden;
+        }
+
+        .aurora-blob {
+            position: absolute;
+            filter: blur(140px);
+            opacity: 0.5;
+            animation: floatBlob 20s infinite ease-in-out alternate;
+            border-radius: 50%;
+        }
+
+        .blob-1 {
+            top: -10%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: rgba(79, 70, 229, 0.4);
+            animation-delay: 0s;
+        }
+
+        .blob-2 {
+            bottom: -20%;
+            right: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: rgba(147, 51, 234, 0.3);
+            animation-delay: -5s;
+        }
+
+        .blob-3 {
+            top: 40%;
+            left: 30%;
+            width: 40vw;
+            height: 40vw;
+            background: rgba(59, 130, 246, 0.3);
+            animation-delay: -10s;
+        }
+
+        @keyframes floatBlob {
+            0% {
+                transform: translate(0, 0) scale(1) rotate(0deg);
+            }
+
+            50% {
+                transform: translate(5%, 5%) scale(1.1) rotate(5deg);
+            }
+
+            100% {
+                transform: translate(-5%, 10%) scale(0.9) rotate(-5deg);
+            }
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .glass-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .glass-input:focus {
+            border-color: rgba(99, 102, 241, 0.5);
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
+            outline: none;
+        }
+
+        .btn-premium {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.8), rgba(139, 92, 246, 0.8));
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .btn-premium:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+        }
+
+        .upload-zone {
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            transition: all 0.3s;
+        }
+
+        .upload-zone.dragover {
+            border-color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        /* Skeleton Animation */
+        .skeleton {
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.05) 75%);
+            background-size: 200% 100%;
+            animation: skeletonLoading 1.5s infinite;
+            border-radius: 8px;
+        }
+
+        @keyframes skeletonLoading {
+            0% {
+                background-position: 200% 0;
+            }
+
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        /* Scanning overlay for image */
+        .scan-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #8b5cf6;
+            box-shadow: 0 0 10px 2px #8b5cf6;
+            animation: scan 2s linear infinite;
+            display: none;
+        }
+
+        @keyframes scan {
+            0% {
+                top: 0;
+            }
+
+            100% {
+                top: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body class="antialiased selection:bg-indigo-500/30">
+    <div class="aurora-bg">
+        <div class="aurora-blob blob-1"></div>
+        <div class="aurora-blob blob-2"></div>
+        <div class="aurora-blob blob-3"></div>
+    </div>
+
+    <!-- Nav -->
+    <nav
+        class="sticky top-0 z-50 glass-card rounded-none border-t-0 border-l-0 border-r-0 border-b border-white/10 backdrop-blur-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
+            <a href="{{ url_for('main.explore') }}" class="flex items-center space-x-2 group">
+                <div
+                    class="w-8 h-8 rounded-lg flex items-center justify-center border border-white/20 bg-white/5 group-hover:bg-white/10 transition-colors">
+                    <i data-lucide="arrow-left" size="18" class="text-white"></i>
+                </div>
+                <span class="text-xl font-bold text-white">Back</span>
+            </a>
+            <div class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-400">
+                Style Your Outfit
+            </div>
+            <div class="flex items-center">
+                {% if session.get('user') %}
+                <a href="#"
+                    onclick="event.preventDefault(); fetch('{{ url_for('main.auth_logout') }}', {method: 'POST'}).then(() => window.location.href='/');"
+                    class="text-red-400 hover:text-red-300 font-medium text-sm transition-colors whitespace-nowrap">
+                    Logout
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <main
+        class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 lg:py-16 z-10 flex flex-col lg:flex-row gap-10 lg:gap-14 items-start">
+
+        <!-- Left Side: Upload & Controls (Sticky-ish) -->
+        <div class="w-full lg:w-1/3 flex flex-col gap-8 lg:sticky lg:top-28">
+            <div class="glass-card p-6">
+                <h2 class="text-xl font-bold mb-4 flex items-center"><i data-lucide="camera"
+                        class="mr-2 text-indigo-400"></i> Upload Photo</h2>
+
+                <form id="analyzeForm" class="flex flex-col gap-4">
+                    <!-- Dropzone -->
+                    <div id="dropzone"
+                        class="upload-zone rounded-xl flex flex-col items-center justify-center text-center cursor-pointer relative overflow-hidden group min-h-[280px] lg:min-h-[350px]">
+                        <input type="file" id="imageInput" name="image" accept="image/*"
+                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                        <div id="uploadPlaceholder" class="flex flex-col items-center transition-opacity duration-300">
+                            <div
+                                class="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                                <i data-lucide="upload-cloud" size="32" class="text-indigo-400"></i>
+                            </div>
+                            <p class="text-sm text-gray-300">Drag & drop or <span class="text-indigo-400">browse</span>
+                            </p>
+                            <p class="text-xs text-gray-500 mt-1">JPEG, PNG up to 5MB</p>
+                        </div>
+
+                        <!-- Image Preview -->
+                        <div id="imagePreviewContainer"
+                            class="hidden absolute inset-0 w-full h-full bg-black/50 backdrop-blur-sm z-0">
+                            <img id="imagePreview" src="" alt="Preview" class="w-full h-full object-cover opacity-60">
+                            <div id="scanLine" class="scan-line"></div>
+                            <!-- Remove button inside preview -->
+                            <button type="button" id="removeImgBtn"
+                                class="absolute top-2 right-2 w-8 h-8 rounded-full bg-red-500/80 text-white flex items-center justify-center hover:bg-red-600 transition-colors z-20 hidden">
+                                <i data-lucide="x" size="16"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Gender Selection -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-400 mb-2">Gender / Body Profile</label>
+                        <select id="genderSelect" name="gender"
+                            class="w-full px-4 py-3 rounded-xl glass-input appearance-none">
+                            <option value="Auto" class="bg-gray-900 text-white">Auto-detect</option>
+                            <option value="Male" class="bg-gray-900 text-white">Male</option>
+                            <option value="Female" class="bg-gray-900 text-white">Female</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" id="analyzeBtn" disabled
+                        class="btn-premium w-full py-4 rounded-xl text-white font-bold flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed">
+                        <i data-lucide="sparkles" size="18" class="mr-2"></i> Analyze My Style
+                    </button>
+                    <p class="text-center text-xs text-gray-500"><i data-lucide="shield-check" size="12"
+                            class="inline"></i> Photos are not stored.</p>
+                </form>
+            </div>
+        </div>
+
+        <!-- Right Side: Results Area -->
+        <div class="w-full lg:w-2/3 flex flex-col gap-8">
+
+            <!-- Default Empty State -->
+            <div id="emptyState"
+                class="glass-card p-12 flex flex-col items-center justify-center text-center h-full min-h-[400px]">
+                <div class="w-20 h-20 bg-indigo-500/10 rounded-full flex items-center justify-center mb-6">
+                    <i data-lucide="wand-2" size="40" class="text-indigo-400 opacity-50"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-2">Ready for your glow up?</h3>
+                <p class="text-gray-400 max-w-md">Upload a clear photo facing the camera. Our AI will analyze your
+                    features and suggest the perfect outfits.</p>
+            </div>
+
+            <!-- Loading Skeleton -->
+            <div id="loadingState" class="hidden flex-col gap-6">
+                <div class="glass-card p-6">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="skeleton w-8 h-8 rounded-full"></div>
+                        <div class="skeleton h-6 w-48"></div>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="skeleton h-20 w-full"></div>
+                        <div class="skeleton h-20 w-full"></div>
+                        <div class="skeleton h-20 w-full"></div>
+                        <div class="skeleton h-20 w-full"></div>
+                    </div>
+                </div>
+                <div class="glass-card p-6">
+                    <div class="skeleton h-6 w-48 mb-6"></div>
+                    <div class="space-y-4">
+                        <div class="skeleton h-32 w-full"></div>
+                        <div class="skeleton h-32 w-full"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Data -->
+            <div id="resultsState" class="hidden flex-col gap-8">
+                <!-- Analysis Card -->
+                <div class="glass-card p-6 border border-indigo-500/30 relative overflow-hidden">
+                    <div
+                        class="absolute top-0 right-0 px-4 py-1 bg-gradient-to-l from-indigo-500/20 to-transparent text-indigo-300 text-sm font-bold border-b border-l border-indigo-500/20 rounded-bl-lg flex items-center gap-1">
+                        <i data-lucide="check-circle-2" size="14"></i> <span id="resConfidence">95</span>% Match
+                    </div>
+
+                    <h3 class="text-xl font-bold mb-6 flex items-center text-white"><i data-lucide="scan-face"
+                            class="mr-2 text-indigo-400"></i> AI Profile Analysis</h3>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mt-2">
+                        <div
+                            class="bg-white/5 rounded-lg p-3 text-center border border-white/5 hover:border-indigo-400/30 transition-colors">
+                            <span class="block text-xs text-gray-400 mb-1 uppercase tracking-wider">Face Shape</span>
+                            <span id="resFace" class="font-bold text-white text-lg">Oval</span>
+                        </div>
+                        <div
+                            class="bg-white/5 rounded-lg p-3 text-center border border-white/5 hover:border-indigo-400/30 transition-colors">
+                            <span class="block text-xs text-gray-400 mb-1 uppercase tracking-wider">Body Type</span>
+                            <span id="resBody" class="font-bold text-white text-lg">Athletic</span>
+                        </div>
+                        <div
+                            class="bg-white/5 rounded-lg p-3 text-center border border-white/5 hover:border-indigo-400/30 transition-colors">
+                            <span class="block text-xs text-gray-400 mb-1 uppercase tracking-wider">Height</span>
+                            <span id="resHeight" class="font-bold text-white text-lg">Avg</span>
+                        </div>
+                        <div
+                            class="bg-white/5 rounded-lg p-3 text-center border border-white/5 hover:border-indigo-400/30 transition-colors">
+                            <span class="block text-xs text-gray-400 mb-1 uppercase tracking-wider">Shoulders</span>
+                            <span id="resShoulder" class="font-bold text-white text-lg">Broad</span>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-lg p-3 text-center border border-indigo-500/30">
+                            <span class="block text-xs text-indigo-200 mb-1 uppercase tracking-wider">Est. Size</span>
+                            <span id="resSize" class="font-bold text-indigo-400 text-lg">M</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm">
+                        <div
+                            class="bg-gradient-to-br from-emerald-500/10 to-transparent border border-emerald-500/20 rounded-xl p-5">
+                            <strong class="text-emerald-400 block mb-3 text-base flex items-center"><i
+                                    data-lucide="palette" size="18" class="mr-2"></i> Best Colors</strong>
+                            <div id="resColors" class="flex flex-wrap gap-2 text-gray-300"></div>
+                        </div>
+                        <div
+                            class="bg-gradient-to-br from-rose-500/10 to-transparent border border-rose-500/20 rounded-xl p-5">
+                            <strong class="text-rose-400 block mb-3 text-base flex items-center"><i data-lucide="ban"
+                                    size="18" class="mr-2"></i> Avoid</strong>
+                            <div id="resAvoid" class="flex flex-wrap gap-2 text-gray-300"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Suggestions container dynamically populated -->
+                <div id="suggestionsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Styles inserted here -->
+                </div>
+
+                <!-- Smart Cart Direct Searches -->
+                <div class="glass-card p-6 mt-4">
+                    <h3 class="text-xl font-bold mb-4 flex items-center text-white"><i data-lucide="shopping-cart"
+                            class="mr-2 text-pink-400"></i> Smart Cart Searches</h3>
+                    <p class="text-gray-400 text-sm mb-4">Click any AI-generated query below to instantly compare prices
+                        across all major platforms.</p>
+
+                    <div id="searchQueriesContainer" class="flex flex-wrap gap-2">
+                        <!-- Queries inserted here -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Error Toast -->
+    <div id="errorToast"
+        class="fixed bottom-4 right-4 bg-red-500/90 text-white px-6 py-3 rounded-lg shadow-xl translate-y-[200%] transition-transform duration-300 z-50 flex items-center">
+        <i data-lucide="alert-circle" class="mr-2"></i>
+        <span id="errorMsg">An error occurred</span>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // UI Elements
+        const form = document.getElementById('analyzeForm');
+        const fileInput = document.getElementById('imageInput');
+        const dropzone = document.getElementById('dropzone');
+        const uploadPlaceholder = document.getElementById('uploadPlaceholder');
+        const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+        const imagePreview = document.getElementById('imagePreview');
+        const removeImgBtn = document.getElementById('removeImgBtn');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        const scanLine = document.getElementById('scanLine');
+
+        const states = {
+            empty: document.getElementById('emptyState'),
+            loading: document.getElementById('loadingState'),
+            results: document.getElementById('resultsState')
+        };
+
+        // File handling
+        fileInput.addEventListener('change', handleFile);
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropzone.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) { e.preventDefault(); e.stopPropagation(); }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropzone.addEventListener(eventName, () => dropzone.classList.add('dragover'), false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropzone.addEventListener(eventName, () => dropzone.classList.remove('dragover'), false);
+        });
+
+        dropzone.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            fileInput.files = files;
+            handleFile();
+        });
+
+        function handleFile() {
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    imagePreview.src = e.target.result;
+                    uploadPlaceholder.classList.add('opacity-0');
+                    setTimeout(() => {
+                        uploadPlaceholder.classList.add('hidden');
+                        imagePreviewContainer.classList.remove('hidden');
+                        removeImgBtn.classList.remove('hidden');
+                    }, 300);
+                    analyzeBtn.disabled = false;
+                }
+                reader.readAsDataURL(fileInput.files[0]);
+            }
+        }
+
+        removeImgBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            fileInput.value = '';
+            analyzeBtn.disabled = true;
+            imagePreviewContainer.classList.add('hidden');
+            removeImgBtn.classList.add('hidden');
+            uploadPlaceholder.classList.remove('hidden');
+            setTimeout(() => uploadPlaceholder.classList.remove('opacity-0'), 10);
+
+            // Reset state
+            switchState('empty');
+        });
+
+        // Form Submit
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!fileInput.files || !fileInput.files[0]) return;
+
+            const formData = new FormData(form);
+
+            switchState('loading');
+            scanLine.style.display = 'block';
+
+            try {
+                const res = await fetch('/api/analyze-outfit', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                scanLine.style.display = 'none';
+
+                if (!res.ok) {
+                    const errStr = await res.text();
+                    throw new Error(errStr);
+                }
+
+                const data = await res.json();
+
+                if (data.error) {
+                    console.error("AI Error:", data.details);
+                    if (data.fallback) {
+                        showError("API error - showing fallback data");
+                        populateResults(data.fallback);
+                    } else {
+                        throw new Error(data.error);
+                    }
+                } else {
+                    populateResults(data);
+                }
+
+            } catch (err) {
+                console.error(err);
+                showError(err.message || 'Analysis failed. Please try again.');
+                switchState('empty');
+            }
+        });
+
+        function switchState(state) {
+            Object.values(states).forEach(el => el.classList.add('hidden'));
+            states[state].classList.remove('hidden');
+            if (state === 'results') states.results.classList.add('flex');
+            else states.results.classList.remove('flex');
+
+            if (state === 'loading') states.loading.classList.add('flex');
+            else states.loading.classList.remove('flex');
+        }
+
+        function populateResults(data) {
+            // Populate Analysis Header
+            const an = data.analysis || {};
+            document.getElementById('resFace').innerText = an.face_shape || '--';
+            document.getElementById('resBody').innerText = an.body_type || '--';
+            document.getElementById('resHeight').innerText = an.height_category || '--';
+            document.getElementById('resShoulder').innerText = an.shoulder_type || '--';
+            document.getElementById('resSize').innerText = an.clothing_size || '--';
+            document.getElementById('resConfidence').innerText = an.confidence || '90';
+
+            const sug = data.suggestions || {};
+
+            const colorsContainer = document.getElementById('resColors');
+            colorsContainer.innerHTML = '';
+            (sug.best_colors || []).forEach(color => {
+                colorsContainer.insertAdjacentHTML('beforeend', `<span class="px-3 py-1 bg-emerald-500/20 text-emerald-300 rounded-full text-xs font-semibold border border-emerald-500/30">${color}</span>`);
+            });
+            if (!sug.best_colors || sug.best_colors.length === 0) colorsContainer.innerHTML = '--';
+
+            const avoidContainer = document.getElementById('resAvoid');
+            avoidContainer.innerHTML = '';
+            (sug.avoid_list || []).forEach(item => {
+                avoidContainer.insertAdjacentHTML('beforeend', `<span class="px-3 py-1 bg-rose-500/20 text-rose-300 rounded-full text-xs font-semibold border border-rose-500/30">${item}</span>`);
+            });
+            if (!sug.avoid_list || sug.avoid_list.length === 0) avoidContainer.innerHTML = '--';
+
+            // Populate Suggestion Cards
+            const container = document.getElementById('suggestionsContainer');
+            container.innerHTML = ''; // clear
+
+            const looks = ['casual', 'office', 'party', 'traditional'];
+            const icons = { 'casual': 'coffee', 'office': 'briefcase', 'party': 'glass-water', 'traditional': 'star' };
+            const gradients = {
+                'casual': 'from-blue-500/10 to-transparent border-blue-500/20 text-blue-400',
+                'office': 'from-slate-500/10 to-transparent border-slate-500/20 text-slate-400',
+                'party': 'from-pink-500/10 to-transparent border-pink-500/20 text-pink-400',
+                'traditional': 'from-amber-500/10 to-transparent border-amber-500/20 text-amber-400'
+            };
+
+            looks.forEach(look => {
+                const spec = sug[look];
+                if (!spec) return;
+
+                let itemsHtml = '';
+                for (const [key, val] of Object.entries(spec)) {
+                    itemsHtml += `<li class="flex items-start mb-3"><i data-lucide="check" size="16" class="mt-[2px] mr-3 text-indigo-400 flex-shrink-0"></i><span class="leading-relaxed"><strong class="capitalize text-white">${key}:</strong> ${val}</span></li>`;
+                }
+
+                const cardHtml = `
+                    <div class="glass-card overflow-hidden">
+                        <div class="px-6 py-4 bg-gradient-to-r ${gradients[look]} flex items-center border-b">
+                            <i data-lucide="${icons[look]}" size="20" class="mr-2"></i>
+                            <h4 class="font-bold text-lg capitalize tracking-wide">${look} Look</h4>
+                        </div>
+                        <div class="p-6 text-gray-300 text-sm">
+                            <ul class="space-y-1">${itemsHtml}</ul>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', cardHtml);
+            });
+
+            // Populate Queries
+            const queriesContainer = document.getElementById('searchQueriesContainer');
+            queriesContainer.innerHTML = '';
+            const queries = data.search_queries || [];
+            queries.forEach(q => {
+                // Determine if we should send to general shop or ecommerce (we default to ecommerce for clothes)
+                const targetUrl = `{{ url_for('main.ecommerce') }}?q=${encodeURIComponent(q)}`;
+                const qHtml = `
+                    <a href="${targetUrl}" class="inline-flex items-center px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-pink-500/50 rounded-full text-sm text-gray-200 transition-colors shadow-sm cursor-pointer group">
+                        <i data-lucide="search" size="14" class="mr-2 text-gray-400 group-hover:text-pink-400 transition-colors"></i>
+                        ${q}
+                    </a>
+                `;
+                queriesContainer.insertAdjacentHTML('beforeend', qHtml);
+            });
+
+            lucide.createIcons();
+            switchState('results');
+        }
+
+        function showError(msg) {
+            const t = document.getElementById('errorToast');
+            document.getElementById('errorMsg').innerText = msg;
+            t.classList.remove('translate-y-[200%]');
+            setTimeout(() => t.classList.add('translate-y-[200%]'), 4000);
+        }
+    </script>
+</body>
+
+</html>

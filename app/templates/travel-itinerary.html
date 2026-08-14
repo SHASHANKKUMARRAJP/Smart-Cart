@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Itinerary | Plan My Trip</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            --glass-glow: 0 0 20px rgba(56, 189, 248, 0.4);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0f172a;
+            color: #f1f5f9;
+            margin: 0;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .aurora-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            background: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 100%);
+        }
+
+        .grid-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+
+        .glass-morphism {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .glass-card-premium {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+        }
+
+        .glass-nav-item {
+            padding: 8px 16px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            position: relative;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 500;
+        }
+
+        .glass-nav-item:hover,
+        .glass-nav-item.active {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: white;
+        }
+
+        .gradient-text-premium {
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Timeline Experience Specifics */
+        .timeline-node {
+            position: relative;
+            padding-left: 60px;
+            padding-bottom: 60px;
+        }
+
+        .timeline-node::before {
+            content: '';
+            position: absolute;
+            left: 19px;
+            top: 10px;
+            bottom: -10px;
+            width: 2px;
+            background: linear-gradient(to bottom, #38bdf8, #818cf8, transparent);
+            opacity: 0.3;
+        }
+
+        .timeline-node:last-child::before {
+            display: none;
+        }
+
+        .glow-node {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 40px;
+            height: 40px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 2px solid #38bdf8;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .timeline-node:hover .glow-node {
+            transform: scale(1.1) rotate(10deg);
+            background: #38bdf8;
+            border-color: white;
+        }
+
+        .timeline-node:hover .glow-node i {
+            color: white;
+        }
+
+        .style-sync-card {
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.1) 0%, rgba(236, 72, 153, 0.02) 100%);
+            border: 1px solid rgba(236, 72, 153, 0.2);
+            border-radius: 16px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+
+        .animate-float-slow {
+            animation: floatSlow 6s infinite ease-in-out;
+        }
+
+        @keyframes floatSlow {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+    </style>
+</head>
+
+<body class="text-gray-100 antialiased">
+    <div class="aurora-bg">
+        <div class="grid-overlay"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 w-full z-50 glass-morphism border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Branding -->
+                <a href="{{ url_for('main.plan_trip') }}" class="flex items-center space-x-3 group">
+                    <div
+                        class="w-10 h-10 bg-gradient-to-br from-gray-800 to-slate-900 rounded-xl flex items-center justify-center border border-white/10 shadow-xl group-hover:border-sky-500/50 transition-all">
+                        <i data-lucide="plane" class="w-6 h-6 text-sky-400"></i>
+                    </div>
+                    <span class="text-xl font-bold text-white tracking-tight uppercase">Plan My Trip</span>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-2">
+                    <a href="{{ url_for('main.index') }}" class="glass-nav-item">Home</a>
+                    <a href="{{ url_for('main.plan_trip') }}" class="glass-nav-item">Plan My Trip</a>
+                    <a href="{{ url_for('main.destination_ideas') }}" class="glass-nav-item">Destination Ideas</a>
+                    <a href="{{ url_for('main.budget_planner') }}" class="glass-nav-item">Budget Planner</a>
+                    <a href="{{ url_for('main.travel_itinerary') }}" class="glass-nav-item active">
+                        Travel Itinerary
+                        <span
+                            class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-sky-500 rounded-full shadow-[0_0_8px_rgba(56,189,248,0.8)]"></span>
+                    </a>
+                    <a href="{{ url_for('main.hotels') }}" class="glass-nav-item">Hotels</a>
+                    <a href="{{ url_for('main.packing_list') }}" class="glass-nav-item">Packing List</a>
+                </div>
+
+                <!-- Right Side Actions -->
+                <div class="hidden md:flex items-center space-x-4 flex-1 justify-end max-w-sm ml-8">
+                    <a href="{{ url_for('main.index') }}"
+                        class="glass-button-premium px-6 py-2.5 rounded-xl text-sm font-bold uppercase tracking-widest text-white">
+                        Back Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow pt-24 pb-20 px-4 relative z-10">
+        <div class="max-w-5xl mx-auto">
+            <header class="text-center mb-16">
+                <div
+                    class="inline-flex items-center bg-sky-500/10 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] mb-6 text-sky-400 border border-sky-500/20">
+                    <i data-lucide="map" class="w-3.5 h-3.5 mr-2"></i> Logic Mapping
+                </div>
+                <h1 class="text-5xl md:text-7xl font-black text-white mb-6 tracking-tighter uppercase leading-[0.9]">
+                    Travel<br>
+                    <span class="gradient-text-premium">Itinerary Builder</span>
+                </h1>
+                <p class="text-slate-400 text-lg max-w-2xl mx-auto font-medium">
+                    Automate your journey. Generate a comprehensive day-by-day plan tailored to your destination.
+                </p>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                <!-- Input Section -->
+                <div class="lg:col-span-4">
+                    <div class="glass-card-premium p-8 h-fit sticky top-24">
+                        <div class="space-y-6">
+                            <div class="space-y-3">
+                                <label
+                                    class="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Destination</label>
+                                <div class="relative group">
+                                    <i data-lucide="map-pin"
+                                        class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-sky-400 z-10"></i>
+                                    <input type="text" id="destination" placeholder="e.g. Paris" class="pl-12 w-full">
+                                </div>
+                            </div>
+
+                            <div class="space-y-3">
+                                <label class="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Number
+                                    of Days</label>
+                                <div class="relative group">
+                                    <i data-lucide="clock"
+                                        class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-sky-400"></i>
+                                    <input type="number" id="days" placeholder="e.g. 3" class="pl-12">
+                                </div>
+                            </div>
+
+                            <button onclick="generateItinerary()"
+                                class="w-full bg-gradient-to-r from-sky-500 to-indigo-600 p-5 rounded-2xl font-black uppercase text-xs tracking-[0.2em] shadow-lg shadow-sky-500/20 hover:shadow-sky-500/40 transform hover:-translate-y-1 transition-all flex items-center justify-center gap-3">
+                                Build Plan <i data-lucide="wand-2" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Itinerary Output -->
+                <div class="lg:col-span-8">
+                    <div id="itinerary-empty"
+                        class="glass-card-premium p-12 h-full flex flex-col items-center justify-center text-center">
+                        <div
+                            class="w-24 h-24 rounded-full bg-slate-800/50 flex items-center justify-center mb-8 border border-white/5">
+                            <i data-lucide="list-checks" class="w-10 h-10 text-slate-600"></i>
+                        </div>
+                        <h4 class="text-2xl font-bold text-slate-500 uppercase tracking-tighter mb-4">No Itinerary Yet
+                        </h4>
+                        <p class="text-slate-600 max-w-sm">Define your destination and duration to generate a
+                            professional travel sequence.</p>
+                    </div>
+
+                    <div id="itinerary-list" class="space-y-4 hidden">
+                        <!-- Timeline experience will be injected here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-black/40 backdrop-blur-xl border-t border-white/10 text-gray-400 py-8 px-4">
+        <div class="max-w-7xl mx-auto text-center">
+            <p>&copy; 2024 Smart Cart. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        function generateItinerary() {
+            const dest = document.getElementById('destination').value;
+            const days = parseInt(document.getElementById('days').value);
+
+            if (!dest || !days) {
+                alert('Please enter destination and days');
+                return;
+            }
+
+            const container = document.getElementById('itinerary-list');
+            const placeholder = document.getElementById('itinerary-empty');
+
+            placeholder.classList.add('hidden');
+            container.classList.remove('hidden');
+            container.innerHTML = '';
+
+            const activities = [
+                { time: "09:00", task: "Metropolitan Exploration", icon: "map-pin", desc: "Navigate the heart of the city with AI-guided mapping.", style: "Premium Casual" },
+                { time: "13:00", task: "Gourmet Experience", icon: "utensils", desc: "Elite curation of local flavors and Michelin-starred nodes.", style: "Contemporary Elegant" },
+                { time: "16:00", task: "Heritage Circuit", icon: "landmark", desc: "Deep immersion into the sector's historical archive.", style: "Smart Utility" },
+                { time: "20:00", task: "Evening Gala", icon: "sparkles", desc: "Premium socialization event with skyline panoramic view.", style: "Sophisticated Luxe" }
+            ];
+
+            for (let i = 1; i <= days; i++) {
+                const dayNode = document.createElement('div');
+                dayNode.className = 'timeline-node group p-4';
+                dayNode.innerHTML = `
+                    <div class="glow-node">
+                        <i data-lucide="plane" class="w-5 h-5 text-sky-400"></i>
+                    </div>
+                    <div class="glass-card-premium p-8 border-white/5 relative z-10">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+                            <div>
+                                <p class="text-sky-400 text-[10px] font-black uppercase tracking-[0.3em] mb-2">Cycle 0${i}</p>
+                                <h3 class="text-4xl font-black text-white uppercase tracking-tighter">Day ${i}: ${dest}</h3>
+                            </div>
+                            <div class="flex gap-2">
+                                <button class="glass-button-premium p-3 rounded-xl border-white/10 text-slate-400 hover:text-white">
+                                    <i data-lucide="share-2" class="w-4 h-4"></i>
+                                </button>
+                                <button class="glass-button-premium p-3 rounded-xl border-sky-500/20 text-sky-400 hover:bg-sky-500/10">
+                                    <i data-lucide="download" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="space-y-8 mb-10">
+                            ${activities.map((a, idx) => `
+                                <div class="flex gap-6 items-start relative">
+                                    <div class="w-16 pt-1 text-right">
+                                        <span class="text-xs font-black text-slate-500 font-mono tracking-tighter">${a.time}</span>
+                                    </div>
+                                    <div class="flex-grow glass-card-premium p-5 border-white/5 group/act hover:border-sky-500/30 transition-all">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <div class="flex items-center gap-3">
+                                                <div class="w-8 h-8 rounded-lg bg-sky-500/10 flex items-center justify-center">
+                                                    <i data-lucide="${a.icon}" class="w-4 h-4 text-sky-400"></i>
+                                                </div>
+                                                <h4 class="text-sm font-black text-white uppercase tracking-tight">${a.task}</h4>
+                                            </div>
+                                            <div class="flex gap-2 opacity-0 group-hover/act:opacity-100 transition-opacity">
+                                                <button class="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400" title="Swap Activity">
+                                                    <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <p class="text-[11px] text-slate-500 leading-relaxed mb-4">${a.desc}</p>
+                                        
+                                        <!-- Style Sync Integration -->
+                                        <div class="pt-4 border-t border-white/5 flex items-center justify-between">
+                                            <div class="flex items-center gap-2">
+                                                <i data-lucide="shirt" class="w-3.5 h-3.5 text-pink-400"></i>
+                                                <span class="text-[10px] font-black text-pink-400 uppercase tracking-widest">Style Sync: ${a.style}</span>
+                                            </div>
+                                            <a href="/style-your-outfit" class="text-[9px] font-bold text-slate-500 hover:text-white underline uppercase tracking-widest">Outfit Match</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        <!-- Daily AI Summary -->
+                        <div class="bg-sky-500/5 border border-sky-500/20 rounded-2xl p-6 flex items-start gap-5">
+                            <div class="w-12 h-12 rounded-xl bg-sky-500/10 flex items-center justify-center shrink-0">
+                                <i data-lucide="zap" class="w-6 h-6 text-sky-400 animate-pulse"></i>
+                            </div>
+                            <div>
+                                <h5 class="text-xs font-black text-white uppercase tracking-widest mb-2">AI Strategic Insight</h5>
+                                <p class="text-xs text-slate-400 leading-relaxed">Optimization suggested: Swap Cycle 03 with evening gala to align with sunset panoramic node timing for maximum aesthetic output.</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(dayNode);
+            }
+            lucide.createIcons();
+
+            // Motion entry effect
+            const nodes = container.querySelectorAll('.timeline-node');
+            nodes.forEach((node, idx) => {
+                node.style.opacity = '0';
+                node.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    node.style.transition = 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+                    node.style.opacity = '1';
+                    node.style.transform = 'translateY(0)';
+                }, idx * 150);
+            });
+        }
+    </script>
+</body>
+
+</html>

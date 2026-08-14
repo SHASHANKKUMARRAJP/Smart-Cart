@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price History - Smart Cart</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            --glass-glow: 0 0 20px rgba(99, 102, 241, 0.4);
+            --glass-hover: rgba(255, 255, 255, 0.08);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #030712;
+            color: #f3f4f6;
+            margin: 0;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .aurora-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            overflow: hidden;
+            background: #030712;
+        }
+
+        .aurora-blob {
+            position: absolute;
+            filter: blur(140px);
+            opacity: 0.6;
+            animation: floatBlob 20s infinite ease-in-out alternate;
+            border-radius: 50%;
+        }
+
+        .blob-1 {
+            top: -10%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: rgba(59, 130, 246, 0.4);
+            animation-delay: 0s;
+        }
+
+        .blob-2 {
+            bottom: -20%;
+            right: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: rgba(99, 102, 241, 0.3);
+            animation-delay: -5s;
+        }
+
+        @keyframes floatBlob {
+            0% {
+                transform: translate(0, 0) scale(1) rotate(0deg);
+            }
+
+            33% {
+                transform: translate(5%, 5%) scale(1.1) rotate(5deg);
+            }
+
+            66% {
+                transform: translate(-5%, 10%) scale(0.9) rotate(-5deg);
+            }
+
+            100% {
+                transform: translate(0, -5%) scale(1) rotate(0deg);
+            }
+        }
+
+        .grid-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+
+        .glass-morphism {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 40px rgba(31, 38, 135, 0.1), 0 8px 32px rgba(31, 38, 135, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .glass-card-premium {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.2);
+            border-radius: 24px;
+        }
+
+        .gradient-text-premium {
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #4f46e5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .search-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(59, 130, 246, 0.5);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+            outline: none;
+        }
+
+        .loader {
+            display: inline-block;
+            width: 2rem;
+            height: 2rem;
+            border: 3px solid rgba(255, 255, 255, .3);
+            border-radius: 50%;
+            border-top-color: #3b82f6;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body class="text-primary antialiased">
+    <div class="aurora-bg">
+        <div class="aurora-blob blob-1"></div>
+        <div class="aurora-blob blob-2"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 glass-morphism">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="{{ url_for('main.explore') }}" class="flex items-center space-x-2">
+                    <div
+                        class="w-8 h-8 glass-card-premium rounded-lg flex items-center justify-center border border-white/20">
+                        <i data-lucide="arrow-left" size="18" class="text-white"></i>
+                    </div>
+                    <span class="text-xl font-bold text-white">Back to Explore</span>
+                </a>
+                <div class="flex items-center space-x-2">
+                    <div
+                        class="w-8 h-8 glass-card-premium rounded-lg flex items-center justify-center border border-white/20">
+                        <i data-lucide="trending-up" size="18" class="text-white"></i>
+                    </div>
+                    <span class="text-xl font-bold text-white">Price History</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="max-w-4xl mx-auto w-full">
+            <div class="text-center mb-10">
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                    Track <span class="gradient-text-premium">Price Trends</span>
+                </h1>
+                <p class="text-lg text-gray-300">
+                    Search for a product to see how its price has changed over the past year.
+                </p>
+            </div>
+
+            <div class="glass-card-premium p-8 border border-white/10 mb-8">
+                <form id="search-form" class="relative">
+                    <div class="flex gap-4">
+                        <div class="relative flex-grow">
+                            <i data-lucide="search"
+                                class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <input type="text" id="product-search"
+                                placeholder="Enter product name (e.g. iPhone 15, Amul Milk) to see price trends..."
+                                class="w-full pl-12 pr-4 py-4 rounded-xl search-input text-lg font-medium placeholder-gray-500"
+                                required>
+                        </div>
+                        <button type="submit"
+                            class="px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-xl font-bold shadow-lg shadow-blue-500/25 transition-all flex items-center gap-2">
+                            <span>Analyze</span>
+                            <i data-lucide="activity"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loading-state" class="hidden glass-card-premium p-12 text-center border border-white/10 mt-8">
+                <div class="loader mb-4"></div>
+                <h3 class="text-xl font-bold text-white mb-2">Analyzing Historical Data</h3>
+                <p class="text-gray-400">Gathering price points over the last 12 months...</p>
+            </div>
+
+            <!-- Chart Container -->
+            <div id="results-container"
+                class="hidden glass-card-premium p-8 border border-white/10 mt-8 relative overflow-hidden">
+                <!-- Background decorative element -->
+                <div
+                    class="absolute -right-20 -top-20 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none">
+                </div>
+
+                <div class="flex justify-between items-end mb-8 relative z-10">
+                    <div>
+                        <h2 class="text-2xl font-bold text-white mb-1" id="chart-product-title">Product Name</h2>
+                        <p class="text-blue-400 font-medium" id="chart-product-current">Current Price: ₹0</p>
+                    </div>
+                    <div class="text-right">
+                        <span
+                            class="inline-flex items-center px-3 py-1 rounded-full bg-green-500/10 text-green-400 text-sm font-bold border border-green-500/20"
+                            id="price-trend-badge">
+                            <i data-lucide="trending-down" size="16" class="mr-1"></i> Good time to buy
+                        </span>
+                    </div>
+                </div>
+
+                <div class="w-full h-[400px] relative z-10">
+                    <canvas id="priceChart"></canvas>
+                </div>
+
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-white/10 pt-6 relative z-10">
+                    <div class="glass-morphism rounded-xl p-4 text-center">
+                        <p class="text-gray-400 text-sm mb-1">Lowest Price</p>
+                        <p class="text-xl font-bold text-white" id="stat-lowest">₹0</p>
+                    </div>
+                    <div class="glass-morphism rounded-xl p-4 text-center">
+                        <p class="text-gray-400 text-sm mb-1">Average Price</p>
+                        <p class="text-xl font-bold text-white" id="stat-avg">₹0</p>
+                    </div>
+                    <div class="glass-morphism rounded-xl p-4 text-center">
+                        <p class="text-gray-400 text-sm mb-1">Highest Price</p>
+                        <p class="text-xl font-bold text-white" id="stat-highest">₹0</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Error State -->
+            <div id="error-state" class="hidden glass-card-premium p-8 text-center border border-red-500/30 mt-8">
+                <div
+                    class="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-500/50">
+                    <i data-lucide="alert-circle" size="32" class="text-red-400"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-2" id="error-title">Analysis Failed</h3>
+                <p class="text-gray-400" id="error-message">We couldn't generate price history for this product right
+                    now.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer
+        class="mt-auto bg-black/40 backdrop-blur-xl border-t border-white/10 py-6 text-center text-gray-400 text-sm">
+        <p>&copy; 2024 Smart Cart. All rights reserved.</p>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+        let chartInstance = null;
+
+        document.getElementById('search-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const product = document.getElementById('product-search').value.trim();
+            if (!product) return;
+
+            // UI Transitions
+            document.getElementById('results-container').classList.add('hidden');
+            document.getElementById('error-state').classList.add('hidden');
+            document.getElementById('loading-state').classList.remove('hidden');
+
+            try {
+                const response = await fetch(`/api/price-history?q=${encodeURIComponent(product)}`);
+                const data = await response.json();
+
+                document.getElementById('loading-state').classList.add('hidden');
+
+                if (!response.ok || data.error) {
+                    throw new Error(data.error || 'Failed to fetch price history');
+                }
+
+                renderChart(data.product, data.history, data.stats);
+                document.getElementById('results-container').classList.remove('hidden');
+
+            } catch (error) {
+                console.error(error);
+                document.getElementById('loading-state').classList.add('hidden');
+                document.getElementById('error-state').classList.remove('hidden');
+                document.getElementById('error-message').innerText = error.message;
+            }
+        });
+
+        function renderChart(productName, historyData, stats) {
+            // Update UI
+            document.getElementById('chart-product-title').innerText = productName;
+            document.getElementById('chart-product-current').innerText = `Current Market Price: ₹${stats.current}`;
+            document.getElementById('stat-lowest').innerText = `₹${stats.lowest}`;
+            document.getElementById('stat-avg').innerText = `₹${stats.average}`;
+            document.getElementById('stat-highest').innerText = `₹${stats.highest}`;
+
+            // Handle badge insight
+            const badge = document.getElementById('price-trend-badge');
+            if (stats.current <= stats.average) {
+                badge.innerHTML = `<i data-lucide="trending-down" size="16" class="mr-1"></i> Good time to buy`;
+                badge.className = "inline-flex items-center px-3 py-1 rounded-full bg-green-500/10 text-green-400 text-sm font-bold border border-green-500/20";
+            } else {
+                badge.innerHTML = `<i data-lucide="trending-up" size="16" class="mr-1"></i> Prices are high`;
+                badge.className = "inline-flex items-center px-3 py-1 rounded-full bg-red-500/10 text-red-400 text-sm font-bold border border-red-500/20";
+            }
+            lucide.createIcons();
+
+            // Prepare chart data
+            const labels = historyData.map(item => item.month);
+            const dataPoints = historyData.map(item => item.price);
+
+            const ctx = document.getElementById('priceChart').getContext('2d');
+
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            // Create gradient for chart fill
+            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, 'rgba(59, 130, 246, 0.5)'); // Blue
+            gradient.addColorStop(1, 'rgba(59, 130, 246, 0.0)'); // Transparent
+
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Price (₹)',
+                        data: dataPoints,
+                        borderColor: '#3b82f6', // Tailwind blue-500
+                        backgroundColor: gradient,
+                        borderWidth: 3,
+                        pointBackgroundColor: '#1e3a8a', // Dark blue
+                        pointBorderColor: '#60a5fa',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        fill: true,
+                        tension: 0.4 // Smooth curves
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(3, 7, 18, 0.9)',
+                            titleColor: '#f3f4f6',
+                            bodyColor: '#93c5fd',
+                            borderColor: 'rgba(59, 130, 246, 0.3)',
+                            borderWidth: 1,
+                            padding: 12,
+                            displayColors: false,
+                            callbacks: {
+                                label: function (context) {
+                                    return `₹${context.parsed.y}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: '#9ca3af',
+                                callback: function (value) {
+                                    return '₹' + value;
+                                },
+                                padding: 10
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false,
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: '#9ca3af',
+                                padding: 10
+                            }
+                        }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'index',
+                    },
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

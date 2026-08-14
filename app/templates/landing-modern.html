@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Cart - Grocery Intelligence</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='premium-css.css') }}">
+</head>
+
+<body>
+    <!-- SVG Defs -->
+    <svg width="0" height="0" style="position: absolute;">
+        <defs>
+            <linearGradient id="premium-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#4f46e5" />
+                <stop offset="50%" stop-color="#9333ea" />
+                <stop offset="100%" stop-color="#ec4899" />
+            </linearGradient>
+        </defs>
+    </svg>
+
+    <!-- BACKGROUND SYSTEM -->
+    <div class="bg-grid"></div>
+    <div class="noise-overlay"></div>
+    <div class="orb-container">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <div class="orb orb-4"></div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="navigation" id="default-nav" style="position: fixed; top: 2rem; right: 2rem; z-index: 100;">
+
+        {% if session.get('user') %}
+        <a href="{{ url_for('main.dashboard') }}" class="btn btn-primary"
+            style="padding: 10px 20px; font-size: 0.9rem;">Go
+            to Dashboard</a>
+        <button onclick="logoutLanding()" class="btn btn-secondary"
+            style="padding: 10px 20px; font-size: 0.9rem; border: none; cursor: pointer;">Logout</button>
+        {% else %}
+        <a href="{{ url_for('main.login') }}" class="btn btn-secondary"
+            style="padding: 10px 20px; font-size: 0.9rem;">Log In</a>
+        <a href="{{ url_for('main.dashboard') }}" class="btn btn-primary"
+            style="padding: 10px 20px; font-size: 0.9rem;">Get
+            Started</a>
+        {% endif %}
+    </div>
+
+    <!-- Buyhatke Header -->
+    <header id="buyhatke-header"
+        style="display: none; background: #fff; padding: 0 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); height: 70px; align-items: center; justify-content: space-between; font-family: 'Inter', sans-serif; position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;">
+        <div style="display: flex; align-items: center; gap: 30px;">
+            <div style="display: flex; align-items: center; gap: 5px;">
+                <div
+                    style="background: #5b45ff; width: 35px; height: 35px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                </div>
+                <span style="color: #5b45ff; font-weight: 700; font-size: 22px; letter-spacing: -0.5px;">buyhatke</span>
+            </div>
+
+            <nav style="display: flex; gap: 20px;">
+                <a href="#" style="color: #4b5563; text-decoration: none; font-size: 14px; font-weight: 500;">Hot
+                    Deals</a>
+                <a href="#" style="color: #4b5563; text-decoration: none; font-size: 14px; font-weight: 500;">Spend
+                    Lens</a>
+                <a href="#" style="color: #4b5563; text-decoration: none; font-size: 14px; font-weight: 500;">Price
+                    Alert</a>
+                <div style="position: relative;">
+                    <a href="#"
+                        style="color: #4b5563; text-decoration: none; font-size: 14px; font-weight: 500;">Grocery
+                        Comparison</a>
+                    <span
+                        style="position: absolute; top: -10px; right: -20px; background: #ecf0ff; color: #5b45ff; font-size: 9px; padding: 2px 4px; border-radius: 4px; font-weight: 700;">BETA</span>
+                </div>
+                <a href="#" style="color: #4b5563; text-decoration: none; font-size: 14px; font-weight: 500;">Ride
+                    Compare</a>
+                <a href="#" style="color: #4b5563; text-decoration: none; font-size: 14px; font-weight: 500;">Gift
+                    Vouchers</a>
+            </nav>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <a href="#" style="color: #4b5563; text-decoration: none; font-size: 14px; font-weight: 500;">Refer &
+                Earn</a>
+            <div style="display: flex; align-items: center; gap: 5px;">
+                <div
+                    style="width: 24px; height: 16px; background: linear-gradient(to bottom, #ff9933 33%, #ffffff 33%, #ffffff 66%, #138808 66%); border: 1px solid #ddd;">
+                </div>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" style="color: #4b5563;">
+                    <path d="M5 12h14"></path>
+                    <path d="M12 5l7 7-7 7"></path>
+                </svg>
+                <span style="font-size: 16px; font-weight: 600;">A</span>
+            </div>
+
+            <a href="#"
+                style="background: #ecf0ff; color: #5b45ff; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <circle cx="12" cy="12" r="4"></circle>
+                    <line x1="21.17" y1="8" x2="12" y2="8"></line>
+                    <line x1="3.95" y1="6.06" x2="8.54" y2="14"></line>
+                    <line x1="10.88" y1="21.94" x2="15.46" y2="14"></line>
+                </svg>
+                Install, it's free
+            </a>
+
+            <a href="{{ url_for('main.login') }}"
+                style="background: #5b45ff; color: white; padding: 8px 24px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 600;">Login</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="section" style="padding-top: 180px; min-height: 100vh;">
+        <div class="container center">
+            <div class="reveal d-1">
+                <span
+                    style="background: rgba(255,255,255,0.8); border: 1px solid rgba(0,0,0,0.05); padding: 8px 16px; border-radius: 100px; font-size: 0.875rem; font-weight: 600; color: #4f46e5; box-shadow: 0 4px 10px rgba(0,0,0,0.03);">
+                    🚀 Intelligent Grocery Comparison
+                </span>
+            </div>
+
+            <h1 class="reveal d-2" style="margin-top: 20px;">
+                Shop Smarter, <br>
+                <span class="text-gradient">Save Faster.</span>
+            </h1>
+
+            <p class="reveal d-3" style="max-width: 600px; margin: 0 auto 40px;">
+                Real-time price tracking across Blinkit, Zepto, and Instamart.
+                We find the hidden deals so you never overpay again.
+            </p>
+
+            <div class="reveal d-3" style="margin-bottom: 80px;">
+                <a href="{{ url_for('main.tickets') }}" class="btn btn-primary">Start Ticket Booking <i
+                        data-lucide="arrow-right" size="18"></i></a>
+                <a href="#features" class="btn btn-secondary">Learn More</a>
+            </div>
+
+            <!-- 3D Dashboard Preview (Ultimate) -->
+            <div id="dashboard-container" class="dashboard-tilt reveal d-3"
+                style="perspective: 2000px; transform-style: preserve-3d;">
+                <div id="dashboard-card" class="dashboard-inner"
+                    style="max-width: 900px; height: 500px; margin: 0 auto; position: relative; background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); border: 1px solid rgba(255, 255, 255, 0.6); border-radius: 28px; box-shadow: 0 50px 100px -20px rgba(50, 50, 93, 0.15), 0 30px 60px -30px rgba(0, 0, 0, 0.2); overflow: hidden; transform-style: preserve-3d; transition: transform 0.1s ease-out;">
+
+                    <!-- Ambient Dynamic Background -->
+                    <div
+                        style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.15), transparent 60%); pointer-events: none; z-index: 0;">
+                    </div>
+
+                    <!-- Decorative Graphic Elements -->
+                    <div style="position: absolute; top: 0; right: 0; padding: 40px; z-index: 0; opacity: 0.1;">
+                        <svg width="200" height="200" viewBox="0 0 200 200" fill="none">
+                            <circle cx="100" cy="100" r="90" stroke="#000" stroke-width="1" stroke-dasharray="10 10" />
+                            <circle cx="100" cy="100" r="70" stroke="#000" stroke-width="1" stroke-dasharray="10 10" />
+                        </svg>
+                    </div>
+
+                    <!-- UI Header -->
+                    <div
+                        style="position: relative; z-index: 10; height: 80px; border-bottom: 1px solid rgba(0,0,0,0.05); display: flex; align-items: center; padding: 0 40px; justify-content: space-between; background: rgba(255,255,255,0.4);">
+                        <div style="display: flex; gap: 16px; align-items: center;">
+                            <div
+                                style="width: 44px; height: 44px; background: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); border: 1px solid rgba(0,0,0,0.02);">
+                                <i data-lucide="activity" size="22" stroke="url(#premium-gradient)"
+                                    style="stroke: #4f46e5;"></i>
+                            </div>
+                            <div>
+                                <h4
+                                    style="margin: 0; font-size: 1rem; font-weight: 700; color: #0f172a; letter-spacing: -0.01em;">
+                                    Price Intelligence Hub</h4>
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <span style="position: relative; display: flex; width: 8px; height: 8px;">
+                                        <span
+                                            style="position: absolute; display: inline-flex; height: 100%; width: 100%; border-radius: 50%; background-color: #22c55e; opacity: 0.75; animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;"></span>
+                                        <span
+                                            style="position: relative; display: inline-flex; border-radius: 50%; height: 8px; width: 8px; background-color: #22c55e;"></span>
+                                    </span>
+                                    <span style="font-size: 0.75rem; color: #64748b; font-weight: 500;">Live Market
+                                        Data</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Header Actions -->
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div
+                                style="padding: 8px 16px; background: rgba(241, 245, 249, 0.5); border-radius: 100px; font-size: 0.8rem; font-weight: 600; color: #475569; border: 1px solid rgba(0,0,0,0.02);">
+                                Mumbai, IN
+                            </div>
+                            <div
+                                style="width: 36px; height: 36px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center;">
+                                <i data-lucide="bell" size="16" color="#64748b"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- UI Body -->
+                    <div
+                        style="position: relative; z-index: 10; padding: 40px; display: flex; gap: 32px; height: calc(100% - 80px); align-items: flex-end;">
+
+                        <!-- Card 1 (Competitor A) -->
+                        <div class="glass-card-hover"
+                            style="flex: 1; background: linear-gradient(180deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.3) 100%); border: 1px solid rgba(255,255,255,0.5); border-radius: 20px; padding: 24px; height: 260px; display: flex; flex-direction: column; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                                <div style="display: flex; gap: 10px; align-items: center;">
+                                    <div
+                                        style="width: 32px; height: 32px; background: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                                    </div>
+                                    <div style="font-weight: 600; font-size: 0.9rem; color: #64748b;">Blinkit</div>
+                                </div>
+                                <span style="font-size: 0.8rem; color: #94a3b8;">12m ago</span>
+                            </div>
+
+                            <div style="margin-top: auto;">
+                                <div style="font-size: 1.5rem; font-weight: 700; color: #64748b; margin-bottom: 8px;">
+                                    ₹125</div>
+                                <!-- Graph Bars -->
+                                <div style="display: flex; gap: 4px; align-items: flex-end; height: 40px;">
+                                    <div style="flex:1; background: #e2e8f0; border-radius: 2px; height: 40%;"></div>
+                                    <div style="flex:1; background: #e2e8f0; border-radius: 2px; height: 60%;"></div>
+                                    <div style="flex:1; background: #e2e8f0; border-radius: 2px; height: 30%;"></div>
+                                    <div style="flex:1; background: #cbd5e1; border-radius: 2px; height: 80%;"></div>
+                                    <div style="flex:1; background: #e2e8f0; border-radius: 2px; height: 50%;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 2 (Winner - Highlight) -->
+                        <div class="winner-card"
+                            style="flex: 1.4; background: #fff; border-radius: 24px; padding: 32px; height: 360px; transform: translateY(-20px); box-shadow: 0 25px 50px -12px rgba(79, 70, 229, 0.25), 0 0 0 1px rgba(79, 70, 229, 0.1); display: flex; flex-direction: column; position: relative; z-index: 20;">
+
+                            <!-- Winner Badge -->
+                            <div
+                                style="position: absolute; top: -16px; left: 50%; transform: translateX(-50%); background: #10b981; padding: 8px 16px; border-radius: 100px; color: white; font-weight: 700; font-size: 0.85rem; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4); display: flex; align-items: center; gap: 6px; white-space: nowrap;">
+                                <i data-lucide="crown" size="14" fill="white"></i> Best Deal & Fastest
+                            </div>
+
+                            <!-- Product Info -->
+                            <div
+                                style="display: flex; gap: 16px; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #f1f5f9;">
+                                <div
+                                    style="width: 64px; height: 64px; background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); border-radius: 16px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px -5px rgba(253, 160, 133, 0.4); color: white;">
+                                    <i data-lucide="shopping-bag" size="32"></i>
+                                </div>
+                                <div>
+                                    <div
+                                        style="font-size: 1.1rem; font-weight: 700; color: #0f172a; margin-bottom: 4px;">
+                                        Premium Quaker Oats</div>
+                                    <div style="font-size: 0.9rem; color: #64748b;">1kg • Fresh Stock</div>
+                                    <div
+                                        style="margin-top: 6px; display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; background: #f0fdf4; border-radius: 4px; color: #166534; font-size: 0.75rem; font-weight: 600;">
+                                        <i data-lucide="truck" size="10"></i> 10 min delivery
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Price Action -->
+                            <div style="margin-top: auto; text-align: center;">
+                                <span
+                                    style="color: #6366f1; font-weight: 600; font-size: 0.9rem; letter-spacing: 0.02em; text-transform: uppercase;">Total
+                                    Price</span>
+                                <div
+                                    style="font-size: 4.5rem; font-weight: 800; color: #0f172a; line-height: 1; letter-spacing: -2px; margin: 5px 0 15px;">
+                                    ₹85
+                                </div>
+                                <button class="btn btn-primary"
+                                    style="width: 100%; justify-content: center; padding: 14px; font-size: 1rem;">
+                                    Add to Cart <i data-lucide="arrow-right" size="16"></i>
+                                </button>
+                            </div>
+
+                            <!-- Cursor -->
+                            <div class="floating-cursor" style="bottom: 80px; right: 20px;">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    style="filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));">
+                                    <path d="M3 3L10.07 19.97L12.58 12.58L19.97 10.07L3 3Z" fill="#1e293b"
+                                        stroke="white" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                                <div
+                                    style="position: absolute; top: 20px; left: 20px; background: #1e293b; color: white; padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 600;">
+                                    You</div>
+                            </div>
+                        </div>
+
+                        <!-- Card 3 (Competitor B) -->
+                        <div class="glass-card-hover"
+                            style="flex: 1; background: linear-gradient(180deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.3) 100%); border: 1px solid rgba(255,255,255,0.5); border-radius: 20px; padding: 24px; height: 260px; display: flex; flex-direction: column; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                                <div style="display: flex; gap: 10px; align-items: center;">
+                                    <div
+                                        style="width: 32px; height: 32px; background: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                                    </div>
+                                    <div style="font-weight: 600; font-size: 0.9rem; color: #64748b;">Zepto</div>
+                                </div>
+                                <span style="font-size: 0.8rem; color: #94a3b8;">4m ago</span>
+                            </div>
+
+                            <div style="margin-top: auto;">
+                                <div style="font-size: 1.5rem; font-weight: 700; color: #64748b; margin-bottom: 8px;">
+                                    ₹118</div>
+                                <!-- Graph Bars -->
+                                <div style="display: flex; gap: 4px; align-items: flex-end; height: 40px;">
+                                    <div style="flex:1; background: #e2e8f0; border-radius: 2px; height: 50%;"></div>
+                                    <div style="flex:1; background: #cbd5e1; border-radius: 2px; height: 90%;"></div>
+                                    <div style="flex:1; background: #e2e8f0; border-radius: 2px; height: 40%;"></div>
+                                    <div style="flex:1; background: #e2e8f0; border-radius: 2px; height: 60%;"></div>
+                                    <div style="flex:1; background: #e2e8f0; border-radius: 2px; height: 30%;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="section">
+        <div class="container">
+            <h2 class="center reveal">Why choose us?</h2>
+            <div class="grid-3" style="margin-top: 60px;">
+                <div class="card card-hover reveal d-1">
+                    <div class="icon-box"><i data-lucide="search" size="24"></i></div>
+                    <h3>Global Search</h3>
+                    <p>Search once, see results everywhere. We aggregate data from all top delivery platforms.</p>
+                </div>
+                <div class="card card-hover reveal d-2">
+                    <div class="icon-box"><i data-lucide="zap" size="24"></i></div>
+                    <h3>Instant Updates</h3>
+                    <p>Prices change every minute. Our engine tracks them in real-time to catch flash sales.</p>
+                </div>
+                <div class="card card-hover reveal d-3">
+                    <div class="icon-box"><i data-lucide="shield" size="24"></i></div>
+                    <h3>Secure & Private</h3>
+                    <p>We don't track your personal data. We only care about finding you the best grocery prices.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="padding: 60px 0; border-top: 1px solid rgba(0,0,0,0.05); text-align: center;">
+        <div class="container">
+            <h2 style="font-size: 1.5rem; margin-bottom: 20px;">Ready to save?</h2>
+            <a href="{{ url_for('main.dashboard') }}" class="btn btn-primary" style="margin-bottom: 40px;">Get Started
+                Now</a>
+            <p style="font-size: 0.9rem; color: #94a3b8;">&copy; 2024 Smart Cart. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // sophisticated 3D Tilt Effect
+        const container = document.getElementById('dashboard-container');
+        const card = document.getElementById('dashboard-card');
+
+        if (container && card) {
+            container.addEventListener('mousemove', (e) => {
+                const rect = container.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                // Calculate percentage from center (0 to 1)
+                const xPct = x / rect.width - 0.5;
+                const yPct = y / rect.height - 0.5;
+
+                // Max rotation degrees
+                const xRot = yPct * -10; // Rotate around X axis (up/down tilt)
+                const yRot = xPct * 10;  // Rotate around Y axis (left/right tilt)
+
+                card.style.transform = `rotateX(${xRot}deg) rotateY(${yRot}deg)`;
+            });
+
+            container.addEventListener('mouseleave', () => {
+                card.style.transform = 'rotateX(0deg) rotateY(0deg)';
+                card.style.transition = 'transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1)';
+            });
+
+            container.addEventListener('mouseenter', () => {
+                card.style.transition = 'transform 0.1s ease-out';
+            });
+        }
+
+        // Scroll Reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Parallax Effect for Orbs
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 20;
+            const y = (e.clientY / window.innerHeight - 0.5) * 20;
+
+            document.querySelectorAll('.orb').forEach((orb, i) => {
+                const factor = (i + 1) * 2;
+                orb.style.transform = `translate(${x * factor}px, ${y * factor}px)`;
+            });
+        });
+
+
+
+        async function logoutLanding() {
+            try {
+                const res = await fetch('/auth/logout', { method: 'POST' });
+                if (res.ok) window.location.reload();
+            } catch (err) {
+                console.error(err);
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Packing List Generator | Plan My Trip</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0f172a;
+            color: #f1f5f9;
+            margin: 0;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .aurora-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            background: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 100%);
+        }
+
+        .grid-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+
+        .glass-morphism {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .glass-card-premium {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+        }
+
+        .glass-nav-item {
+            padding: 8px 16px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            position: relative;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 500;
+        }
+
+        .glass-nav-item:hover,
+        .glass-nav-item.active {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: white;
+        }
+
+        .gradient-text-premium {
+            background: linear-gradient(135deg, #fb7185 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        input,
+        select {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 14px 18px;
+            border-radius: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: rgba(236, 72, 153, 0.4);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 20px rgba(236, 72, 153, 0.1);
+        }
+
+        .packing-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 16px 20px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .packing-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
+            transform: translateX(4px);
+        }
+
+        .packing-item.packed {
+            opacity: 0.5;
+            text-decoration: line-through;
+            border-color: rgba(16, 185, 129, 0.2);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .packing-item.packed i {
+            color: #10b981;
+        }
+
+        .glass-button-premium {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .glass-button-premium:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-1px);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-slide {
+            animation: slideIn 0.3s ease-out forwards;
+        }
+    </style>
+</head>
+
+<body class="text-gray-100 antialiased">
+    <div class="aurora-bg">
+        <div class="grid-overlay"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 w-full z-50 glass-morphism border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Branding -->
+                <a href="{{ url_for('main.plan_trip') }}" class="flex items-center space-x-3 group">
+                    <div
+                        class="w-10 h-10 bg-gradient-to-br from-gray-800 to-slate-900 rounded-xl flex items-center justify-center border border-white/10 shadow-xl group-hover:border-pink-500/50 transition-all">
+                        <i data-lucide="plane" class="w-6 h-6 text-pink-400"></i>
+                    </div>
+                    <span class="text-xl font-bold text-white tracking-tight uppercase">Plan My Trip</span>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-2">
+                    <a href="{{ url_for('main.index') }}" class="glass-nav-item">Home</a>
+                    <a href="{{ url_for('main.plan_trip') }}" class="glass-nav-item">Plan My Trip</a>
+                    <a href="{{ url_for('main.destination_ideas') }}" class="glass-nav-item">Destination Ideas</a>
+                    <a href="{{ url_for('main.budget_planner') }}" class="glass-nav-item">Budget Planner</a>
+                    <a href="{{ url_for('main.travel_itinerary') }}" class="glass-nav-item">Travel Itinerary</a>
+                    <a href="{{ url_for('main.hotels') }}" class="glass-nav-item">Hotels</a>
+                    <a href="{{ url_for('main.packing_list') }}" class="glass-nav-item active">
+                        Packing List
+                        <span
+                            class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-pink-500 rounded-full shadow-[0_0_8px_rgba(236,72,153,0.8)]"></span>
+                    </a>
+                </div>
+
+                <!-- Right Side Actions -->
+                <div class="hidden md:flex items-center space-x-4 flex-1 justify-end max-w-sm ml-8">
+                    <a href="{{ url_for('main.plan_trip') }}"
+                        class="glass-button-premium px-6 py-2.5 rounded-xl text-sm font-bold uppercase tracking-widest text-white">
+                        Back Hub
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow pt-24 pb-20 px-4 relative z-10">
+        <div class="max-w-5xl mx-auto">
+            <header class="text-center mb-16">
+                <div
+                    class="inline-flex items-center bg-pink-500/10 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] mb-6 text-pink-400 border border-pink-500/20">
+                    <i data-lucide="luggage" class="w-3.5 h-3.5 mr-2"></i> Smart Utility
+                </div>
+                <h1 class="text-5xl md:text-7xl font-black text-white mb-6 tracking-tighter uppercase leading-[0.9]">
+                    AI Trip<br>
+                    <span class="gradient-text-premium">Packing List</span>
+                </h1>
+                <p class="text-slate-400 text-lg max-w-2xl mx-auto font-medium">
+                    Never forget an essential again. Generate a curated checklist based on your destination and trip
+                    type.
+                </p>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                <!-- Generator Controls -->
+                <div class="lg:col-span-4">
+                    <div class="glass-card-premium p-8 h-fit sticky top-24">
+                        <div class="space-y-6">
+                            <div class="space-y-3">
+                                <label class="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Trip
+                                    Type</label>
+                                <div class="relative group">
+                                    <i data-lucide="sun"
+                                        class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-pink-400 z-10"></i>
+                                    <select id="trip_type" class="pl-12 appearance-none" onchange="generateList()">
+                                        <option value="beach">Beach Vacation</option>
+                                        <option value="mountain">Mountain Trekking</option>
+                                        <option value="city">City Sightseeing</option>
+                                        <option value="business">Business Trip</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="space-y-3">
+                                <label
+                                    class="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Duration</label>
+                                <div class="relative group">
+                                    <i data-lucide="calendar"
+                                        class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-pink-400"></i>
+                                    <input type="number" id="duration" placeholder="e.g. 5 days" class="pl-12">
+                                </div>
+                            </div>
+
+                            <button onclick="generateList()"
+                                class="w-full bg-gradient-to-r from-pink-500 to-rose-600 p-5 rounded-2xl font-black uppercase text-xs tracking-[0.2em] shadow-lg shadow-pink-500/20 hover:shadow-pink-500/40 transform hover:-translate-y-1 transition-all flex items-center justify-center gap-3">
+                                Generate List <i data-lucide="sparkles" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- List Output -->
+                <div class="lg:col-span-8">
+                    <div id="list-empty"
+                        class="glass-card-premium p-12 h-64 flex flex-col items-center justify-center text-center">
+                        <i data-lucide="list-todo" class="w-10 h-10 text-slate-600 mb-4"></i>
+                        <p class="text-slate-500 font-bold uppercase text-xs tracking-widest">Select parameters to start
+                        </p>
+                    </div>
+
+                    <div id="list-container" class="hidden space-y-4">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 id="list-title" class="text-2xl font-black text-white uppercase tracking-tighter">
+                                Essential Gear</h3>
+                            <button onclick="resetList()"
+                                class="text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-pink-400 transition-colors">Clear
+                                All</button>
+                        </div>
+                        <div id="items-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <!-- Items Injected Here -->
+                        </div>
+
+                        <div class="mt-8 pt-8 border-t border-white/5 flex flex-col sm:flex-row gap-4">
+                            <input type="text" id="custom-item" placeholder="Add custom item..." class="flex-grow">
+                            <button onclick="addCustomItem()"
+                                class="px-8 py-4 glass-button-premium rounded-2xl font-black text-xs uppercase tracking-widest text-white whitespace-nowrap">Add
+                                Item</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-black/40 backdrop-blur-xl border-t border-white/10 text-gray-400 py-8 px-4 mt-auto">
+        <div class="max-w-7xl mx-auto text-center">
+            <p>&copy; 2024 Smart Cart. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+        document.addEventListener('DOMContentLoaded', generateList);
+
+        const lists = {
+            beach: ["Swimwear", "Sunscreen (SPF 50+)", "Flip Flops", "Beach Towel", "Sunglasses", "Waterproof Phone Case", "Hat", "Light Cotton Clothes"],
+            mountain: ["Trekking Boots", "Warm Jacket", "Thermal Base Layer", "First Aid Kit", "Flashlight", "Rain Coat", "Backpack", "Water Purifier"],
+            city: ["Comfortable Walking Shoes", "Power Bank", "City Map / App", "Day Pack", "Universal Adapter", "Light Jacket", "Hand Sanitizer", "Noise Canceling Headphones"],
+            business: ["Formal Attire", "Laptop & Charger", "Business Cards", "Travel Iron", "Notebook & Pen", "Toiletry Kit", "Passport / ID", "Wristwatch"]
+        };
+
+        function generateList() {
+            const type = document.getElementById('trip_type').value;
+            const container = document.getElementById('list-container');
+            const placeholder = document.getElementById('list-empty');
+            const grid = document.getElementById('items-grid');
+            const title = document.getElementById('list-title');
+
+            const items = lists[type] || [];
+
+            placeholder.classList.add('hidden');
+            container.classList.remove('hidden');
+            grid.innerHTML = '';
+            title.innerText = type.charAt(0).toUpperCase() + type.slice(1) + " Essentials";
+
+            items.forEach((item, index) => {
+                createItemElement(item, index);
+            });
+            lucide.createIcons();
+        }
+
+        function createItemElement(text, index) {
+            const grid = document.getElementById('items-grid');
+            const div = document.createElement('div');
+            div.className = `packing-item animate-slide`;
+            div.style.animationDelay = `${index * 0.05}s`;
+            div.onclick = function () { this.classList.toggle('packed'); };
+            div.innerHTML = `
+                <div class="w-5 h-5 rounded border border-white/20 flex items-center justify-center">
+                    <i data-lucide="check" class="w-3 h-3 text-transparent"></i>
+                </div>
+                <span class="text-sm font-medium tracking-wide uppercase">${text}</span>
+            `;
+            grid.appendChild(div);
+        }
+
+        function addCustomItem() {
+            const input = document.getElementById('custom-item');
+            if (!input.value.trim()) return;
+            createItemElement(input.value.trim(), 0);
+            input.value = '';
+            lucide.createIcons();
+        }
+
+        function resetList() {
+            if (confirm('Are you sure you want to clear your list?')) {
+                generateList();
+            }
+        }
+    </script>
+</body>
+
+</html>

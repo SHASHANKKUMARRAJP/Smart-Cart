@@ -1,0 +1,201 @@
+/* VIDEO BACKGROUND STYLES */
+
+body {
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Video Background Container */
+.video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    overflow: hidden;
+}
+
+.video-background video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translateX(-50%) translateY(-50%);
+    object-fit: cover;
+    pointer-events: none;
+}
+
+/* Video Overlay for better text visibility */
+.video-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        135deg,
+        rgba(0, 0, 0, 0.7) 0%,
+        rgba(0, 0, 0, 0.3) 50%,
+        rgba(0, 0, 0, 0.7) 100%
+    );
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Animated Gradient Overlay */
+.video-overlay::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        45deg,
+        rgba(102, 126, 234, 0.2),
+        rgba(118, 75, 162, 0.2),
+        rgba(240, 147, 251, 0.2),
+        rgba(245, 87, 108, 0.2),
+        rgba(250, 112, 154, 0.2),
+        rgba(254, 225, 64, 0.2),
+        rgba(102, 126, 234, 0.2)
+    );
+    background-size: 400% 400%;
+    animation: videoGradientShift 15s ease infinite;
+    opacity: 0.3;
+    z-index: -1;
+    pointer-events: none;
+}
+
+@keyframes videoGradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    25% {
+        background-position: 100% 50%;
+    }
+    50% {
+        background-position: 200% 50%;
+    }
+    75% {
+        background-position: 300% 50%;
+    }
+    100% {
+        background-position: 400% 50%;
+    }
+}
+
+/* Responsive Video Background */
+@media (max-width: 768px) {
+    .video-background video {
+        width: 100vw;
+        height: 100vh;
+        object-fit: cover;
+    }
+}
+
+/* Content Container with better visibility */
+.content-container {
+    position: relative;
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    margin: 20px;
+    padding: 20px;
+}
+
+/* Header with video background */
+.header-with-video {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Search section with video background */
+.search-section-with-video {
+    background: rgba(255, 255, 255, 0.9) !important;
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 40px;
+    margin: 20px;
+}
+
+/* Product cards with video background */
+.product-card-with-video {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Footer with video background */
+.footer-with-video {
+    background: rgba(17, 24, 39, 0.95) !important;
+    backdrop-filter: blur(15px);
+}
+
+/* Video Controls (optional) */
+.video-controls {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 10;
+    display: flex;
+    gap: 10px;
+}
+
+.video-control-btn {
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.video-control-btn:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: scale(1.1);
+}
+
+/* Loading State for Video */
+.video-loading {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    color: white;
+    font-size: 18px;
+    text-align: center;
+}
+
+/* Fallback Background */
+.video-fallback {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    z-index: -3;
+    animation: fallbackPulse 3s ease-in-out infinite;
+}
+
+@keyframes fallbackPulse {
+    0%, 100% {
+        opacity: 0.8;
+    }
+    50% {
+        opacity: 1;
+    }
+}

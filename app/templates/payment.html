@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Payment Gateway | Premium Shopping</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        :root {
+            --glass-bg: rgba(10, 15, 28, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #030712;
+            color: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Ambient Background */
+        .ambient-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            overflow: hidden;
+            background: #030712;
+        }
+
+        .ambient-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: float 20s infinite ease-in-out alternate;
+        }
+
+        .blob-1 {
+            top: -10%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: rgba(99, 102, 241, 0.3);
+            /* Indigo */
+        }
+
+        .blob-2 {
+            bottom: -10%;
+            right: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: rgba(236, 72, 153, 0.3);
+            /* Pink */
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            100% {
+                transform: translate(5%, 10%) scale(1.1);
+            }
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .payment-option {
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.02);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .payment-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .payment-option:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .payment-option:hover::before {
+            opacity: 1;
+        }
+
+        .payment-option.active {
+            border-color: #ec4899;
+            /* Pink-500 */
+            background: rgba(236, 72, 153, 0.1);
+            box-shadow: 0 0 20px rgba(236, 72, 153, 0.2);
+        }
+
+        .payment-option.active .radio-inner {
+            background-color: #ec4899;
+            transform: scale(1);
+        }
+
+        .radio-outer {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: border-color 0.3s;
+        }
+
+        .payment-option.active .radio-outer {
+            border-color: #ec4899;
+        }
+
+        .radio-inner {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: transparent;
+            transform: scale(0);
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .payment-details-panel {
+            display: none;
+            animation: slideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        .payment-details-panel.active {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .input-premium {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .input-premium:focus {
+            outline: none;
+            border-color: #ec4899;
+            box-shadow: 0 0 0 2px rgba(236, 72, 153, 0.2);
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .btn-pay {
+            background: linear-gradient(135deg, #ec4899 0%, #f43f5e 50%, #f97316 100%);
+            background-size: 200% auto;
+            transition: all 0.5s ease;
+            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);
+        }
+
+        .btn-pay:hover {
+            background-position: right center;
+            box-shadow: 0 8px 25px rgba(244, 63, 94, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn-pay:active {
+            transform: translateY(1px);
+        }
+
+        .processing-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(3, 7, 18, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .processing-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-left-color: #ec4899;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .success-checkmark {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #10b981;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: scale(0);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.5);
+        }
+
+        .success-checkmark.show {
+            transform: scale(1);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="ambient-bg">
+        <div class="ambient-blob blob-1"></div>
+        <div class="ambient-blob blob-2"></div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav
+        class="w-full relative z-10 glass-card border-b-0 border-white/5 py-4 px-6 md:px-12 flex items-center justify-between">
+        <a href="javascript:history.back()"
+            class="flex items-center text-gray-400 hover:text-white transition-colors group">
+            <i data-lucide="arrow-left"
+                class="w-5 h-5 mr-2 transform group-hover:-translate-x-1 transition-transform"></i>
+            <span>Back to Cart</span>
+        </a>
+        <div class="flex items-center space-x-2">
+            <i data-lucide="shield-check" class="w-5 h-5 text-green-400"></i>
+            <span class="text-sm font-medium tracking-wide text-gray-300">100% Secure Checkout</span>
+        </div>
+    </nav>
+
+    <main class="flex-grow flex items-center justify-center p-4 md:p-8 relative z-10 my-8">
+        <div class="max-w-4xl w-full grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+            <!-- Left Column: Payment Methods -->
+            <div class="lg:col-span-2 space-y-6">
+                <div>
+                    <h1 class="text-3xl font-bold mb-2">Select Payment Method</h1>
+                    <p class="text-gray-400 text-sm">Choose how you'd like to safely pay for your order.</p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-2">
+
+                    <!-- UPI Option -->
+                    <div class="payment-option active rounded-xl p-5 mb-2 flex flex-col"
+                        onclick="selectPayment('upi', this)">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 rounded-lg bg-white/5 flex items-center justify-center">
+                                    <svg class="w-7 h-7 text-green-400" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M12 21v-8m0 0V5m0 8h8m-8 0H4" transform="rotate(45 12 12)" />
+                                        <circle cx="12" cy="12" r="10" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-lg">UPI</h3>
+                                    <p class="text-xs text-green-400 flex items-center mt-1"><i data-lucide="zap"
+                                            class="w-3 h-3 mr-1"></i> Instant Payment</p>
+                                </div>
+                            </div>
+                            <div class="radio-outer">
+                                <div class="radio-inner"></div>
+                            </div>
+                        </div>
+
+                        <!-- UPI Details -->
+                        <div id="panel-upi" class="payment-details-panel active mt-4 pt-4 border-t border-white/10">
+                            <p class="text-sm text-gray-400 mb-4">Pay securely using your favorite UPI app.</p>
+                            <div class="grid grid-cols-3 gap-4 mb-6 mt-2 max-w-sm">
+                                <div
+                                    class="h-20 rounded-2xl bg-white flex items-center justify-center cursor-pointer border-2 border-transparent hover:border-pink-500 hover:shadow-[0_0_15px_rgba(236,72,153,0.3)] transition-all shadow-lg overflow-hidden p-3 relative group">
+                                    <div
+                                        class="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    </div>
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Google_Pay_Logo.svg"
+                                        alt="GPay" class="w-[85%] h-[85%] object-contain relative z-10">
+                                </div>
+                                <div
+                                    class="h-20 rounded-2xl bg-white flex items-center justify-center cursor-pointer border-2 border-transparent hover:border-pink-500 hover:shadow-[0_0_15px_rgba(236,72,153,0.3)] transition-all shadow-lg overflow-hidden p-3 relative group">
+                                    <div
+                                        class="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    </div>
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/71/PhonePe_Logo.svg"
+                                        alt="PhonePe" class="w-[90%] h-[90%] object-contain relative z-10">
+                                </div>
+                                <div
+                                    class="h-20 rounded-2xl bg-[#002970] flex items-center justify-center cursor-pointer border-2 border-transparent hover:border-pink-500 hover:shadow-[0_0_15px_rgba(236,72,153,0.3)] transition-all shadow-lg overflow-hidden p-3 relative group">
+                                    <div
+                                        class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    </div>
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/24/Paytm_Logo_%28standalone%29.svg"
+                                        alt="Paytm"
+                                        class="w-[90%] h-[90%] object-contain brightness-0 invert relative z-10">
+                                </div>
+                            </div>
+                            <div class="relative">
+                                <label class="text-xs text-gray-400 font-medium mb-1 block">Enter UPI ID</label>
+                                <input type="text" placeholder="username@upi"
+                                    class="w-full input-premium rounded-xl py-3 px-4 text-sm" id="upi-input">
+                                <button
+                                    class="absolute right-2 top-[22px] text-pink-400 text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-pink-500/10 transition-colors">VERIFY</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cards Option -->
+                    <div class="payment-option rounded-xl p-5 mb-2 flex flex-col" onclick="selectPayment('card', this)">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 rounded-lg bg-white/5 flex items-center justify-center">
+                                    <i data-lucide="credit-card" class="w-6 h-6 text-blue-400"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-lg">Credit / Debit Card</h3>
+                                    <p class="text-xs text-gray-400 mt-1">Visa, Mastercard, RuPay, Amex</p>
+                                </div>
+                            </div>
+                            <div class="radio-outer">
+                                <div class="radio-inner"></div>
+                            </div>
+                        </div>
+
+                        <!-- Card Details -->
+                        <div id="panel-card" class="payment-details-panel mt-4 pt-4 border-t border-white/10">
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="text-xs text-gray-400 font-medium mb-1 block">Card Number</label>
+                                    <div class="relative">
+                                        <input type="text" placeholder="0000 0000 0000 0000"
+                                            class="w-full input-premium rounded-xl py-3 px-4 text-sm pl-12 font-mono tracking-widest"
+                                            maxlength="19">
+                                        <i data-lucide="credit-card"
+                                            class="w-5 h-5 absolute left-4 top-3.5 text-gray-500"></i>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="text-xs text-gray-400 font-medium mb-1 block">Valid Thru</label>
+                                        <input type="text" placeholder="MM/YY"
+                                            class="w-full input-premium rounded-xl py-3 px-4 text-sm font-mono"
+                                            maxlength="5">
+                                    </div>
+                                    <div>
+                                        <label class="text-xs text-gray-400 font-medium mb-1 block">CVV</label>
+                                        <div class="relative">
+                                            <input type="password" placeholder="•••"
+                                                class="w-full input-premium rounded-xl py-3 px-4 text-sm font-mono"
+                                                maxlength="4">
+                                            <i data-lucide="help-circle"
+                                                class="w-4 h-4 absolute right-4 top-4 text-gray-500 cursor-pointer"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="text-xs text-gray-400 font-medium mb-1 block">Name on Card</label>
+                                    <input type="text" placeholder="John Doe"
+                                        class="w-full input-premium rounded-xl py-3 px-4 text-sm">
+                                </div>
+                                <div class="flex items-center space-x-2 mt-2">
+                                    <input type="checkbox" id="save-card"
+                                        class="rounded accent-pink-500 border-gray-600 bg-gray-700 w-4 h-4 cursor-pointer">
+                                    <label for="save-card" class="text-xs text-gray-400 cursor-pointer">Save this card
+                                        securely for future payments</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Net Banking Option -->
+                    <div class="payment-option rounded-xl p-5 flex flex-col"
+                        onclick="selectPayment('netbanking', this)">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 rounded-lg bg-white/5 flex items-center justify-center">
+                                    <i data-lucide="landmark" class="w-6 h-6 text-orange-400"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-lg">Net Banking</h3>
+                                    <p class="text-xs text-gray-400 mt-1">All major Indian banks supported</p>
+                                </div>
+                            </div>
+                            <div class="radio-outer">
+                                <div class="radio-inner"></div>
+                            </div>
+                        </div>
+
+                        <!-- Net Banking Details -->
+                        <div id="panel-netbanking" class="payment-details-panel mt-4 pt-4 border-t border-white/10">
+                            <p class="text-sm text-gray-400 mb-3">Select your bank</p>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+                                <div
+                                    class="border border-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/5 hover:border-pink-500/50 transition-colors">
+                                    <div class="font-bold text-sm">HDFC</div>
+                                </div>
+                                <div
+                                    class="border border-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/5 hover:border-pink-500/50 transition-colors">
+                                    <div class="font-bold text-sm">SBI</div>
+                                </div>
+                                <div
+                                    class="border border-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/5 hover:border-pink-500/50 transition-colors">
+                                    <div class="font-bold text-sm">ICICI</div>
+                                </div>
+                                <div
+                                    class="border border-white/10 rounded-lg p-3 text-center cursor-pointer hover:bg-white/5 hover:border-pink-500/50 transition-colors">
+                                    <div class="font-bold text-sm">Axis</div>
+                                </div>
+                            </div>
+                            <div class="relative">
+                                <select
+                                    class="w-full input-premium rounded-xl py-3 px-4 text-sm appearance-none outline-none cursor-pointer">
+                                    <option value="" disabled selected>Other Banks</option>
+                                    <option value="kotak" class="bg-gray-900">Kotak Mahindra Bank</option>
+                                    <option value="pnb" class="bg-gray-900">Punjab National Bank</option>
+                                    <option value="bob" class="bg-gray-900">Bank of Baroda</option>
+                                    <option value="yes" class="bg-gray-900">Yes Bank</option>
+                                </select>
+                                <i data-lucide="chevron-down"
+                                    class="w-5 h-5 text-gray-400 absolute right-4 top-3.5 pointer-events-none"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Right Column: Order Summary -->
+            <div class="lg:col-span-1">
+                <div class="glass-card rounded-2xl p-6 sticky top-24">
+                    <h2 class="text-xl font-bold mb-6 flex items-center">
+                        <i data-lucide="receipt" class="w-5 h-5 mr-2 text-pink-400"></i> Order Summary
+                    </h2>
+
+                    <div class="space-y-4 mb-6">
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-gray-400">Items Total</span>
+                            <span class="font-medium" id="summary-items">₹0</span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-gray-400">Delivery Fee</span>
+                            <span class="font-medium text-green-400">FREE</span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-gray-400">Platform Fee</span>
+                            <span class="font-medium">₹15</span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm pb-4 border-b border-white/10">
+                            <span class="text-gray-400 flex items-center">
+                                AI Savings <i data-lucide="sparkles" class="w-3 h-3 text-yellow-400 ml-1"></i>
+                            </span>
+                            <span class="font-bold text-green-400" id="summary-savings">-₹0</span>
+                        </div>
+
+                        <div class="flex justify-between items-end pt-2">
+                            <span class="text-white font-semibold">Total to Pay</span>
+                            <span
+                                class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-orange-400"
+                                id="summary-total">₹0</span>
+                        </div>
+                    </div>
+
+                    <div
+                        class="bg-blue-500/10 border border-blue-500/20 rounded-xl p-3 flex items-start space-x-3 mb-6">
+                        <i data-lucide="shield-alert" class="w-5 h-5 text-blue-400 mt-0.5 shrink-0"></i>
+                        <p class="text-xs text-blue-200 leading-relaxed">Transactions are encrypted and secured with
+                            256-bit SSL technology.</p>
+                    </div>
+
+                    <button onclick="processPayment()"
+                        class="w-full btn-pay text-white font-bold py-4 rounded-xl flex items-center justify-center tracking-wide">
+                        <i data-lucide="lock" class="w-4 h-4 mr-2"></i> PAY <span id="btn-total" class="ml-1">₹0</span>
+                    </button>
+
+                    <p class="text-center text-xs text-gray-500 mt-4">By continuing, you agree to our Terms of Service &
+                        Privacy Policy.</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Processing Overlay -->
+    <div class="processing-overlay" id="processing-overlay">
+        <div id="spinner-container" class="flex flex-col items-center">
+            <div class="spinner mb-6"></div>
+            <h3 class="text-2xl font-bold text-white mb-2">Processing Payment</h3>
+            <p class="text-gray-400">Please do not close or refresh this page.</p>
+        </div>
+
+        <div id="success-container" class="hidden flex-col items-center">
+            <div class="success-checkmark mb-6" id="checkmark">
+                <i data-lucide="check" class="w-10 h-10 text-white stroke-[3]"></i>
+            </div>
+            <h3 class="text-3xl font-bold text-green-400 mb-2">Payment Successful!</h3>
+            <p class="text-gray-300 mb-6">Your order has been placed securely.</p>
+            <p class="text-sm text-gray-500">Redirecting to order tracking...</p>
+        </div>
+    </div>
+
+    <script>
+        // Init Lucide Icons
+        lucide.createIcons();
+
+        // Load values from localStorage if available (passed from the cart)
+        document.addEventListener('DOMContentLoaded', () => {
+            const finalTotalStr = localStorage.getItem('checkout_total');
+            const originalTotalStr = localStorage.getItem('checkout_original');
+
+            // Fallback for direct page access
+            const finalTotal = finalTotalStr ? parseInt(finalTotalStr) : 1499;
+            const originalTotal = originalTotalStr ? parseInt(originalTotalStr) : 1899;
+
+            const savings = Math.max(0, originalTotal - finalTotal);
+            const displayTotal = finalTotal + 15; // adding platform fee
+
+            document.getElementById('summary-items').innerText = `₹${originalTotal}`;
+            document.getElementById('summary-savings').innerText = `-₹${savings}`;
+            document.getElementById('summary-total').innerText = `₹${displayTotal}`;
+            document.getElementById('btn-total').innerText = `₹${displayTotal}`;
+        });
+
+        // Tab selection logic
+        function selectPayment(type, element) {
+            // Remove active class from all options
+            document.querySelectorAll('.payment-option').forEach(el => {
+                el.classList.remove('active');
+            });
+            // Hide all panels
+            document.querySelectorAll('.payment-details-panel').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            // Add active class to selected
+            element.classList.add('active');
+            // Show corresponding panel
+            document.getElementById(`panel-${type}`).classList.add('active');
+        }
+
+        // Simulate payment process
+        function processPayment() {
+            const overlay = document.getElementById('processing-overlay');
+            const spinner = document.getElementById('spinner-container');
+            const success = document.getElementById('success-container');
+            const checkmark = document.getElementById('checkmark');
+
+            // Reset state
+            spinner.classList.remove('hidden');
+            spinner.classList.add('flex');
+            success.classList.add('hidden');
+            success.classList.remove('flex');
+            checkmark.classList.remove('show');
+
+            // Show overlay
+            overlay.classList.add('active');
+
+            // Simulate network request duration
+            setTimeout(() => {
+                spinner.classList.add('hidden');
+                spinner.classList.remove('flex');
+
+                success.classList.remove('hidden');
+                success.classList.add('flex');
+
+                // Slight delay for animation to look natural
+                setTimeout(() => {
+                    checkmark.classList.add('show');
+                }, 50);
+
+                // Redirect after success
+                setTimeout(() => {
+                    window.location.href = '/dashboard'; // Redirect back to dashboard/home after pay
+                }, 2500);
+
+            }, 2500);
+        }
+    </script>
+</body>
+
+</html>

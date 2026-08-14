@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Booking | Premium Price Comparison</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            --glass-glow: 0 0 20px rgba(99, 102, 241, 0.4);
+            --glass-hover: rgba(255, 255, 255, 0.08);
+            --accent-glow: 0 0 20px rgba(239, 68, 68, 0.4);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0f172a;
+            /* Slate 900 */
+            color: #f1f5f9;
+            margin: 0;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Sophisticated & Decent Background */
+        .aurora-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            overflow: hidden;
+            background: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 100%);
+        }
+
+        .aurora-blob {
+            position: absolute;
+            filter: blur(160px);
+            opacity: 0.2;
+            animation: floatBlob 30s infinite ease-in-out alternate;
+            border-radius: 50%;
+        }
+
+        .blob-1 {
+            top: -10%;
+            left: -10%;
+            width: 70vw;
+            height: 70vw;
+            background: rgba(148, 163, 184, 0.15);
+            /* Slate 400 */
+            animation-delay: 0s;
+        }
+
+        .blob-2 {
+            bottom: -20%;
+            right: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: rgba(99, 102, 241, 0.1);
+            /* Indigo 500 */
+            animation-delay: -5s;
+        }
+
+        .blob-3 {
+            top: 40%;
+            left: 30%;
+            width: 50vw;
+            height: 50vw;
+            background: rgba(30, 41, 59, 0.2);
+            /* Slate 800 */
+            animation-delay: -10s;
+        }
+
+        @keyframes floatBlob {
+            0% {
+                transform: translate(0, 0) scale(1) rotate(0deg);
+            }
+
+            33% {
+                transform: translate(5%, 5%) scale(1.1) rotate(5deg);
+            }
+
+            66% {
+                transform: translate(-5%, 10%) scale(0.9) rotate(-5deg);
+            }
+
+            100% {
+                transform: translate(0, -5%) scale(1) rotate(0deg);
+            }
+        }
+
+        .grid-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+
+        /* Core UI Components */
+        .glass-morphism {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .glass-card-premium {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            border-color: rgba(239, 68, 68, 0.4);
+            box-shadow: 0 15px 40px -10px rgba(0, 0, 0, 0.4), var(--accent-glow);
+        }
+
+        .glass-button-premium {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .glass-button-premium:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .glass-nav-item {
+            padding: 8px 16px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            position: relative;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 500;
+        }
+
+        .glass-nav-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: white;
+        }
+
+        .glass-nav-item.active {
+            color: white;
+            font-weight: 700;
+        }
+
+        .glass-button-action {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .glass-button-action:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.2);
+            transform: translateY(-3px) scale(1.01);
+        }
+
+        .glass-button-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 10px 20px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .glass-button-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .gradient-text-premium {
+            background: linear-gradient(135deg, #f87171 0%, #ef4444 30%, #f97316 70%, #fcd34d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .search-form-container {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        input,
+        select {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 12px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: rgba(239, 68, 68, 0.5);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
+        }
+
+        .shimmer {
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+</head>
+
+<body class="text-gray-100 antialiased selection:bg-red-500/30">
+    <!-- Premium Aurora Background -->
+    <div class="aurora-bg">
+        <div class="aurora-blob blob-1"></div>
+        <div class="aurora-blob blob-2"></div>
+        <div class="aurora-blob blob-3"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 w-full z-50 glass-morphism border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Branding -->
+                <a href="{{ url_for('main.plan_trip') }}" class="flex items-center space-x-3 group">
+                    <div
+                        class="w-10 h-10 bg-gradient-to-br from-gray-800 to-slate-900 rounded-xl flex items-center justify-center border border-white/10 shadow-xl group-hover:border-sky-500/50 transition-all">
+                        <i data-lucide="plane" class="w-6 h-6 text-sky-400"></i>
+                    </div>
+                    <span class="text-xl font-bold text-white tracking-tight uppercase">Plan My Trip</span>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-2">
+                    <a href="{{ url_for('main.index') }}" class="glass-nav-item">Home</a>
+                    <a href="{{ url_for('main.plan_trip') }}" class="glass-nav-item active">
+                        Plan My Trip
+                        <span
+                            class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-sky-500 rounded-full shadow-[0_0_8px_rgba(56,189,248,0.8)]"></span>
+                    </a>
+                    <a href="#" class="glass-nav-item">Destination Ideas</a>
+                    <a href="#" class="glass-nav-item">Budget Planner</a>
+                    <a href="#" class="glass-nav-item">Travel Itinerary</a>
+                    <a href="#" class="glass-nav-item">Hotels</a>
+                    <a href="#" class="glass-nav-item">How It Works</a>
+                </div>
+
+                <!-- Right Side Actions -->
+                <div class="hidden md:flex items-center space-x-4 flex-1 justify-end max-w-sm ml-8">
+                    {% if session.get('user') %}
+                    <a href="#"
+                        onclick="event.preventDefault(); fetch('{{ url_for('main.auth_logout') }}', {method: 'POST'}).then(() => window.location.href='/');"
+                        class="glass-button-premium px-6 py-2.5 rounded-xl text-sm font-bold uppercase tracking-widest hover:bg-rose-500/10 hover:border-rose-500/40 hover:text-rose-400 transition-all text-white">
+                        Logout
+                    </a>
+                    {% else %}
+                    <a href="{{ url_for('main.login') }}"
+                        class="glass-button-premium px-6 py-2.5 rounded-xl text-sm font-bold uppercase tracking-widest hover:bg-sky-500/10 hover:border-sky-500/40 hover:text-sky-400 transition-all text-white">
+                        Login
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow pt-32 pb-20 px-4 relative z-10 flex flex-col items-center">
+
+        <!-- View 1: Category Selection -->
+        <div id="category-selection" class="max-w-7xl mx-auto w-full text-center">
+            <div
+                class="inline-flex items-center bg-sky-500/10 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest mb-8 text-sky-400 border border-sky-500/20">
+                <span
+                    class="w-2 h-2 rounded-full bg-sky-400 animate-pulse mr-2 shadow-[0_0_8px_rgba(56,189,248,0.8)]"></span>
+                Real-Time Global Price Comparison
+            </div>
+
+            <h1 class="text-5xl md:text-8xl font-black text-white mb-6 leading-[0.9] tracking-tighter uppercase">
+                Premium<br>
+                <span class="gradient-text-premium">Booking Terminal</span>
+            </h1>
+
+            <p class="text-xl text-slate-400 mb-16 max-w-2xl mx-auto leading-relaxed">
+                Experience a streamlined way to find the absolute best rates.
+                Secured, verified, and cross-referenced in seconds.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+                <!-- Train -->
+                <div onclick="selectCategory('train')"
+                    class="glass-card-premium p-10 card-hover flex flex-col items-center cursor-pointer group"
+                    data-tilt>
+                    <div
+                        class="w-16 h-16 bg-slate-800/50 border border-white/5 rounded-2xl flex items-center justify-center mb-8 shadow-inner group-hover:bg-sky-500/10 transition-all">
+                        <i data-lucide="train" size="28"
+                            class="text-slate-400 group-hover:text-sky-400 transition-colors"></i>
+                    </div>
+                    <h3 class="font-bold text-2xl mb-2 text-white group-hover:text-sky-400 transition-colors">Train</h3>
+                    <p class="text-xs text-slate-500 mb-8 font-medium">IRCTC • PAYTM • CONFIRMTKT</p>
+                    <div class="w-full h-px bg-white/5 mb-8"></div>
+                    <span
+                        class="glass-button-card text-sky-400 font-bold text-xs tracking-widest uppercase group-hover:border-sky-500/30 transition-all">
+                        Access Terminal <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </span>
+                </div>
+
+                <!-- Flight -->
+                <div onclick="selectCategory('flight')"
+                    class="glass-card-premium p-10 card-hover flex flex-col items-center cursor-pointer group"
+                    data-tilt>
+                    <div
+                        class="w-16 h-16 bg-slate-800/50 border border-white/5 rounded-2xl flex items-center justify-center mb-8 shadow-inner group-hover:bg-indigo-500/10 transition-all">
+                        <i data-lucide="plane" size="28"
+                            class="text-slate-400 group-hover:text-indigo-400 transition-colors"></i>
+                    </div>
+                    <h3 class="font-bold text-2xl mb-2 text-white group-hover:text-indigo-400 transition-colors">Flight
+                    </h3>
+                    <p class="text-xs text-slate-500 mb-8 font-medium">IXIGO • MMT • CLEARTRIP</p>
+                    <div class="w-full h-px bg-white/5 mb-8"></div>
+                    <span
+                        class="glass-button-card text-indigo-400 font-bold text-xs tracking-widest uppercase group-hover:border-indigo-500/30 transition-all">
+                        Find Routes <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </span>
+                </div>
+
+                <!-- Bus -->
+                <div onclick="selectCategory('bus')"
+                    class="glass-card-premium p-10 card-hover flex flex-col items-center cursor-pointer group"
+                    data-tilt>
+                    <div
+                        class="w-16 h-16 bg-slate-800/50 border border-white/5 rounded-2xl flex items-center justify-center mb-8 shadow-inner group-hover:bg-teal-500/10 transition-all">
+                        <i data-lucide="bus-front" size="28"
+                            class="text-slate-400 group-hover:text-teal-400 transition-colors"></i>
+                    </div>
+                    <h3 class="font-bold text-2xl mb-2 text-white group-hover:text-teal-400 transition-colors">Bus</h3>
+                    <p class="text-xs text-slate-500 mb-8 font-medium">REDBUS • ABHIBUS • MMT</p>
+                    <div class="w-full h-px bg-white/5 mb-8"></div>
+                    <span
+                        class="glass-button-card text-teal-400 font-bold text-xs tracking-widest uppercase group-hover:border-teal-500/30 transition-all">
+                        Search Bus <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </span>
+                </div>
+
+                <!-- Movies -->
+                <div onclick="selectCategory('movie')"
+                    class="glass-card-premium p-10 card-hover flex flex-col items-center cursor-pointer group"
+                    data-tilt>
+                    <div
+                        class="w-16 h-16 bg-slate-800/50 border border-white/5 rounded-2xl flex items-center justify-center mb-8 shadow-inner group-hover:bg-rose-500/10 transition-all">
+                        <i data-lucide="film" size="28"
+                            class="text-slate-400 group-hover:text-rose-400 transition-colors"></i>
+                    </div>
+                    <h3 class="font-bold text-2xl mb-2 text-white group-hover:text-rose-400 transition-colors">Theater
+                    </h3>
+                    <p class="text-xs text-slate-500 mb-8 font-medium">BMS • PAYTM • PVR</p>
+                    <div class="w-full h-px bg-white/5 mb-8"></div>
+                    <span
+                        class="glass-button-card text-rose-400 font-bold text-xs tracking-widest uppercase group-hover:border-rose-500/30 transition-all">
+                        Showtimes <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- View 2: Search Form -->
+        <div id="search-section" class="hidden w-full max-w-5xl mx-auto">
+            <button onclick="goBack('selection')"
+                class="mb-10 flex items-center gap-3 text-slate-500 hover:text-sky-400 transition-all group font-bold uppercase text-xs tracking-widest">
+                <i data-lucide="chevron-left" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"></i>
+                Terminal Selection
+            </button>
+
+            <div class="glass-card-premium p-12 relative overflow-hidden">
+                <!-- Decorative element -->
+                <div class="absolute top-0 right-0 w-64 h-64 bg-sky-500/5 blur-[100px] pointer-events-none"></div>
+
+                <div class="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12 relative z-10">
+                    <div class="flex items-center gap-6">
+                        <div id="category-icon-container"
+                            class="w-20 h-20 rounded-2xl flex items-center justify-center shadow-2xl border border-white/5 bg-slate-800/50">
+                            <i id="category-icon" data-lucide="search" class="w-10 h-10 text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-sky-400 text-xs font-black uppercase tracking-[0.3em] mb-2">Service Terminal
+                            </p>
+                            <h2 id="category-title" class="text-5xl font-black text-white uppercase tracking-tighter">
+                                Search Tickets</h2>
+                        </div>
+                    </div>
+                    <div class="hidden lg:block text-right">
+                        <p class="text-slate-500 text-xs font-bold uppercase tracking-widest">Comparison Engine</p>
+                        <p class="text-slate-400 text-sm font-medium">v4.2.0 Active</p>
+                    </div>
+                </div>
+
+                <form id="search-form" onsubmit="handleSearch(event)" class="relative z-10">
+                    <!-- Dynamic form fields will be injected here with enhanced layout -->
+                </form>
+
+                <div class="mt-12 relative z-10">
+                    <button form="search-form" type="submit"
+                        class="w-full glass-button-action text-white font-black py-6 rounded-2xl text-sm uppercase tracking-[0.3em] flex items-center justify-center gap-3">
+                        Execute Price Comparison
+                        <i data-lucide="zap" class="w-5 h-5 fill-current"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- View 3: Results Display -->
+        <div id="results-section" class="hidden w-full max-w-5xl mx-auto">
+            <div class="flex justify-between items-center mb-8">
+                <button onclick="goBack('form')"
+                    class="flex items-center gap-2 text-gray-400 hover:text-white transition-colors group">
+                    <i data-lucide="arrow-left" class="w-5 h-5 group-hover:-translate-x-1 transition-transform"></i>
+                    Modify Search
+                </button>
+                <div class="text-right">
+                    <p id="search-summary" class="text-white font-bold"></p>
+                    <p id="search-date" class="text-gray-400 text-sm"></p>
+                </div>
+            </div>
+
+            <div id="results-loader" class="space-y-4">
+                <div class="shimmer h-24 w-full rounded-2xl"></div>
+                <div class="shimmer h-24 w-full rounded-2xl"></div>
+                <div class="shimmer h-24 w-full rounded-2xl"></div>
+            </div>
+
+            <div id="results-list" class="space-y-4">
+                <!-- Results cards will be injected here -->
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black/40 backdrop-blur-xl border-t border-white/10 text-gray-400 py-8 px-4 mt-auto">
+        <div class="max-w-7xl mx-auto text-center">
+            <p>&copy; 2024 Smart Cart. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        let currentCategory = '{{ category }}' || null;
+
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Handle initial category if passed from URL
+        const validCategories = ['train', 'flight', 'bus', 'movie'];
+        if (currentCategory && validCategories.includes(currentCategory)) {
+            selectCategory(currentCategory);
+        }
+
+        function selectCategory(category) {
+            currentCategory = category;
+            const selection = document.getElementById('category-selection');
+            const searchSection = document.getElementById('search-section');
+            const form = document.getElementById('search-form');
+            const iconContainer = document.getElementById('category-icon-container');
+            const title = document.getElementById('category-title');
+
+            // Update UI based on category
+            let formHTML = '';
+            let icon = 'search';
+            let colorClass = 'bg-red-500/20';
+            let categoryName = '';
+
+            const validCategories = ['train', 'flight', 'bus', 'movie'];
+            if (!validCategories.includes(category)) return;
+
+            if (category === 'train' || category === 'flight' || category === 'bus') {
+                categoryName = category.charAt(0).toUpperCase() + category.slice(1);
+                icon = category === 'train' ? 'train' : (category === 'flight' ? 'plane' : 'bus-front');
+                colorClass = category === 'train' ? 'bg-sky-500/20' : (category === 'flight' ? 'bg-indigo-500/20' : 'bg-teal-500/20');
+
+                formHTML = `
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-end">
+                        <div class="md:col-span-5 space-y-3">
+                            <label class="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Departure Origin</label>
+                            <div class="relative group">
+                                <i data-lucide="map-pin" class="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-sky-400 transition-colors"></i>
+                                <input type="text" name="from" placeholder="Current City" class="pl-14 py-5 text-lg font-bold" required>
+                            </div>
+                        </div>
+
+                        <div class="md:col-span-1 flex justify-center pb-3">
+                            <button type="button" onclick="swapInputs()" class="w-12 h-12 rounded-full bg-slate-800/50 border border-white/10 flex items-center justify-center hover:bg-sky-500/20 hover:border-sky-500/50 transition-all group">
+                                <i data-lucide="repeat" class="w-5 h-5 text-sky-400 group-hover:rotate-180 transition-transform duration-500"></i>
+                            </button>
+                        </div>
+
+                        <div class="md:col-span-6 space-y-3">
+                            <label class="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Arrival Destination</label>
+                            <div class="relative group">
+                                <i data-lucide="navigation" class="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-sky-400 transition-colors"></i>
+                                <input type="text" name="to" placeholder="Destination City" class="pl-14 py-5 text-lg font-bold" required>
+                            </div>
+                        </div>
+
+                        <div class="md:col-span-12 space-y-3 mt-4">
+                            <label class="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Scheduled Travel Date</label>
+                            <div class="relative group">
+                                <i data-lucide="calendar" class="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-sky-400 transition-colors"></i>
+                                <input type="date" name="date" class="pl-14 py-5 text-lg font-bold w-full" required min="${new Date().toISOString().split('T')[0]}">
+                            </div>
+                        </div>
+                        ${(category === 'flight') ? `
+                        <div class="md:col-span-12 space-y-3 mt-4">
+                            <label class="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Flight Type</label>
+                            <div class="relative group">
+                                <i data-lucide="globe" class="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-sky-400 transition-colors z-10"></i>
+                                <select name="flight_type" class="pl-14 py-5 text-lg font-bold w-full appearance-none">
+                                    <option value="Domestic" class="bg-slate-800 text-white" selected>Domestic Flight</option>
+                                    <option value="International" class="bg-slate-800 text-white">International Flight</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="md:col-span-12 space-y-3 mt-4">
+                            <label class="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Flight Class</label>
+                            <div class="relative group">
+                                <i data-lucide="award" class="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-sky-400 transition-colors z-10"></i>
+                                <select name="flight_class" class="pl-14 py-5 text-lg font-bold w-full appearance-none">
+                                    <option value="Economy" class="bg-slate-800 text-white" selected>Economy</option>
+                                    <option value="Premium Economy" class="bg-slate-800 text-white">Premium Economy</option>
+                                    <option value="Business" class="bg-slate-800 text-white">Business Class</option>
+                                    <option value="First Class" class="bg-slate-800 text-white">First Class</option>
+                                </select>
+                            </div>
+                        </div>
+                        ` : ''}
+                        ${(category === 'train' || category === 'bus') ? `
+                        <div class="md:col-span-12 space-y-3 mt-4">
+                            <label class="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Class Type</label>
+                            <div class="relative group">
+                                <i data-lucide="wind" class="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-sky-400 transition-colors z-10"></i>
+                                <select name="ac_type" id="ac-type-select" onchange="toggleAcTiers('${category}')" class="pl-14 py-5 text-lg font-bold w-full appearance-none">
+                                    <option value="AC" class="bg-slate-800 text-white">AC Class</option>
+                                    <option value="Non-AC" class="bg-slate-800 text-white" selected>Non-AC Class</option>
+                                </select>
+                            </div>
+                        </div>
+                        ` : ''}
+
+                        ${(category === 'train') ? `
+                        <div id="ac-tier-container" class="md:col-span-12 space-y-3 mt-4 hidden">
+                            <label class="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">AC Tier</label>
+                            <div class="relative group">
+                                <i data-lucide="layers" class="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-sky-400 transition-colors z-10"></i>
+                                <select name="ac_tier" class="pl-14 py-5 text-lg font-bold w-full appearance-none">
+                                    <option value="1A" class="bg-slate-800 text-white">1A (AC First Class)</option>
+                                    <option value="2A" class="bg-slate-800 text-white">2A (AC 2 Tier)</option>
+                                    <option value="3A" class="bg-slate-800 text-white" selected>3A (AC 3 Tier)</option>
+                                    <option value="3E" class="bg-slate-800 text-white">3E (AC 3 Tier Economy)</option>
+                                </select>
+                            </div>
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+            } else if (category === 'movie') {
+                categoryName = 'Cinema';
+                icon = 'film';
+                colorClass = 'bg-rose-500/20';
+                formHTML = `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-3">
+                            <label class="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Location City</label>
+                            <div class="relative group">
+                                <i data-lucide="map-pin" class="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-rose-400 transition-colors"></i>
+                                <input type="text" name="city" placeholder="Select City" class="pl-14 py-5 text-lg font-bold" required>
+                            </div>
+                        </div>
+                        <div class="space-y-3">
+                            <label class="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Movie Experience</label>
+                            <div class="relative group">
+                                <i data-lucide="ticket" class="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-rose-400 transition-colors"></i>
+                                <input type="text" name="movie" placeholder="Enter Movie Name" class="pl-14 py-5 text-lg font-bold" required>
+                            </div>
+                        </div>
+                        <div class="md:col-span-2 space-y-3 mt-2">
+                            <label class="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Viewing Date</label>
+                            <div class="relative group">
+                                <i data-lucide="calendar" class="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-rose-400 transition-colors"></i>
+                                <input type="date" name="date" class="pl-14 py-5 text-lg font-bold" required min="${new Date().toISOString().split('T')[0]}">
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            form.innerHTML = formHTML;
+            title.innerText = categoryName + ' Terminal';
+            iconContainer.className = `w-20 h-20 rounded-2xl flex items-center justify-center shadow-2xl border border-white/5 ${colorClass}`;
+
+            // Re-render icon
+            const iconElem = document.getElementById('category-icon');
+            iconElem.setAttribute('data-lucide', icon);
+            lucide.createIcons();
+
+            // Transition
+            selection.classList.add('hidden');
+            searchSection.classList.remove('hidden');
+        }
+
+        async function handleSearch(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const params = new URLSearchParams(formData);
+            params.append('category', currentCategory);
+
+            // Show results view
+            document.getElementById('search-section').classList.add('hidden');
+            document.getElementById('results-section').classList.remove('hidden');
+            document.getElementById('results-loader').classList.remove('hidden');
+            document.getElementById('results-list').innerHTML = '';
+
+            // Update summary
+            if (currentCategory === 'movie') {
+                document.getElementById('search-summary').innerText = formData.get('movie');
+                document.getElementById('search-date').innerText = `${formData.get('city')} • ${formData.get('date')}`;
+            } else {
+                document.getElementById('search-summary').innerText = `${formData.get('from')} ➔ ${formData.get('to')}`;
+                document.getElementById('search-date').innerText = formData.get('date');
+            }
+
+            try {
+                const response = await fetch(`/api/tickets/search?${params.toString()}`);
+                const data = await response.json();
+
+                document.getElementById('results-loader').classList.add('hidden');
+                const list = document.getElementById('results-list');
+
+                if (data.length === 0) {
+                    list.innerHTML = '<p class="text-center text-gray-400 py-12">No tickets found for this route.</p>';
+                    return;
+                }
+
+                data.forEach((item, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'glass-card-premium p-8 md:p-10 my-6 flex flex-col sm:flex-row items-center justify-between gap-8 hover:border-sky-500/50 hover:shadow-[0_0_30px_rgba(14,165,233,0.15)] transition-all duration-500 transform hover:-translate-y-2';
+                    card.style.animation = `fadeInUp 0.4s ease-out forwards ${index * 0.1}s`;
+                    card.style.opacity = '0';
+
+                    card.innerHTML = `
+                        <div class="flex items-center gap-8 w-full sm:w-auto">
+                            <div class="w-20 h-20 rounded-2xl bg-slate-800/50 p-4 flex items-center justify-center overflow-hidden border border-white/5 relative group shadow-lg">
+                                <img src="${item.logo}" alt="${item.platform}" 
+                                     onerror="this.parentElement.innerHTML='<div class=\\\'w-full h-full flex items-center justify-center text-sky-400 font-black text-3xl\\\'>${item.platform.charAt(0)}</div>'"
+                                     class="max-w-full max-h-full object-contain filter drop-shadow-md transition-transform duration-500 group-hover:scale-125">
+                            </div>
+                            <div>
+                                <h4 class="font-black text-white text-2xl uppercase tracking-tighter mb-1">${item.platform}</h4>
+                                <div class="flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.8)] animate-pulse"></span>
+                                    <p class="text-sm text-slate-400 font-bold uppercase tracking-widest">${item.details}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-12 w-full sm:w-auto justify-between sm:justify-end mt-6 sm:mt-0">
+                            <div class="flex flex-col items-center">
+                                <span class="text-xs text-slate-500 uppercase tracking-[0.2em] font-black mb-1">Departure</span>
+                                <span class="text-white font-black text-xl">${item.time}</span>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-4xl font-black text-white tracking-tighter mb-1">₹${item.price.toLocaleString()}</div>
+                                <div class="text-[11px] text-emerald-400 font-black uppercase tracking-widest flex items-center gap-1.5 justify-end">
+                                    <i data-lucide="check-circle" class="w-4 h-4"></i>
+                                    Verified Rate
+                                </div>
+                            </div>
+                            <a href="${item.url}" target="_blank" class="px-10 py-4 glass-button-action text-white rounded-xl font-black uppercase text-sm tracking-[0.2em] flex items-center gap-3 group hover:bg-sky-500/20">
+                                Book Now
+                                <i data-lucide="external-link" class="w-5 h-5 text-sky-400 group-hover:translate-x-1 transition-transform"></i>
+                            </a>
+                        </div>
+                    `;
+                    list.appendChild(card);
+                });
+                lucide.createIcons();
+
+            } catch (error) {
+                console.error('Search failed:', error);
+                document.getElementById('results-loader').classList.add('hidden');
+                document.getElementById('results-list').innerHTML = '<p class="text-center text-red-400 py-12">Failed to fetch prices. Please try again.</p>';
+            }
+        }
+
+        function swapInputs() {
+            const fromInput = document.querySelector('input[name="from"]');
+            const toInput = document.querySelector('input[name="to"]');
+            if (fromInput && toInput) {
+                const temp = fromInput.value;
+                fromInput.value = toInput.value;
+                toInput.value = temp;
+
+                // Add a little spin animation to the icon
+                const icon = event.currentTarget.querySelector('i');
+                icon.style.transform = 'rotate(180deg)';
+                setTimeout(() => icon.style.transform = '', 500);
+            }
+        }
+
+        function toggleAcTiers(category) {
+            if (category !== 'train') return;
+            const acType = document.getElementById('ac-type-select').value;
+            const tierContainer = document.getElementById('ac-tier-container');
+            if (tierContainer) {
+                if (acType === 'AC') {
+                    tierContainer.classList.remove('hidden');
+                } else {
+                    tierContainer.classList.add('hidden');
+                }
+            }
+        }
+
+        function goBack(target) {
+            if (target === 'selection') {
+                document.getElementById('search-section').classList.add('hidden');
+                document.getElementById('category-selection').classList.remove('hidden');
+                // Clear URL param if we are at root /plan-my-trip
+                window.history.pushState({}, '', '/plan-my-trip');
+            } else if (target === 'form') {
+                document.getElementById('results-section').classList.add('hidden');
+                document.getElementById('search-section').classList.remove('hidden');
+            }
+        }
+
+        // Add CSS for fade in animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInUp {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Destination Ideas | Plan My Trip</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            --glass-glow: 0 0 20px rgba(56, 189, 248, 0.4);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0f172a;
+            color: #f1f5f9;
+            margin: 0;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .aurora-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            background: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 100%);
+        }
+
+        .grid-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+
+        .glass-morphism {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .glass-card-premium {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            overflow: hidden;
+        }
+
+        .glass-card-premium:hover {
+            transform: translateY(-8px);
+            border-color: rgba(56, 189, 248, 0.4);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5), var(--glass-glow);
+        }
+
+        .glass-nav-item {
+            padding: 8px 16px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            position: relative;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 500;
+        }
+
+        .glass-nav-item:hover,
+        .glass-nav-item.active {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: white;
+        }
+
+        .gradient-text-premium {
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .destination-badge {
+            background: rgba(56, 189, 248, 0.15);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 4px 12px;
+            border-radius: 99px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #38bdf8;
+        }
+
+        .cost-tag {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 14px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .glass-button-premium {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .glass-button-premium:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+
+<body class="text-gray-100 antialiased">
+    <div class="aurora-bg">
+        <div class="grid-overlay"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 w-full z-50 glass-morphism border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Branding -->
+                <a href="{{ url_for('main.plan_trip') }}" class="flex items-center space-x-3 group">
+                    <div
+                        class="w-10 h-10 bg-gradient-to-br from-gray-800 to-slate-900 rounded-xl flex items-center justify-center border border-white/10 shadow-xl group-hover:border-sky-500/50 transition-all">
+                        <i data-lucide="plane" class="w-6 h-6 text-sky-400"></i>
+                    </div>
+                    <span class="text-xl font-bold text-white tracking-tight uppercase">Plan My Trip</span>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-2">
+                    <a href="{{ url_for('main.index') }}" class="glass-nav-item">Home</a>
+                    <a href="{{ url_for('main.plan_trip') }}" class="glass-nav-item">Plan My Trip</a>
+                    <a href="{{ url_for('main.destination_ideas') }}" class="glass-nav-item active">
+                        Destination Ideas
+                        <span
+                            class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-sky-500 rounded-full shadow-[0_0_8px_rgba(56,189,248,0.8)]"></span>
+                    </a>
+                    <a href="{{ url_for('main.budget_planner') }}" class="glass-nav-item">Budget Planner</a>
+                    <a href="{{ url_for('main.travel_itinerary') }}" class="glass-nav-item">Travel Itinerary</a>
+                    <a href="{{ url_for('main.hotels') }}" class="glass-nav-item">Hotels</a>
+                    <a href="{{ url_for('main.packing_list') }}" class="glass-nav-item">Packing List</a>
+                </div>
+
+                <!-- Right Side Actions -->
+                <div class="hidden md:flex items-center space-x-4 flex-1 justify-end max-w-sm ml-8">
+                    <a href="{{ url_for('main.index') }}"
+                        class="glass-button-premium px-6 py-2.5 rounded-xl text-sm font-bold uppercase tracking-widest text-white">
+                        Back Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow pt-24 pb-20 px-4 relative z-10">
+        <div class="max-w-7xl mx-auto">
+            <header class="text-center mb-16">
+                <div
+                    class="inline-flex items-center bg-sky-500/10 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] mb-6 text-sky-400 border border-sky-500/20">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5 mr-2"></i> Curated Experiences
+                </div>
+                <h1 class="text-5xl md:text-7xl font-black text-white mb-6 tracking-tighter uppercase leading-[0.9]">
+                    Bucket List<br>
+                    <span class="gradient-text-premium">Destinations</span>
+                </h1>
+                <p class="text-slate-400 text-lg max-w-2xl mx-auto font-medium">
+                    From neon cities to tranquil shores, discover the world's most breathtaking escapes.
+                </p>
+            </header>
+
+            <div class="max-w-4xl mx-auto mb-16 space-y-6">
+                <div class="relative group">
+                    <i data-lucide="search"
+                        class="absolute left-6 top-1/2 -translate-y-1/2 w-6 h-6 text-slate-500 group-focus-within:text-sky-400 transition-colors"></i>
+                    <input type="text" id="dest-search" placeholder="Search by city, country or continent..."
+                        class="w-full pl-16 pr-6 py-6 bg-slate-800/50 border border-white/10 rounded-2xl text-xl font-bold focus:border-sky-500/50 focus:bg-slate-800/80 outline-none transition-all shadow-2xl"
+                        oninput="filterDestinations()">
+                </div>
+                <div class="flex flex-wrap justify-center gap-3">
+                    <button onclick="setFilter('all')"
+                        class="filter-btn active px-6 py-2 rounded-full border border-white/10 text-xs font-black uppercase tracking-widest hover:border-sky-500/50 transition-all">All</button>
+                    <button onclick="setFilter('Europe')"
+                        class="filter-btn px-6 py-2 rounded-full border border-white/10 text-xs font-black uppercase tracking-widest hover:border-sky-500/50 transition-all">Europe</button>
+                    <button onclick="setFilter('Asia')"
+                        class="filter-btn px-6 py-2 rounded-full border border-white/10 text-xs font-black uppercase tracking-widest hover:border-sky-500/50 transition-all">Asia</button>
+                    <button onclick="setFilter('Tropical')"
+                        class="filter-btn px-6 py-2 rounded-full border border-white/10 text-xs font-black uppercase tracking-widest hover:border-sky-500/50 transition-all">Tropical</button>
+                    <button onclick="setFilter('Americas')"
+                        class="filter-btn px-6 py-2 rounded-full border border-white/10 text-xs font-black uppercase tracking-widest hover:border-sky-500/50 transition-all">Americas</button>
+                    <button onclick="setFilter('Africa')"
+                        class="filter-btn px-6 py-2 rounded-full border border-white/10 text-xs font-black uppercase tracking-widest hover:border-sky-500/50 transition-all">Africa</button>
+                </div>
+            </div>
+
+            <div id="dest-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <!-- Destination 1 -->
+                <div class="glass-card-premium group dest-card" data-category="Europe" data-name="Paris France">
+                    <div class="h-64 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80"
+                            alt="Paris"
+                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent"></div>
+                        <div
+                            class="absolute top-4 right-4 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10 flex items-center gap-2">
+                            <i data-lucide="sun" class="w-3.5 h-3.5 text-amber-400"></i>
+                            <span class="text-[10px] font-black text-white">18°C</span>
+                        </div>
+                        <div class="absolute bottom-6 left-6 right-6 flex justify-between items-end">
+                            <div>
+                                <span class="destination-badge mb-2 inline-block">Europe</span>
+                                <h3 class="text-3xl font-black text-white uppercase tracking-tighter">Paris</h3>
+                                <p class="text-sky-400 text-xs font-bold tracking-widest uppercase">The City of Light
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <p class="text-slate-400 text-sm leading-relaxed mb-6 font-medium">
+                            Experience the romantic charm of the Eiffel Tower, world-class art at the Louvre, and
+                            exquisite French cuisine.
+                        </p>
+                        <div class="flex items-center justify-between pt-6 border-t border-white/5">
+                            <span class="cost-tag">Est. ₹1,45,000</span>
+                            <button
+                                class="text-sky-400 font-black text-xs uppercase tracking-widest flex items-center gap-2 group/btn">
+                                View Details <i data-lucide="arrow-right"
+                                    class="w-4 h-4 group-hover/btn:translate-x-1 transition-transform"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Destination 2 -->
+                <div class="glass-card-premium group dest-card" data-category="Asia" data-name="Tokyo Japan">
+                    <div class="h-64 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=800&q=80"
+                            alt="Tokyo"
+                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent"></div>
+                        <div
+                            class="absolute top-4 right-4 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10 flex items-center gap-2">
+                            <i data-lucide="cloud-rain" class="w-3.5 h-3.5 text-sky-400"></i>
+                            <span class="text-[10px] font-black text-white">15°C</span>
+                        </div>
+                        <div class="absolute bottom-6 left-6 right-6 flex justify-between items-end">
+                            <div>
+                                <span class="destination-badge mb-2 inline-block">Asia</span>
+                                <h3 class="text-3xl font-black text-white uppercase tracking-tighter">Tokyo</h3>
+                                <p class="text-indigo-400 text-xs font-bold tracking-widest uppercase">Futuristic
+                                    Tradition</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <p class="text-slate-400 text-sm leading-relaxed mb-6 font-medium">
+                            A high-tech metropolis where neon skyscrapers meet ancient temples and world-renowned street
+                            food.
+                        </p>
+                        <div class="flex items-center justify-between pt-6 border-t border-white/5">
+                            <span class="cost-tag">Est. ₹1,20,000</span>
+                            <button
+                                class="text-indigo-400 font-black text-xs uppercase tracking-widest flex items-center gap-2 group/btn">
+                                View Details <i data-lucide="arrow-right"
+                                    class="w-4 h-4 group-hover/btn:translate-x-1 transition-transform"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Destination 3 -->
+                <div class="glass-card-premium group dest-card" data-category="Tropical" data-name="Bali Indonesia">
+                    <div class="h-64 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80"
+                            alt="Bali"
+                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent"></div>
+                        <div
+                            class="absolute top-4 right-4 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10 flex items-center gap-2">
+                            <i data-lucide="sun" class="w-3.5 h-3.5 text-amber-400"></i>
+                            <span class="text-[10px] font-black text-white">29°C</span>
+                        </div>
+                        <div class="absolute bottom-6 left-6 right-6 flex justify-between items-end">
+                            <div>
+                                <span class="destination-badge mb-2 inline-block">Tropical</span>
+                                <h3 class="text-3xl font-black text-white uppercase tracking-tighter">Bali</h3>
+                                <p class="text-teal-400 text-xs font-bold tracking-widest uppercase">Island Paradise</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <p class="text-slate-400 text-sm leading-relaxed mb-6 font-medium">
+                            Escape to lush jungles, pristine beaches, and sacred temples. The ultimate destination for
+                            rejuvenation.
+                        </p>
+                        <div class="flex items-center justify-between pt-6 border-t border-white/5">
+                            <span class="cost-tag">Est. ₹85,000</span>
+                            <button
+                                class="text-teal-400 font-black text-xs uppercase tracking-widest flex items-center gap-2 group/btn">
+                                View Details <i data-lucide="arrow-right"
+                                    class="w-4 h-4 group-hover/btn:translate-x-1 transition-transform"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Destination 4 -->
+                <div class="glass-card-premium group dest-card" data-category="Americas" data-name="New York USA">
+                    <div class="h-64 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1518391846015-55a9cc00bb86?auto=format&fit=crop&w=800&q=80"
+                            alt="New York"
+                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent"></div>
+                        <div
+                            class="absolute top-4 right-4 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10 flex items-center gap-2">
+                            <i data-lucide="cloud" class="w-3.5 h-3.5 text-slate-300"></i>
+                            <span class="text-[10px] font-black text-white">12°C</span>
+                        </div>
+                        <div class="absolute bottom-6 left-6 right-6 flex justify-between items-end">
+                            <div>
+                                <span class="destination-badge mb-2 inline-block">Americas</span>
+                                <h3 class="text-3xl font-black text-white uppercase tracking-tighter">New York</h3>
+                                <p class="text-amber-400 text-xs font-bold tracking-widest uppercase">The Big Apple</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <p class="text-slate-400 text-sm leading-relaxed mb-6 font-medium">
+                            The crossroads of the world. Broadway shows, Central Park strolls, and iconic skyline views.
+                        </p>
+                        <div class="flex items-center justify-between pt-6 border-t border-white/5">
+                            <span class="cost-tag">Est. ₹2,10,000</span>
+                            <button
+                                class="text-amber-400 font-black text-xs uppercase tracking-widest flex items-center gap-2 group/btn">
+                                View Details <i data-lucide="arrow-right"
+                                    class="w-4 h-4 group-hover/btn:translate-x-1 transition-transform"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Destination 5 -->
+                <div class="glass-card-premium group dest-card" data-category="Europe" data-name="Santorini Greece">
+                    <div class="h-64 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=800&q=80"
+                            alt="Santorini"
+                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent"></div>
+                        <div
+                            class="absolute top-4 right-4 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10 flex items-center gap-2">
+                            <i data-lucide="sun" class="w-3.5 h-3.5 text-amber-400"></i>
+                            <span class="text-[10px] font-black text-white">24°C</span>
+                        </div>
+                        <div class="absolute bottom-6 left-6 right-6 flex justify-between items-end">
+                            <div>
+                                <span class="destination-badge mb-2 inline-block">Mediterranean</span>
+                                <h3 class="text-3xl font-black text-white uppercase tracking-tighter">Santorini</h3>
+                                <p class="text-rose-400 text-xs font-bold tracking-widest uppercase">Sunset Horizons</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <p class="text-slate-400 text-sm leading-relaxed mb-6 font-medium">
+                            White-washed buildings perched on volcanic cliffs above the sapphire Aegean Sea. Pure magic.
+                        </p>
+                        <div class="flex items-center justify-between pt-6 border-t border-white/5">
+                            <span class="cost-tag">Est. ₹1,80,000</span>
+                            <button
+                                class="text-rose-400 font-black text-xs uppercase tracking-widest flex items-center gap-2 group/btn">
+                                View Details <i data-lucide="arrow-right"
+                                    class="w-4 h-4 group-hover/btn:translate-x-1 transition-transform"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Destination 6 -->
+                <div class="glass-card-premium group dest-card" data-category="Africa" data-name="Cairo Egypt">
+                    <div class="h-64 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1547127796-06bb04e4b315?auto=format&fit=crop&w=800&q=80"
+                            alt="Cairo"
+                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent"></div>
+                        <div
+                            class="absolute top-4 right-4 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10 flex items-center gap-2">
+                            <i data-lucide="sun" class="w-3.5 h-3.5 text-amber-500"></i>
+                            <span class="text-[10px] font-black text-white">32°C</span>
+                        </div>
+                        <div class="absolute bottom-6 left-6 right-6 flex justify-between items-end">
+                            <div>
+                                <span class="destination-badge mb-2 inline-block">Africa</span>
+                                <h3 class="text-3xl font-black text-white uppercase tracking-tighter">Cairo</h3>
+                                <p class="text-emerald-400 text-xs font-bold tracking-widest uppercase">Ancient Wonders
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <p class="text-slate-400 text-sm leading-relaxed mb-6 font-medium">
+                            Stand in the shadow of the Pyramids of Giza and explore the rich tapestry of ancient
+                            Egyptian history.
+                        </p>
+                        <div class="flex items-center justify-between pt-6 border-t border-white/5">
+                            <span class="cost-tag">Est. ₹95,000</span>
+                            <button
+                                class="text-emerald-400 font-black text-xs uppercase tracking-widest flex items-center gap-2 group/btn">
+                                View Details <i data-lucide="arrow-right"
+                                    class="w-4 h-4 group-hover/btn:translate-x-1 transition-transform"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-black/40 backdrop-blur-xl border-t border-white/10 text-gray-400 py-8 px-4 mt-auto">
+        <div class="max-w-7xl mx-auto text-center">
+            <p>&copy; 2024 Smart Cart. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        let currentFilter = 'all';
+
+        function setFilter(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-sky-500/10', 'border-sky-500/50', 'text-sky-400');
+            });
+            event.target.classList.add('active', 'bg-sky-500/10', 'border-sky-500/50', 'text-sky-400');
+            filterDestinations();
+        }
+
+        function filterDestinations() {
+            const query = document.getElementById('dest-search').value.toLowerCase();
+            const cards = document.querySelectorAll('.dest-card');
+
+            cards.forEach(card => {
+                const name = card.getAttribute('data-name').toLowerCase();
+                const category = card.getAttribute('data-category');
+
+                const matchesSearch = name.includes(query);
+                const matchesFilter = currentFilter === 'all' || category === currentFilter;
+
+                if (matchesSearch && matchesFilter) {
+                    card.style.display = 'block';
+                    card.classList.add('animate-fadeIn');
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+    <style>
+        .filter-btn.active {
+            background: rgba(56, 189, 248, 0.1);
+            border-color: rgba(56, 189, 248, 0.5);
+            color: #38bdf8;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .animate-fadeIn {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+    </style>
+</body>
+
+</html>
