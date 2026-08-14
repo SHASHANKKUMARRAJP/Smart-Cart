@@ -22,7 +22,8 @@
             height: 100%;
             width: 100%;
             font-family: 'Inter', sans-serif;
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto;
             color: #fff;
         }
 
@@ -894,6 +895,40 @@
             justify-content: center;
             margin-right: 14px;
             color: #5f6368;
+        }
+
+        /* ════════════════════════════════════════
+           RESPONSIVE DESIGN (MOBILE)
+           ════════════════════════════════════════ */
+        @media (max-width: 900px) {
+            .layout {
+                flex-direction: column;
+                height: auto;
+                min-height: 100vh;
+            }
+
+            .form-side {
+                width: 100%;
+                padding: 15px;
+                flex: 1;
+            }
+
+            .show-side {
+                display: none; /* Hide showcase on smaller screens */
+            }
+
+            .card {
+                padding: 24px 20px;
+            }
+
+            .g-modal {
+                width: 92%;
+                max-width: 400px;
+            }
+            
+            .orb {
+                display: none; /* Simplify background for mobile performance */
+            }
         }
     </style>
 </head>
