@@ -126,7 +126,7 @@
     </div>
 
     <!-- Navigation -->
-    <nav class="nav-glass reveal">
+    <nav class="nav-glass reveal" id="mainNav">
         <a href="{{ url_for('main.dashboard') }}"
             style="text-decoration: none; font-weight: 700; font-size: 1.25rem; color: #000; display: flex; align-items: center; gap: 8px;">
             <div
@@ -135,7 +135,10 @@
             </div>
             Smart Cart
         </a>
-        <div style="display: flex; gap: 20px;">
+        <button class="hamburger-btn" onclick="document.getElementById('mainNav').classList.toggle('active')">
+            <i data-lucide="menu" size="24"></i>
+        </button>
+        <div style="display: flex; gap: 20px;" class="nav-links">
             <a href="{{ url_for('main.dashboard') }}" class="nav-link">Home</a>
             <a href="{{ url_for('main.dashboard') }}" class="nav-link"
                 style="color: var(--text-primary); font-weight: 700;">Smart Cart</a>

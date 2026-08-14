@@ -1185,6 +1185,67 @@ header {
     main {
         padding: 2rem 1rem;
     }
+    
+    /* Navigation Adjustments for Mobile */
+    .nav-glass {
+        flex-direction: column;
+        padding: 15px;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .nav-glass > div {
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+        display: none; /* Hide by default, show with hamburger active class */
+    }
+    
+    .nav-glass.active > div {
+        display: flex;
+    }
+
+    .hamburger-btn {
+        display: block;
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 5px;
+    }
+    
+    /* Center and adjust sizing on small screens */
+    .center.reveal h1 {
+        font-size: 2rem;
+    }
+    
+    .center.reveal p {
+        font-size: 1rem;
+    }
+    
+    .search-container-glass {
+        flex-direction: column;
+        border-radius: 12px;
+        padding: 12px;
+    }
+    
+    .search-input {
+        padding: 12px;
+        font-size: 1rem;
+    }
+    
+    .search-btn {
+        width: 100%;
+        justify-content: center;
+        border-radius: 8px;
+        margin-top: 10px;
+    }
+    
+    .results-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {

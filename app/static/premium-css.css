@@ -333,13 +333,49 @@ p {
     }
 
     h1 {
-        font-size: 3.5rem;
+        font-size: 2.5rem; /* Make even smaller for mobile */
+    }
+
+    h2 {
+        font-size: 2rem;
     }
 
     .nav-glass {
         min-width: auto;
         width: 90%;
         top: 20px;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px;
+        gap: 15px;
+    }
+
+    .nav-glass > div.nav-links {
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+        display: none;
+    }
+
+    .nav-glass.active > div.nav-links {
+        display: flex;
+    }
+
+    .hamburger-btn {
+        display: block;
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 5px;
+    }
+
+    /* Fix search container width on mobile if used */
+    .search-container-glass {
+        flex-direction: column;
+        width: 100%;
     }
 }
 
