@@ -135,12 +135,12 @@
             <i class="fas fa-times text-2xl"></i>
         </button>
         <div class="flex flex-col space-y-6 text-center mt-8">
-            <a href="{{ url_for('main.index') }}" class="text-xl font-medium text-gray-700 hover:text-purple-600">Home</a>
-            <a href="{{ url_for('main.ecommerce') }}" class="text-xl font-medium text-gray-700 hover:text-purple-600">E-commerce</a>
-            <a href="{{ url_for('main.tickets') }}" class="text-xl font-medium text-gray-700 hover:text-purple-600">Ticket Booking</a>
-            <a href="{{ url_for('main.find_dress') }}" class="text-xl font-bold text-purple-600 hover:text-purple-700">Find Dress</a>
+            <a href="{{ url_for('main.index') }}" onclick="toggleMobileMenu()" class="text-xl font-medium text-gray-700 hover:text-purple-600">Home</a>
+            <a href="{{ url_for('main.ecommerce') }}" onclick="toggleMobileMenu()" class="text-xl font-medium text-gray-700 hover:text-purple-600">E-commerce</a>
+            <a href="{{ url_for('main.tickets') }}" onclick="toggleMobileMenu()" class="text-xl font-medium text-gray-700 hover:text-purple-600">Ticket Booking</a>
+            <a href="{{ url_for('main.find_dress') }}" onclick="toggleMobileMenu()" class="text-xl font-bold text-purple-600 hover:text-purple-700">Find Dress</a>
             {% if session.get('user') %}
-            <a href="#" onclick="event.preventDefault(); fetch('{{ url_for('main.auth_logout') }}', {method: 'POST'}).then(() => window.location.href='/');" class="text-xl font-bold text-red-500 mt-4 border-t pt-6">Logout</a>
+            <a href="#" onclick="toggleMobileMenu(); event.preventDefault(); fetch('{{ url_for('main.auth_logout') }}', {method: 'POST'}).then(() => window.location.href='/');" class="text-xl font-bold text-red-500 mt-4 border-t pt-6">Logout</a>
             {% endif %}
         </div>
     </div>
