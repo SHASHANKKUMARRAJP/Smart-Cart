@@ -252,12 +252,10 @@
         </div>
 
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden"
-            style="background: rgba(3, 7, 18, 0.95); backdrop-filter: blur(20px);">
-            <div class="px-2 pt-2 pb-3 space-y-1">
-                <a href="{{ url_for('main.index') }}"
-                    class="block px-3 py-2 text-gray-300 hover:text-white font-medium">Home</a>
-                <a href="{{ url_for('main.explore') }}" class="block px-3 py-2 text-white font-bold">Explore</a>
+        <div id="mobile-menu" class="hidden md:hidden bg-black/95 backdrop-blur-xl shadow-2xl absolute w-full left-0 border-b border-white/10">
+            <div class="px-4 pt-4 pb-6 space-y-3">
+                <a href="{{ url_for('main.index') }}" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg font-medium transition-colors">Home</a>
+                <a href="#categories" class="block px-3 py-2 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg font-medium transition-colors">Categories</a>
                 {% if session.get('user') %}
                 <a href="#"
                     onclick="event.preventDefault(); fetch('{{ url_for('main.auth_logout') }}', {method: 'POST'}).then(() => window.location.href='/');"
