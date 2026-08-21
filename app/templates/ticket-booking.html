@@ -293,7 +293,7 @@
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-2">
                     <a href="{{ url_for('main.index') }}" class="glass-nav-item">Home</a>
-                    <a href="{{ url_for('main.shop') }}" class="glass-nav-item">10 min delivery</a>
+                    <a href="{{ url_for('main.ten_minute_delivery') }}" class="glass-nav-item">10 min delivery</a>
                     <a href="{{ url_for('main.ecommerce') }}" class="glass-nav-item">E-commerce</a>
                     <a href="{{ url_for('main.tickets') }}" class="glass-nav-item active">
                         Tickets
@@ -339,8 +339,8 @@
         <div class="flex flex-col p-4 space-y-4 text-center">
             <a href="{{ url_for('main.index') }}" onclick="toggleMobileMenu()"
                 class="text-gray-300 hover:text-white font-medium py-4 text-xl">Home</a>
-            <a href="{{ url_for('main.shop') }}" onclick="toggleMobileMenu()"
-                class="text-gray-300 hover:text-white font-medium py-4 text-xl">10 min shopping</a>
+            <a href="{{ url_for('main.ten_minute_delivery') }}" onclick="toggleMobileMenu()"
+                class="text-gray-300 hover:text-white font-medium py-4 text-xl border-b border-white/10 w-full text-center">10 min shopping</a>
             <a href="{{ url_for('main.ecommerce') }}" onclick="toggleMobileMenu()"
                 class="text-gray-300 hover:text-white font-medium py-4 text-xl">E-commerce</a>
             <a href="{{ url_for('main.tickets') }}" onclick="toggleMobileMenu()"
