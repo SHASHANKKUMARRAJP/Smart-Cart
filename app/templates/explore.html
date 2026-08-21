@@ -203,10 +203,11 @@
     <nav class="sticky top-0 z-50 glass-morphism">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
-                <!-- Back Button & Logo -->
-                <div class="flex items-center space-x-3">
-                    <a href="javascript:history.back()" class="md:hidden flex items-center justify-center w-8 h-8 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors">
-                        <i data-lucide="arrow-left" size="18"></i>
+                <div class="flex items-center">
+                    <!-- Back Button -->
+                    <a href="javascript:history.back()" class="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/5 mr-2 md:mr-6">
+                        <i data-lucide="arrow-left" class="w-6 h-6"></i>
+                        <span class="text-xl font-bold text-white hidden sm:block">Back</span>
                     </a>
                     <a href="{{ url_for('main.index') }}" class="flex items-center space-x-2">
                         <div class="w-8 h-8 glass-card-premium rounded-lg flex items-center justify-center border border-white/20">

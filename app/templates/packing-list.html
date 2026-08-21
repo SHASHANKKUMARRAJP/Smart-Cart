@@ -176,14 +176,21 @@
     <nav class="sticky top-0 w-full z-50 glass-morphism border-b border-white/5">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <!-- Back Button -->
+                    <a href="javascript:history.back()" class="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors p-2 rounded-lg hover:bg-white/5 mr-2 md:mr-6">
+                        <i data-lucide="arrow-left" class="w-6 h-6"></i>
+                        <span class="text-xl font-bold text-white">Back</span>
+                    </a>
                 <!-- Branding -->
                 <a href="{{ url_for('main.plan_trip') }}" class="flex items-center space-x-3 group">
                     <div
-                        class="w-10 h-10 bg-gradient-to-br from-gray-800 to-slate-900 rounded-xl flex items-center justify-center border border-white/10 shadow-xl group-hover:border-pink-500/50 transition-all">
-                        <i data-lucide="plane" class="w-6 h-6 text-pink-400"></i>
+                        class="w-10 h-10 bg-gradient-to-br from-gray-800 to-slate-900 rounded-xl flex items-center justify-center border border-white/10 shadow-xl group-hover:border-sky-500/50 transition-all">
+                        <i data-lucide="plane" class="w-6 h-6 text-sky-400"></i>
                     </div>
-                    <span class="text-xl font-bold text-white tracking-tight uppercase">Plan My Trip</span>
+                    <span class="text-xl font-bold text-white tracking-tight uppercase hidden sm:block">Plan My Trip</span>
                 </a>
+                </div>
 
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-2">
