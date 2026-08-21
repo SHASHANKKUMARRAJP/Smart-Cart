@@ -203,14 +203,18 @@
     <nav class="sticky top-0 z-50 glass-morphism">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
-                <!-- Logo -->
-                <a href="{{ url_for('main.index') }}" class="flex items-center space-x-2">
-                    <div
-                        class="w-8 h-8 glass-card-premium rounded-lg flex items-center justify-center border border-white/20">
-                        <i data-lucide="shopping-cart" size="18" class="text-white"></i>
-                    </div>
-                    <span class="text-xl font-bold text-white">Smart Cart</span>
-                </a>
+                <!-- Back Button & Logo -->
+                <div class="flex items-center space-x-3">
+                    <a href="javascript:history.back()" class="md:hidden flex items-center justify-center w-8 h-8 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors">
+                        <i data-lucide="arrow-left" size="18"></i>
+                    </a>
+                    <a href="{{ url_for('main.index') }}" class="flex items-center space-x-2">
+                        <div class="w-8 h-8 glass-card-premium rounded-lg flex items-center justify-center border border-white/20">
+                            <i data-lucide="shopping-cart" size="18" class="text-white"></i>
+                        </div>
+                        <span class="text-xl font-bold text-white hidden sm:block">Smart Cart</span>
+                    </a>
+                </div>
 
                 <!-- Desktop Menu -->
                 <!-- Desktop Menu -->
