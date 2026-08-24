@@ -587,7 +587,7 @@ def auth_logout():
 def ten_minute_delivery():
     if not session.get("user"):
         return redirect(url_for("main.login"))
-    return render_template("index-premium.html")
+    return render_template("10minute-delivery.html")
 
 @main.route("/favicon.ico")
 def favicon():
