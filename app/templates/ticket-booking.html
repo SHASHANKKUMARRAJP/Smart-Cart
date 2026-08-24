@@ -26,14 +26,13 @@
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #0f172a;
-            /* Slate 900 */
-            color: #f1f5f9;
-            margin: 0;
+            background-color: #0b0f19;
+            color: #f8fafc;
             overflow-x: hidden;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            color-scheme: dark;
         }
 
         /* Sophisticated & Decent Background */
@@ -236,6 +235,12 @@
             border-color: rgba(239, 68, 68, 0.5);
             background: rgba(255, 255, 255, 0.08);
             box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
+        }
+
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            opacity: 0.6;
+            cursor: pointer;
         }
 
         .shimmer {
