@@ -497,7 +497,7 @@
                 const data = await res.json();
 
                 if (res.ok) {
-                    window.location.href = "{{ url_for('main.dashboard') }}";
+                    window.location.href = "{{ url_for('main.index') }}";
                 } else {
                     alert(data.error || 'Login failed');
                 }
@@ -574,7 +574,7 @@
                 });
 
                 if (res.ok) {
-                    window.location.href = "{{ url_for('main.dashboard') }}";
+                    window.location.href = "{{ url_for('main.index') }}";
                 } else {
                     alert('Login failed');
                 }

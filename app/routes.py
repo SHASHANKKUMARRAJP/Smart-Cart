@@ -16,8 +16,6 @@ main = Blueprint('main', __name__)
 
 @main.route("/")
 def index():
-    if session.get("user"):
-        return redirect(url_for("main.dashboard"))
     return render_template("landing-premium.html")
 
 @main.route("/dashboard")
@@ -648,7 +646,7 @@ def auth_google_callback():
             'picture': user_info.get('picture'),
             'provider': 'google',
         }
-        return redirect(url_for('main.dashboard'))
+        return redirect(url_for('main.index'))
     except Exception as e:
         print(f"Google OAuth error: {e}")
         return redirect(url_for('main.login'))

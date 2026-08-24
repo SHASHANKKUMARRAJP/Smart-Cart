@@ -1252,7 +1252,7 @@
                     body: JSON.stringify({ email: loginEmail.value, password: loginPwd.value })
                 });
                 const d = await r.json();
-                if (r.ok) location.href = "{{ url_for('main.dashboard') }}";
+                if (r.ok) location.href = "{{ url_for('main.index') }}";
                 else alert(d.error || 'Login failed.');
             } catch { alert('Connection error.'); }
             finally { btn.textContent = 'Sign In →'; btn.disabled = false; }
@@ -1269,7 +1269,7 @@
                     body: JSON.stringify({ name: signupName.value, email: signupEmail.value, password: signupPwd.value })
                 });
                 const d = await r.json();
-                if (r.ok) location.href = "{{ url_for('main.dashboard') }}";
+                if (r.ok) location.href = "{{ url_for('main.index') }}";
                 else alert(d.error || 'Sign up failed.');
             } catch { alert('Connection error.'); }
             finally { btn.textContent = 'Create Account →'; btn.disabled = false; }
@@ -1318,7 +1318,7 @@
                     body: JSON.stringify({ email: email, name: name })
                 });
                 const d = await r.json();
-                if (r.ok) location.href = "{{ url_for('main.dashboard') }}";
+                if (r.ok) location.href = "{{ url_for('main.index') }}";
                 else alert(d.error || 'Google login failed.');
             } catch {
                 alert('Connection error.');
