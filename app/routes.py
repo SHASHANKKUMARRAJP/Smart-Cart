@@ -63,10 +63,33 @@ def api_tickets_search():
     results = []
     
     if category == "train":
+        # Smart dictionary to map generic cities to exact IRCTC Station Codes to prevent 404s
+        station_codes = {
+            "bangalore": "SBC", "bengaluru": "SBC", "chennai": "MAS", "madras": "MAS",
+            "delhi": "NDLS", "new delhi": "NDLS", "mumbai": "BCT", "bombay": "BCT",
+            "hyderabad": "SC", "secunderabad": "SC", "kolkata": "HWH", "howrah": "HWH",
+            "pune": "PUNE", "ahmedabad": "ADI", "jaipur": "JP", "lucknow": "LKO",
+            "kanpur": "CNB", "nagpur": "NGP", "indore": "INDB", "bhopal": "BPL",
+            "patna": "PNBE", "ballari": "BAY", "bellary": "BAY", "mysore": "MYS", "mysuru": "MYS",
+            "hubli": "UBL", "mangalore": "MAQ", "tirupati": "TPTY", "vijayawada": "BZA"
+        }
+        
+        from_code = station_codes.get(from_city.lower().strip(), "")
+        to_code = station_codes.get(to_city.lower().strip(), "")
+        
+        # Only build deep links if we successfully resolved BOTH station codes!
+        if from_code and to_code:
+            confirmtkt_url = f"https://www.confirmtkt.com/train-tickets/{from_code}-to-{to_code}"
+            paytm_url = f"https://paytm.com/train-tickets/search/?origin={from_code}&destination={to_code}&departureDate={date}"
+        else:
+            # Safe fallback to prevent 404 firewalls
+            confirmtkt_url = "https://www.confirmtkt.com"
+            paytm_url = "https://paytm.com/train-tickets"
+
         platforms = [
-            {"name": "IRCTC (Official)", "logo": "/static/images/irctc_official.svg", "url": "https://www.irctc.co.in"},
-            {"name": "ConfirmTkt", "logo": "/static/images/confirmtkt.svg", "url": "https://www.confirmtkt.com"},
-            {"name": "Paytm Trains", "logo": "/static/images/paytm_trains.svg", "url": "https://paytm.com/train-tickets"}
+            {"name": "IRCTC (Official)", "logo": "/static/images/irctc_official.svg", "url": "https://www.irctc.co.in/nget/booking/train-list"},
+            {"name": "ConfirmTkt", "logo": "/static/images/confirmtkt.svg", "url": confirmtkt_url},
+            {"name": "Paytm Trains", "logo": "/static/images/paytm_trains.svg", "url": paytm_url}
         ]
         ac_tier = request.args.get("ac_tier", "")
         for p in platforms:
