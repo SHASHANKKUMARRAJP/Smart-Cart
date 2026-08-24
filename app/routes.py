@@ -16,6 +16,8 @@ main = Blueprint('main', __name__)
 
 @main.route("/")
 def index():
+    if session.get("user"):
+        return redirect(url_for("main.dashboard"))
     return render_template("landing-premium.html")
 
 @main.route("/dashboard")
@@ -585,7 +587,7 @@ def auth_logout():
 def ten_minute_delivery():
     if not session.get("user"):
         return redirect(url_for("main.login"))
-    return render_template("10minute-delivery.html")
+    return render_template("index-premium.html")
 
 @main.route("/favicon.ico")
 def favicon():
