@@ -64,9 +64,9 @@ def api_tickets_search():
     
     if category == "train":
         platforms = [
-            {"name": "IRCTC (Official)", "logo": "/static/images/irctc_official.svg", "url": "https://www.irctc.co.in/nget/booking/train-list"},
-            {"name": "ConfirmTkt", "logo": "/static/images/confirmtkt.svg", "url": f"https://www.confirmtkt.com/train-tickets?from={from_city}&to={to_city}&date={date}"},
-            {"name": "Paytm Trains", "logo": "/static/images/paytm_trains.svg", "url": f"https://paytm.com/train-tickets/search/?origin={from_city}&destination={to_city}&departureDate={date}"}
+            {"name": "IRCTC (Official)", "logo": "/static/images/irctc_official.svg", "url": "https://www.irctc.co.in"},
+            {"name": "ConfirmTkt", "logo": "/static/images/confirmtkt.svg", "url": "https://www.confirmtkt.com"},
+            {"name": "Paytm Trains", "logo": "/static/images/paytm_trains.svg", "url": "https://paytm.com/train-tickets"}
         ]
         ac_tier = request.args.get("ac_tier", "")
         for p in platforms:
