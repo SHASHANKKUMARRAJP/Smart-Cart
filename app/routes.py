@@ -65,7 +65,7 @@ def api_tickets_search():
     if category == "train":
         # Smart dictionary to map generic cities to exact IRCTC Station Codes to prevent 404s
         station_codes = {
-            "bangalore": "SBC", "bengaluru": "SBC", "chennai": "MAS", "madras": "MAS",
+            "bangalore": "SBC", "bengaluru": "SBC", "banglore": "SBC", "chennai": "MAS", "madras": "MAS",
             "delhi": "NDLS", "new delhi": "NDLS", "mumbai": "BCT", "bombay": "BCT",
             "hyderabad": "SC", "secunderabad": "SC", "kolkata": "HWH", "howrah": "HWH",
             "pune": "PUNE", "ahmedabad": "ADI", "jaipur": "JP", "lucknow": "LKO",
