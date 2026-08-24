@@ -104,10 +104,10 @@ def api_tickets_search():
         flight_class = request.args.get("flight_class", "Economy")
         flight_type = request.args.get("flight_type", "Domestic")
         platforms = [
-            {"name": "IndiGo", "logo": "https://logo.clearbit.com/goindigo.in", "url": f"https://www.goindigo.in/booking/flight-select.html?or={from_city}&dest={to_city}&date={date}"},
-            {"name": "Air India", "logo": "https://logo.clearbit.com/airindia.com", "url": f"https://www.airindia.com/book-flight.html?from={from_city}&to={to_city}&date={date}"},
-            {"name": "Emirates", "logo": "https://logo.clearbit.com/emirates.com", "url": f"https://www.emirates.com/in/english/book/?origin={from_city}&destination={to_city}"},
-            {"name": "Qatar Airways", "logo": "https://logo.clearbit.com/qatarairways.com", "url": f"https://www.qatarairways.com/en-in/book.html?from={from_city}&to={to_city}"}
+            {"name": "IndiGo", "logo": "https://logo.clearbit.com/goindigo.in", "url": "https://www.goindigo.in"},
+            {"name": "Air India", "logo": "https://logo.clearbit.com/airindia.com", "url": "https://www.airindia.com"},
+            {"name": "Emirates", "logo": "https://logo.clearbit.com/emirates.com", "url": "https://www.emirates.com"},
+            {"name": "Qatar Airways", "logo": "https://logo.clearbit.com/qatarairways.com", "url": "https://www.qatarairways.com"}
         ]
         for p in platforms:
             # Base ranges as requested by user
@@ -141,12 +141,12 @@ def api_tickets_search():
 
     elif category == "bus":
         platforms = [
-            {"name": "RedBus", "logo": "https://logo.clearbit.com/redbus.in", "url": f"https://www.redbus.in/bus-tickets/?fromCity={from_city}&toCity={to_city}&date={date}"},
-            {"name": "AbhiBus", "logo": "https://logo.clearbit.com/abhibus.com", "url": f"https://www.abhibus.com/bus_search?source={from_city}&destination={to_city}&date={date}"},
-            {"name": "Paytm", "logo": "https://logo.clearbit.com/paytm.com", "url": f"https://paytm.com/bus-tickets/search/{from_city}/{to_city}/"},
-            {"name": "MakeMyTrip", "logo": "https://logo.clearbit.com/makemytrip.com", "url": f"https://www.makemytrip.com/bus-tickets/search?fromCity={from_city}&toCity={to_city}"},
-            {"name": "Goibibo", "logo": "https://logo.clearbit.com/goibibo.com", "url": f"https://www.goibibo.com/bus/search?source={from_city}&destination={to_city}"},
-            {"name": "ixigo", "logo": "https://logo.clearbit.com/ixigo.com", "url": f"https://www.ixigo.com/buses/search?origin={from_city}&destination={to_city}"}
+            {"name": "RedBus", "logo": "https://logo.clearbit.com/redbus.in", "url": "https://www.redbus.in"},
+            {"name": "AbhiBus", "logo": "https://logo.clearbit.com/abhibus.com", "url": "https://www.abhibus.com"},
+            {"name": "Paytm", "logo": "https://logo.clearbit.com/paytm.com", "url": "https://paytm.com/bus-tickets"},
+            {"name": "MakeMyTrip", "logo": "https://logo.clearbit.com/makemytrip.com", "url": "https://www.makemytrip.com/bus-tickets/"},
+            {"name": "Goibibo", "logo": "https://logo.clearbit.com/goibibo.com", "url": "https://www.goibibo.com/bus/"},
+            {"name": "ixigo", "logo": "https://logo.clearbit.com/ixigo.com", "url": "https://www.ixigo.com/buses"}
         ]
         
         for p in platforms:
@@ -163,10 +163,10 @@ def api_tickets_search():
 
     elif category == "movie":
         platforms = [
-            {"name": "BookMyShow", "logo": "https://logo.clearbit.com/bookmyshow.com", "url": f"https://in.bookmyshow.com/explore/movies?q={movie.replace(' ', '+')}&city={city}"},
-            {"name": "Paytm", "logo": "https://logo.clearbit.com/paytm.com", "url": f"https://paytm.com/movies?q={movie.replace(' ', '+')}&city={city}"},
-            {"name": "TicketNew", "logo": "https://logo.clearbit.com/ticketnew.com", "url": f"https://ticketnew.com/movies?city={city}&q={movie.replace(' ', '+')}"},
-            {"name": "Justickets", "logo": "https://logo.clearbit.com/justickets.in", "url": f"https://www.justickets.in/search?q={movie.replace(' ', '+')}"},
+            {"name": "BookMyShow", "logo": "https://logo.clearbit.com/bookmyshow.com", "url": "https://in.bookmyshow.com"},
+            {"name": "Paytm", "logo": "https://logo.clearbit.com/paytm.com", "url": "https://paytm.com/movies"},
+            {"name": "TicketNew", "logo": "https://logo.clearbit.com/ticketnew.com", "url": "https://ticketnew.com/"},
+            {"name": "Justickets", "logo": "https://logo.clearbit.com/justickets.in", "url": "https://www.justickets.in/"},
             {"name": "Amazon Pay", "logo": "https://logo.clearbit.com/amazon.in", "url": "https://www.amazon.in/hfc/ticket"}
         ]
         for p in platforms:
