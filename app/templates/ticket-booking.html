@@ -361,7 +361,7 @@
     </div>
 
     <!-- Main Content -->
-    <main class="flex-grow pt-32 pb-20 px-4 relative z-10 flex flex-col items-center">
+    <main class="flex-grow pt-32 pb-20 px-4 relative z-10 flex flex-col w-full">
 
         <!-- View 1: Category Selection -->
         <div id="category-selection" class="max-w-7xl mx-auto w-full text-center">
@@ -372,7 +372,7 @@
                 Real-Time Global Price Comparison
             </div>
 
-            <h1 class="text-4xl md:text-8xl font-black text-white mb-6 leading-[0.9] tracking-tighter uppercase">
+            <h1 class="text-3xl sm:text-4xl md:text-8xl font-black text-white mb-6 leading-[0.9] tracking-tighter uppercase">
                 Premium<br>
                 <span class="gradient-text-premium">Booking Terminal</span>
             </h1>
@@ -480,7 +480,7 @@
                         <div>
                             <p class="text-sky-400 text-xs font-black uppercase tracking-widest md:tracking-[0.3em] mb-2">Service Terminal
                             </p>
-                            <h2 id="category-title" class="text-3xl md:text-5xl font-black text-white uppercase tracking-tighter">
+                            <h2 id="category-title" class="text-2xl sm:text-3xl md:text-5xl font-black text-white uppercase tracking-tighter break-words">
                                 Search Tickets</h2>
                         </div>
                     </div>
@@ -578,7 +578,7 @@
                             <label class="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Departure Origin</label>
                             <div class="relative group">
                                 <i data-lucide="map-pin" class="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-sky-400 transition-colors"></i>
-                                <input type="text" name="from" placeholder="Current City" class="pl-14 py-5 text-lg font-bold w-full" required>
+                                <input type="text" name="from" placeholder="Current City" class="pl-14 py-5 text-lg font-bold w-full min-w-0" required>
                             </div>
                         </div>
 
@@ -592,7 +592,7 @@
                             <label class="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Arrival Destination</label>
                             <div class="relative group">
                                 <i data-lucide="navigation" class="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-sky-400 transition-colors"></i>
-                                <input type="text" name="to" placeholder="Destination City" class="pl-14 py-5 text-lg font-bold w-full" required>
+                                <input type="text" name="to" placeholder="Destination City" class="pl-14 py-5 text-lg font-bold w-full min-w-0" required>
                             </div>
                         </div>
 
@@ -600,7 +600,7 @@
                             <label class="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Scheduled Travel Date</label>
                             <div class="relative group">
                                 <i data-lucide="calendar" class="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-sky-400 transition-colors"></i>
-                                <input type="date" name="date" class="pl-14 py-5 text-lg font-bold w-full" required min="${new Date().toISOString().split('T')[0]}">
+                                <input type="date" name="date" class="pl-14 py-5 text-lg font-bold w-full min-w-0" required min="${new Date().toISOString().split('T')[0]}">
                             </div>
                         </div>
                         ${(category === 'flight') ? `
@@ -608,7 +608,7 @@
                             <label class="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Flight Type</label>
                             <div class="relative group">
                                 <i data-lucide="globe" class="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-sky-400 transition-colors z-10"></i>
-                                <select name="flight_type" class="pl-14 py-5 text-lg font-bold w-full appearance-none">
+                                <select name="flight_type" class="pl-14 py-5 text-lg font-bold w-full min-w-0 appearance-none">
                                     <option value="Domestic" class="bg-slate-800 text-white" selected>Domestic Flight</option>
                                     <option value="International" class="bg-slate-800 text-white">International Flight</option>
                                 </select>
@@ -618,7 +618,7 @@
                             <label class="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Flight Class</label>
                             <div class="relative group">
                                 <i data-lucide="award" class="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-sky-400 transition-colors z-10"></i>
-                                <select name="flight_class" class="pl-14 py-5 text-lg font-bold w-full appearance-none">
+                                <select name="flight_class" class="pl-14 py-5 text-lg font-bold w-full min-w-0 appearance-none">
                                     <option value="Economy" class="bg-slate-800 text-white" selected>Economy</option>
                                     <option value="Premium Economy" class="bg-slate-800 text-white">Premium Economy</option>
                                     <option value="Business" class="bg-slate-800 text-white">Business Class</option>
@@ -632,7 +632,7 @@
                             <label class="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Class Type</label>
                             <div class="relative group">
                                 <i data-lucide="wind" class="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-sky-400 transition-colors z-10"></i>
-                                <select name="ac_type" id="ac-type-select" onchange="toggleAcTiers('${category}')" class="pl-14 py-5 text-lg font-bold w-full appearance-none">
+                                <select name="ac_type" id="ac-type-select" onchange="toggleAcTiers('${category}')" class="pl-14 py-5 text-lg font-bold w-full min-w-0 appearance-none">
                                     <option value="AC" class="bg-slate-800 text-white">AC Class</option>
                                     <option value="Non-AC" class="bg-slate-800 text-white" selected>Non-AC Class</option>
                                 </select>
@@ -645,7 +645,7 @@
                             <label class="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">AC Tier</label>
                             <div class="relative group">
                                 <i data-lucide="layers" class="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-sky-400 transition-colors z-10"></i>
-                                <select name="ac_tier" class="pl-14 py-5 text-lg font-bold w-full appearance-none">
+                                <select name="ac_tier" class="pl-14 py-5 text-lg font-bold w-full min-w-0 appearance-none">
                                     <option value="1A" class="bg-slate-800 text-white">1A (AC First Class)</option>
                                     <option value="2A" class="bg-slate-800 text-white">2A (AC 2 Tier)</option>
                                     <option value="3A" class="bg-slate-800 text-white" selected>3A (AC 3 Tier)</option>
@@ -666,21 +666,21 @@
                             <label class="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Location City</label>
                             <div class="relative group">
                                 <i data-lucide="map-pin" class="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-rose-400 transition-colors"></i>
-                                <input type="text" name="city" placeholder="Select City" class="pl-14 py-5 text-lg font-bold w-full" required>
+                                <input type="text" name="city" placeholder="Select City" class="pl-14 py-5 text-lg font-bold w-full min-w-0" required>
                             </div>
                         </div>
                         <div class="space-y-3">
                             <label class="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Movie Experience</label>
                             <div class="relative group">
                                 <i data-lucide="ticket" class="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-rose-400 transition-colors"></i>
-                                <input type="text" name="movie" placeholder="Enter Movie Name" class="pl-14 py-5 text-lg font-bold w-full" required>
+                                <input type="text" name="movie" placeholder="Enter Movie Name" class="pl-14 py-5 text-lg font-bold w-full min-w-0" required>
                             </div>
                         </div>
                         <div class="md:col-span-2 space-y-3 mt-2">
                             <label class="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Viewing Date</label>
                             <div class="relative group">
                                 <i data-lucide="calendar" class="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-rose-400 transition-colors"></i>
-                                <input type="date" name="date" class="pl-14 py-5 text-lg font-bold w-full" required min="${new Date().toISOString().split('T')[0]}">
+                                <input type="date" name="date" class="pl-14 py-5 text-lg font-bold w-full min-w-0" required min="${new Date().toISOString().split('T')[0]}">
                             </div>
                         </div>
                     </div>
