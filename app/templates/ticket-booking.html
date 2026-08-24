@@ -589,7 +589,7 @@
                             <label class="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Departure Origin</label>
                             <div class="relative group">
                                 <i data-lucide="map-pin" class="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-sky-400 transition-colors"></i>
-                                <input type="text" name="from" placeholder="Current City" class="pl-14 py-5 text-lg font-bold w-full min-w-0" required>
+                                <input type="text" name="from" placeholder="Current City" class="pl-14 py-5 text-lg font-bold w-full min-w-0 max-w-full" required>
                             </div>
                         </div>
 
@@ -603,14 +603,14 @@
                             <label class="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Arrival Destination</label>
                             <div class="relative group">
                                 <i data-lucide="navigation" class="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-sky-400 transition-colors"></i>
-                                <input type="text" name="to" placeholder="Destination City" class="pl-14 py-5 text-lg font-bold w-full min-w-0" required>
+                                <input type="text" name="to" placeholder="Destination City" class="pl-14 py-5 text-lg font-bold w-full min-w-0 max-w-full" required>
                             </div>
                         </div>
 
                         <div class="md:col-span-12 space-y-3 mt-4">
                             <label class="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Scheduled Travel Date</label>
                             <div class="relative group">
-                                <input type="date" name="date" class="pl-5 pr-14 py-5 text-lg font-bold w-full min-w-0 block appearance-none" required min="${new Date().toISOString().split('T')[0]}">
+                                <input type="date" name="date" class="pl-5 pr-14 py-5 text-lg font-bold w-full min-w-0 max-w-full block appearance-none" required min="${new Date().toISOString().split('T')[0]}">
                                 <i data-lucide="calendar" class="absolute right-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-sky-400 transition-colors pointer-events-none"></i>
                             </div>
                         </div>
@@ -619,7 +619,7 @@
                             <label class="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Flight Type</label>
                             <div class="relative group">
                                 <i data-lucide="globe" class="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-sky-400 transition-colors z-10"></i>
-                                <select name="flight_type" class="pl-14 py-5 text-lg font-bold w-full min-w-0 appearance-none">
+                                <select name="flight_type" class="pl-14 py-5 text-lg font-bold w-full min-w-0 max-w-full appearance-none">
                                     <option value="Domestic" class="bg-slate-800 text-white" selected>Domestic Flight</option>
                                     <option value="International" class="bg-slate-800 text-white">International Flight</option>
                                 </select>
@@ -629,7 +629,7 @@
                             <label class="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Flight Class</label>
                             <div class="relative group">
                                 <i data-lucide="award" class="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-sky-400 transition-colors z-10"></i>
-                                <select name="flight_class" class="pl-14 py-5 text-lg font-bold w-full min-w-0 appearance-none">
+                                <select name="flight_class" class="pl-14 py-5 text-lg font-bold w-full min-w-0 max-w-full appearance-none">
                                     <option value="Economy" class="bg-slate-800 text-white" selected>Economy</option>
                                     <option value="Premium Economy" class="bg-slate-800 text-white">Premium Economy</option>
                                     <option value="Business" class="bg-slate-800 text-white">Business Class</option>
@@ -643,7 +643,7 @@
                             <label class="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Class Type</label>
                             <div class="relative group">
                                 <i data-lucide="wind" class="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-sky-400 transition-colors z-10"></i>
-                                <select name="ac_type" id="ac-type-select" onchange="toggleAcTiers('${category}')" class="pl-14 py-5 text-lg font-bold w-full min-w-0 appearance-none">
+                                <select name="ac_type" id="ac-type-select" onchange="toggleAcTiers('${category}')" class="pl-14 py-5 text-lg font-bold w-full min-w-0 max-w-full appearance-none">
                                     <option value="AC" class="bg-slate-800 text-white">AC Class</option>
                                     <option value="Non-AC" class="bg-slate-800 text-white" selected>Non-AC Class</option>
                                 </select>
@@ -656,7 +656,7 @@
                             <label class="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">AC Tier</label>
                             <div class="relative group">
                                 <i data-lucide="layers" class="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-sky-400 transition-colors z-10"></i>
-                                <select name="ac_tier" class="pl-14 py-5 text-lg font-bold w-full min-w-0 appearance-none">
+                                <select name="ac_tier" class="pl-14 py-5 text-lg font-bold w-full min-w-0 max-w-full appearance-none">
                                     <option value="1A" class="bg-slate-800 text-white">1A (AC First Class)</option>
                                     <option value="2A" class="bg-slate-800 text-white">2A (AC 2 Tier)</option>
                                     <option value="3A" class="bg-slate-800 text-white" selected>3A (AC 3 Tier)</option>
@@ -677,7 +677,7 @@
                             <label class="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Location City</label>
                             <div class="relative group">
                                 <i data-lucide="map-pin" class="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-rose-400 transition-colors"></i>
-                                <input type="text" name="city" placeholder="Select City" class="pl-14 py-5 text-lg font-bold w-full min-w-0" required>
+                                <input type="text" name="city" placeholder="Select City" class="pl-14 py-5 text-lg font-bold w-full min-w-0 max-w-full" required>
                             </div>
                         </div>
                         <div class="space-y-3">
