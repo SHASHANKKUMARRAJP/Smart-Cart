@@ -79,16 +79,17 @@ def api_tickets_search():
         
         # Only build deep links if we successfully resolved BOTH station codes!
         if from_code and to_code:
-            confirmtkt_url = f"https://www.confirmtkt.com/train-tickets/{from_code}-to-{to_code}"
+            # MakeMyTrip and Paytm are much more robust with query parameters than ConfirmTkt
+            mmt_url = f"https://www.makemytrip.com/railways/listing?srcStn={from_code}&destStn={to_code}&date={date}"
             paytm_url = f"https://paytm.com/train-tickets/search/?origin={from_code}&destination={to_code}&departureDate={date}"
         else:
             # Safe fallback to prevent 404 firewalls
-            confirmtkt_url = "https://www.confirmtkt.com"
+            mmt_url = "https://www.makemytrip.com/railways/"
             paytm_url = "https://paytm.com/train-tickets"
 
         platforms = [
             {"name": "IRCTC (Official)", "logo": "/static/images/irctc_official.svg", "url": "https://www.irctc.co.in/nget/booking/train-list"},
-            {"name": "ConfirmTkt", "logo": "/static/images/confirmtkt.svg", "url": confirmtkt_url},
+            {"name": "MakeMyTrip Trains", "logo": "https://logo.clearbit.com/makemytrip.com", "url": mmt_url},
             {"name": "Paytm Trains", "logo": "/static/images/paytm_trains.svg", "url": paytm_url}
         ]
         ac_tier = request.args.get("ac_tier", "")
