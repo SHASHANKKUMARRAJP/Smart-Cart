@@ -82,13 +82,16 @@ def api_tickets_search():
             # MakeMyTrip and Paytm are much more robust with query parameters than ConfirmTkt
             mmt_url = f"https://www.makemytrip.com/railways/listing?srcStn={from_code}&destStn={to_code}&date={date}"
             paytm_url = f"https://paytm.com/train-tickets/search/?origin={from_code}&destination={to_code}&departureDate={date}"
+            confirmtkt_url = f"https://www.confirmtkt.com/train-tickets/{from_code}-to-{to_code}"
         else:
             # Safe fallback to prevent 404 firewalls
             mmt_url = "https://www.makemytrip.com/railways/"
             paytm_url = "https://paytm.com/train-tickets"
+            confirmtkt_url = "https://www.confirmtkt.com"
 
         platforms = [
             {"name": "IRCTC (Official)", "logo": "/static/images/irctc_official.svg", "url": "https://www.irctc.co.in/nget/booking/train-list"},
+            {"name": "ConfirmTkt", "logo": "/static/images/confirmtkt.svg", "url": confirmtkt_url},
             {"name": "MakeMyTrip Trains", "logo": "https://logo.clearbit.com/makemytrip.com", "url": mmt_url},
             {"name": "Paytm Trains", "logo": "/static/images/paytm_trains.svg", "url": paytm_url}
         ]
