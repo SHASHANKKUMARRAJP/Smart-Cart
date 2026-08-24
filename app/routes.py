@@ -62,6 +62,7 @@ def api_tickets_search():
 
     results = []
     
+    if category == "train":
         platforms = [
             {"name": "IRCTC (Official)", "logo": "/static/images/irctc_official.svg", "url": "https://www.irctc.co.in/nget/booking/train-list"},
             {"name": "ConfirmTkt", "logo": "/static/images/confirmtkt.svg", "url": f"https://www.confirmtkt.com/train-tickets?from={from_city}&to={to_city}&date={date}"},
@@ -138,6 +139,7 @@ def api_tickets_search():
                 "details": f"{from_city} ➔ {to_city} • {flight_type} • {flight_class}"
             })
 
+    elif category == "bus":
         platforms = [
             {"name": "RedBus", "logo": "https://logo.clearbit.com/redbus.in", "url": f"https://www.redbus.in/bus-tickets/?fromCity={from_city}&toCity={to_city}&date={date}"},
             {"name": "AbhiBus", "logo": "https://logo.clearbit.com/abhibus.com", "url": f"https://www.abhibus.com/bus_search?source={from_city}&destination={to_city}&date={date}"},
@@ -159,6 +161,7 @@ def api_tickets_search():
                 "details": f"{from_city} ➔ {to_city} • {ac_type}"
             })
 
+    elif category == "movie":
         platforms = [
             {"name": "BookMyShow", "logo": "https://logo.clearbit.com/bookmyshow.com", "url": f"https://in.bookmyshow.com/explore/movies?q={movie.replace(' ', '+')}&city={city}"},
             {"name": "Paytm", "logo": "https://logo.clearbit.com/paytm.com", "url": f"https://paytm.com/movies?q={movie.replace(' ', '+')}&city={city}"},
