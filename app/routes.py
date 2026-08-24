@@ -62,12 +62,9 @@ def api_tickets_search():
 
     results = []
     
-    if category == "train":
-        from_slug = from_city.lower().replace(' ', '-')
-        to_slug = to_city.lower().replace(' ', '-')
         platforms = [
             {"name": "IRCTC (Official)", "logo": "/static/images/irctc_official.svg", "url": "https://www.irctc.co.in/nget/booking/train-list"},
-            {"name": "ConfirmTkt", "logo": "/static/images/confirmtkt.svg", "url": f"https://www.confirmtkt.com/train-tickets/{from_slug}-to-{to_slug}"},
+            {"name": "ConfirmTkt", "logo": "/static/images/confirmtkt.svg", "url": f"https://www.confirmtkt.com/train-tickets?from={from_city}&to={to_city}&date={date}"},
             {"name": "Paytm Trains", "logo": "/static/images/paytm_trains.svg", "url": f"https://paytm.com/train-tickets/search/?origin={from_city}&destination={to_city}&departureDate={date}"}
         ]
         ac_tier = request.args.get("ac_tier", "")
@@ -141,12 +138,9 @@ def api_tickets_search():
                 "details": f"{from_city} ➔ {to_city} • {flight_type} • {flight_class}"
             })
 
-    elif category == "bus":
-        from_slug = from_city.lower().replace(' ', '')
-        to_slug = to_city.lower().replace(' ', '')
         platforms = [
-            {"name": "RedBus", "logo": "https://logo.clearbit.com/redbus.in", "url": f"https://www.redbus.in/bus-tickets/{from_slug}-to-{to_slug}"},
-            {"name": "AbhiBus", "logo": "https://logo.clearbit.com/abhibus.com", "url": f"https://www.abhibus.com/bus_search/{from_city}/{to_city}/{date}"},
+            {"name": "RedBus", "logo": "https://logo.clearbit.com/redbus.in", "url": f"https://www.redbus.in/bus-tickets/?fromCity={from_city}&toCity={to_city}&date={date}"},
+            {"name": "AbhiBus", "logo": "https://logo.clearbit.com/abhibus.com", "url": f"https://www.abhibus.com/bus_search?source={from_city}&destination={to_city}&date={date}"},
             {"name": "Paytm", "logo": "https://logo.clearbit.com/paytm.com", "url": f"https://paytm.com/bus-tickets/search/{from_city}/{to_city}/"},
             {"name": "MakeMyTrip", "logo": "https://logo.clearbit.com/makemytrip.com", "url": f"https://www.makemytrip.com/bus-tickets/search?fromCity={from_city}&toCity={to_city}"},
             {"name": "Goibibo", "logo": "https://logo.clearbit.com/goibibo.com", "url": f"https://www.goibibo.com/bus/search?source={from_city}&destination={to_city}"},
@@ -165,14 +159,11 @@ def api_tickets_search():
                 "details": f"{from_city} ➔ {to_city} • {ac_type}"
             })
 
-    elif category == "movie":
-        city_slug = city.lower().replace(' ', '-')
-        movie_slug = movie.lower().replace(' ', '-')
         platforms = [
-            {"name": "BookMyShow", "logo": "https://logo.clearbit.com/bookmyshow.com", "url": f"https://in.bookmyshow.com/explore/movies-{city_slug}?q={movie.replace(' ', '+')}"},
-            {"name": "Paytm", "logo": "https://logo.clearbit.com/paytm.com", "url": f"https://paytm.com/movies/{city_slug}/search?q={movie.replace(' ', '+')}"},
-            {"name": "TicketNew", "logo": "https://logo.clearbit.com/ticketnew.com", "url": f"https://ticketnew.com/movies/{city_slug}"},
-            {"name": "Justickets", "logo": "https://logo.clearbit.com/justickets.in", "url": f"https://www.justickets.in/{city_slug}/movies/{movie_slug}"},
+            {"name": "BookMyShow", "logo": "https://logo.clearbit.com/bookmyshow.com", "url": f"https://in.bookmyshow.com/explore/movies?q={movie.replace(' ', '+')}&city={city}"},
+            {"name": "Paytm", "logo": "https://logo.clearbit.com/paytm.com", "url": f"https://paytm.com/movies?q={movie.replace(' ', '+')}&city={city}"},
+            {"name": "TicketNew", "logo": "https://logo.clearbit.com/ticketnew.com", "url": f"https://ticketnew.com/movies?city={city}&q={movie.replace(' ', '+')}"},
+            {"name": "Justickets", "logo": "https://logo.clearbit.com/justickets.in", "url": f"https://www.justickets.in/search?q={movie.replace(' ', '+')}"},
             {"name": "Amazon Pay", "logo": "https://logo.clearbit.com/amazon.in", "url": "https://www.amazon.in/hfc/ticket"}
         ]
         for p in platforms:
