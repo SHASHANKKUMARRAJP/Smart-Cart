@@ -467,18 +467,18 @@
                 Terminal Selection
             </button>
 
-            <div class="glass-card-premium p-12 relative overflow-hidden">
+            <div class="glass-card-premium p-6 md:p-12 relative overflow-hidden w-full">
                 <!-- Decorative element -->
                 <div class="absolute top-0 right-0 w-64 h-64 bg-sky-500/5 blur-[100px] pointer-events-none"></div>
 
-                <div class="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12 relative z-10">
-                    <div class="flex items-center gap-6">
+                <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 md:gap-8 mb-10 md:mb-12 relative z-10">
+                    <div class="flex items-center gap-4 md:gap-6">
                         <div id="category-icon-container"
-                            class="w-20 h-20 rounded-2xl flex items-center justify-center shadow-2xl border border-white/5 bg-slate-800/50">
-                            <i id="category-icon" data-lucide="search" class="w-10 h-10 text-white"></i>
+                            class="w-16 h-16 md:w-20 md:h-20 rounded-2xl flex items-center justify-center shadow-2xl border border-white/5 bg-slate-800/50 shrink-0">
+                            <i id="category-icon" data-lucide="search" class="w-8 h-8 md:w-10 md:h-10 text-white"></i>
                         </div>
                         <div>
-                            <p class="text-sky-400 text-xs font-black uppercase tracking-[0.3em] mb-2">Service Terminal
+                            <p class="text-sky-400 text-xs font-black uppercase tracking-widest md:tracking-[0.3em] mb-2">Service Terminal
                             </p>
                             <h2 id="category-title" class="text-3xl md:text-5xl font-black text-white uppercase tracking-tighter">
                                 Search Tickets</h2>
@@ -496,7 +496,7 @@
 
                 <div class="mt-12 relative z-10">
                     <button form="search-form" type="submit"
-                        class="w-full glass-button-action text-white font-black py-6 rounded-2xl text-sm uppercase tracking-[0.3em] flex items-center justify-center gap-3">
+                        class="w-full glass-button-action text-white font-black py-4 md:py-6 rounded-2xl text-xs md:text-sm uppercase tracking-widest md:tracking-[0.3em] flex items-center justify-center gap-2 md:gap-3">
                         Execute Price Comparison
                         <i data-lucide="zap" class="w-5 h-5 fill-current"></i>
                     </button>
