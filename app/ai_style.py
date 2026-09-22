@@ -111,36 +111,59 @@ def analyze_outfit_image(file_bytes, filename, gender="Auto"):
     try:
         genai.configure(api_key=gemini_key)
         
-        # Select reliable vision model
-        model = None
-        for m_name in ['gemini-1.5-flash', 'gemini-2.0-flash', 'gemini-1.5-pro']:
-            try:
-                model = genai.GenerativeModel(m_name)
-                if model:
-                    break
-            except Exception:
-                continue
-        if not model:
-            model = genai.GenerativeModel('gemini-1.5-flash')
+        # Dynamically discover model names supported by the user's API key
+        candidate_models = []
+        try:
+            for m in genai.list_models():
+                if 'generateContent' in getattr(m, 'supported_generation_methods', []):
+                    m_id = m.name.replace('models/', '')
+                    candidate_models.append(m_id)
+        except Exception as le:
+            print(f"Dynamic model listing notice: {le}")
+
+        # Fallback list of candidate model names if list_models is restricted
+        static_candidates = [
+            'gemini-1.5-flash-latest', 'gemini-1.5-flash', 
+            'gemini-1.5-pro-latest', 'gemini-1.5-pro',
+            'gemini-2.0-flash-exp', 'gemini-2.0-flash',
+            'gemini-pro-vision', 'gemini-pro'
+        ]
+
+        # Prioritize flash/vision models from discovered models first, then static candidates
+        flash_models = [m for m in candidate_models if 'flash' in m]
+        pro_models = [m for m in candidate_models if 'pro' in m or 'vision' in m]
+        other_models = [m for m in candidate_models if m not in flash_models and m not in pro_models]
         
+        ordered_candidates = flash_models + pro_models + other_models + static_candidates
+        # Remove duplicates while preserving order
+        seen = set()
+        model_queue = [m for m in ordered_candidates if not (m in seen or seen.add(m))]
+
         image = Image.open(io.BytesIO(file_bytes))
+
+        # Helper function to generate content trying candidates in order
+        def call_gemini(prompt_data):
+            last_err = None
+            for m_name in model_queue:
+                try:
+                    m_obj = genai.GenerativeModel(m_name)
+                    res = m_obj.generate_content(prompt_data)
+                    if res and res.text:
+                        return res.text
+                except Exception as ex:
+                    last_err = ex
+                    continue
+            raise last_err or Exception("All Gemini model candidates failed.")
 
         # STEP 1: Strict Validation
         validation_prompt = "Analyze this image. Is there a human person (or at least a human face/body) clearly visible in this image? Answer strictly with the word YES or NO, and nothing else."
-        try:
-            val_response = model.generate_content([validation_prompt, image])
-            val_text = val_response.text.strip().upper()
-        except Exception as ve:
-            print(f"Validation API call error: {ve}")
-            # Try alternate fallback model
-            model = genai.GenerativeModel('gemini-1.5-flash')
-            val_response = model.generate_content([validation_prompt, image])
-            val_text = val_response.text.strip().upper()
+        val_text = call_gemini([validation_prompt, image]).strip().upper()
 
         if "NO" in val_text or "YES" not in val_text:
             return {
                 "error": "Please upload a clear photo of a person. I cannot style animals, objects, cartoons, or landscapes!"
             }
+
 
         # STEP 2: Full Analysis (We know it's a person now)
         prompt = f"""
@@ -195,13 +218,8 @@ Return ONLY JSON matching this exact structure:
 }}
 """
 
-        try:
-            response = model.generate_content([prompt, image])
-            text = response.text
-        except Exception:
-            model = genai.GenerativeModel('gemini-1.5-flash')
-            response = model.generate_content([prompt, image])
-            text = response.text
+        text = call_gemini([prompt, image])
+
 
         # Robust JSON extraction
         match = re.search(r'\{.*\}', text, re.DOTALL)
