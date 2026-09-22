@@ -17,6 +17,7 @@ dependencies = [
     "pillow",
 ]
 
-[tool.setuptools.packages.find]
-include = ["app*", "api*"]
+[tool.setuptools]
+packages = ["app", "api"]
+
 
