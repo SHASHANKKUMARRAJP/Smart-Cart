@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Cart - Compare Prices Across Quick Commerce Apps</title>
+    <meta name="description"
+        content="Compare prices across Blinkit, Zepto, Swiggy Instamart and more quick commerce apps in real-time. Save money on groceries and daily essentials." />
+    <meta name="keywords"
+        content="quick commerce, price comparison, Blinkit, Zepto, Swiggy, grocery comparison, online shopping" />
+    <meta name="author" content="Smart Cart" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://smartcart.app/" />
+    <meta property="og:title" content="Smart Cart - Real-time Price Comparison Across Quick Commerce Apps" />
+    <meta property="og:description"
+        content="Compare prices across Blinkit, Zepto, Swiggy, and more quick commerce apps in real-time. Save money on groceries and daily essentials." />
+    <meta property="og:image" content="https://smartcart.app/og-image.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://smartcart.app/" />
+    <meta property="twitter:title" content="Smart Cart - Real-time Price Comparison" />
+    <meta property="twitter:description"
+        content="Compare prices across quick commerce apps in real-time. Save money on groceries and daily essentials." />
+    <meta property="twitter:image" content="https://smartcart.app/twitter-card.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon-32x32.png') }}" />
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon-16x16.png') }}" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='apple-touch-icon.png') }}" />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <style>
+        /* Professional Landing Page Styles */
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .hero-section {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.05) 50%, rgba(0, 0, 0, 0.1) 100%);
+        }
+
+        .floating-logo {
+            animation: logoFloat 6s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+
+            0%,
+            100% {
+                transform: translateY(0px) scale(1);
+            }
+
+            50% {
+                transform: translateY(-20px) scale(1.05);
+            }
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 1rem;
+            text-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            text-align: center;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .platform-icons {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .platform-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            border-radius: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .platform-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .video-controls {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 100;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .control-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .navigation {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 100;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .platform-icons {
+                gap: 1rem;
+            }
+
+            .navigation {
+                top: 1rem;
+                right: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <!-- Floating Logo -->
+            <div class="floating-logo mb-8 animate-supernova">
+                <div
+                    class="inline-flex items-center space-x-3 bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20">
+                    <div class="bg-gradient-to-r from-blue-600 to-purple-600 p-3 rounded-xl animate-atomic">
+                        <i data-lucide="shopping-cart" class="w-8 h-8 text-white animate-cosmic"></i>
+                    </div>
+                    <div class="text-left">
+                        <h1 class="text-3xl font-bold text-white mb-1 animate-dimensionalShift">Smart Cart</h1>
+                        <p class="text-sm text-white/80 animate-slideInLeft">Compare Prices & Save Money</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hero Text -->
+            <h2 class="hero-title text-white animate-fadeInUp">
+                The Smartest Way to<br>
+                <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 animate-pulse">Compare
+                    & Save</span>
+            </h2>
+
+            <p class="hero-subtitle text-white/90 animate-timeWarp">
+                Save up to 40% on your shopping with intelligent price comparison<br>
+                <span class="text-white/70 animate-vortex">Compare prices across multiple platforms in real-time and
+                    find the best deals instantly</span>
+            </p>
+
+            <div class="mb-8">
+                <a href="{{ url_for('main.ecommerce') }}"
+                    class="cta-button bg-gradient-to-r from-blue-600 to-purple-600 text-white animate-explosion">
+                    <i data-lucide="shopping-bag" class="w-5 h-5 mr-2 animate-plasma"></i>
+                    Start Comparing Prices
+                </a>
+            </div>
+
+            <!-- Platform Icons -->
+            <div class="platform-icons">
+                <div class="platform-item animate-float">
+                    <i data-lucide="zap" class="w-8 h-8 text-white mb-2 animate-galaxy"></i>
+                    <span class="text-white font-semibold animate-quantum">Blinkit</span>
+                    <span class="text-white/70 text-sm animate-blackhole">10-min delivery</span>
+                </div>
+
+                <div class="platform-item animate-float" style="animation-delay: 0.5s">
+                    <i data-lucide="package" class="w-8 h-8 text-white mb-2 animate-galaxy"></i>
+                    <span class="text-white font-semibold animate-quantum">Zepto</span>
+                    <span class="text-white/70 text-sm animate-blackhole">10-min delivery</span>
+                </div>
+
+                <div class="platform-item animate-float" style="animation-delay: 1s">
+                    <i data-lucide="truck" class="w-8 h-8 text-white mb-2 animate-galaxy"></i>
+                    <span class="text-white font-semibold animate-quantum">Instamart</span>
+                    <span class="text-white/70 text-sm animate-blackhole">Swiggy delivery</span>
+                </div>
+
+                <div class="platform-item animate-float" style="animation-delay: 1.5s">
+                    <i data-lucide="shopping-bag" class="w-8 h-8 text-white mb-2 animate-galaxy"></i>
+                    <span class="text-white font-semibold animate-quantum">BigBasket</span>
+                    <span class="text-white/70 text-sm animate-blackhole">2-hour delivery</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigation -->
+    <div class="navigation" id="default-nav">
+        <button id="spoing-btn" class="cta-button bg-white/20 backdrop-blur-sm text-white mr-4">
+            Spoing
+        </button>
+        <a href="{{ url_for('main.index') }}" class="cta-button bg-white/20 backdrop-blur-sm text-white">
+            <i data-lucide="shopping-bag" class="w-5 h-5 mr-2 animate-plasma"></i>
+            Shopping
+        </a>
+    </div>
+
+    <!-- Buyhatke Header -->
+    <header id="buyhatke-header"
+        style="display: none; background: #fff; padding: 0 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); height: 70px; align-items: center; justify-content: space-between; font-family: 'Inter', sans-serif; position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;">
+        <div style="display: flex; align-items: center; gap: 30px;">
+            <div style="display: flex; align-items: center; gap: 5px;">
+                <div
+                    style="background: #5b45ff; width: 35px; height: 35px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                </div>
+                <span style="color: #5b45ff; font-weight: 700; font-size: 22px; letter-spacing: -0.5px;">buyhatke</span>
+            </div>
+
+            <nav style="display: flex; gap: 20px;">
+                <a href="#" style="color: #4b5563; text-decoration: none; font-size: 14px; font-weight: 500;">Hot
+                    Deals</a>
+                <a href="#" style="color: #4b5563; text-decoration: none; font-size: 14px; font-weight: 500;">Spend
+                    Lens</a>
+                <a href="#" style="color: #4b5563; text-decoration: none; font-size: 14px; font-weight: 500;">Price
+                    Alert</a>
+                <div style="position: relative;">
+                    <a href="#"
+                        style="color: #4b5563; text-decoration: none; font-size: 14px; font-weight: 500;">Grocery
+                        Comparison</a>
+                    <span
+                        style="position: absolute; top: -10px; right: -20px; background: #ecf0ff; color: #5b45ff; font-size: 9px; padding: 2px 4px; border-radius: 4px; font-weight: 700;">BETA</span>
+                </div>
+                <a href="#" style="color: #4b5563; text-decoration: none; font-size: 14px; font-weight: 500;">Ride
+                    Compare</a>
+                <a href="#" style="color: #4b5563; text-decoration: none; font-size: 14px; font-weight: 500;">Gift
+                    Vouchers</a>
+            </nav>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <a href="#" style="color: #4b5563; text-decoration: none; font-size: 14px; font-weight: 500;">Refer &
+                Earn</a>
+            <div style="display: flex; align-items: center; gap: 5px;">
+                <div
+                    style="width: 24px; height: 16px; background: linear-gradient(to bottom, #ff9933 33%, #ffffff 33%, #ffffff 66%, #138808 66%); border: 1px solid #ddd;">
+                </div>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" style="color: #4b5563;">
+                    <path d="M5 12h14"></path>
+                    <path d="M12 5l7 7-7 7"></path>
+                </svg>
+                <span style="font-size: 16px; font-weight: 600;">A</span>
+            </div>
+
+            <a href="#"
+                style="background: #ecf0ff; color: #5b45ff; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <circle cx="12" cy="12" r="4"></circle>
+                    <line x1="21.17" y1="8" x2="12" y2="8"></line>
+                    <line x1="3.95" y1="6.06" x2="8.54" y2="14"></line>
+                    <line x1="10.88" y1="21.94" x2="15.46" y2="14"></line>
+                </svg>
+                Install, it's free
+            </a>
+
+            <a href="{{ url_for('main.login') }}"
+                style="background: #5b45ff; color: white; padding: 8px 24px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 600;">Login</a>
+        </div>
+    </header>
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+    <script>
+        // Initialize Lucide icons
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                if (window.lucide) lucide.createIcons();
+            } catch (e) { console.warn(e); }
+
+            // Spoing interaction
+            const spoingBtn = document.getElementById('spoing-btn');
+            const defaultNav = document.getElementById('default-nav');
+            const buyhatkeHeader = document.getElementById('buyhatke-header');
+            const heroSection = document.querySelector('.hero-section');
+            const body = document.body;
+
+            if (spoingBtn) {
+                spoingBtn.style.cursor = 'pointer';
+
+                spoingBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+
+                    // Hide default nav
+                    if (defaultNav) defaultNav.style.display = 'none';
+
+                    // Show buyhatke header
+                    if (buyhatkeHeader) {
+                        buyhatkeHeader.style.display = 'flex';
+                        buyhatkeHeader.style.animation = 'slideInDown 0.5s ease';
+                    }
+
+                    // Adjust body/hero
+                    if (body) body.style.background = '#ffffff';
+                    if (heroSection) heroSection.style.background = '#ffffff';
+
+                    // Fix Text Colors - Remove white text classes
+                    const whiteTexts = document.querySelectorAll('.hero-title, .hero-subtitle, .text-white, .text-white\\/90, .text-white\\/80, .text-white\\/70');
+                    whiteTexts.forEach(el => {
+                        el.classList.remove('text-white', 'text-white/90', 'text-white/80', 'text-white/70');
+                        el.style.color = '#1e293b'; // Slate-800
+                    });
+
+                    // Fix Gradient Title specifically
+                    // It likely has classes 'text-transparent bg-clip-text'
+                    const gradientTexts = document.querySelectorAll('.text-transparent');
+                    gradientTexts.forEach(el => {
+                        el.classList.remove('text-transparent', 'bg-clip-text');
+                        el.style.color = '#5b45ff'; // Use the Buyhatke brand color
+                        el.style.backgroundImage = 'none';
+                        el.style.webkitTextFillColor = 'initial';
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

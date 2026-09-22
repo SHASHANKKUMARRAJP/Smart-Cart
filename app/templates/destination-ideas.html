@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
+    <title>Global Destination Ideas - 10 Countries, 200+ Places | Plan My Trip</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+            --glass-glow: 0 0 20px rgba(56, 189, 248, 0.4);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0b1329;
+            color: #f1f5f9;
+            margin: 0;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .aurora-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            background: radial-gradient(circle at 50% 0%, #1e293b 0%, #0b1329 100%);
+        }
+
+        .grid-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+
+        .glass-morphism {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .glass-card-premium {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            overflow: hidden;
+        }
+
+        .glass-card-premium:hover {
+            transform: translateY(-6px);
+            border-color: rgba(56, 189, 248, 0.4);
+            box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.6), var(--glass-glow);
+        }
+
+        .country-tab {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #94a3b8;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .country-tab:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-color: rgba(56, 189, 248, 0.3);
+        }
+
+        .country-tab.active {
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            border-color: rgba(56, 189, 248, 0.6);
+            color: white;
+            font-weight: 700;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+        }
+
+        .tag-chip {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
+            transition: all 0.2s ease;
+        }
+
+        .tag-chip.active {
+            background: rgba(56, 189, 248, 0.2);
+            border-color: rgba(56, 189, 248, 0.5);
+            color: #38bdf8;
+            font-weight: 700;
+        }
+
+        .gradient-text-premium {
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .search-input {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(56, 189, 248, 0.5);
+            box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);
+            outline: none;
+        }
+
+        .cost-tag {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 13px;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .modal-backdrop {
+            background: rgba(11, 19, 41, 0.85);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+
+<body class="text-gray-100 antialiased">
+    <div class="aurora-bg">
+        <div class="grid-overlay"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 w-full z-50 glass-morphism border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Branding -->
+                <a href="{{ url_for('main.plan_trip') }}" class="flex items-center space-x-3 group">
+                    <div class="w-10 h-10 bg-gradient-to-br from-sky-500 to-indigo-600 rounded-xl flex items-center justify-center border border-white/20 shadow-xl group-hover:scale-105 transition-all">
+                        <i data-lucide="plane" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <span class="text-xl font-black text-white tracking-tight uppercase">Plan My Trip</span>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-2">
+                    <a href="{{ url_for('main.index') }}" class="glass-nav-item text-xs font-semibold px-4 py-2">Home</a>
+                    <a href="{{ url_for('main.plan_trip') }}" class="glass-nav-item text-xs font-semibold px-4 py-2">Plan My Trip</a>
+                    <a href="{{ url_for('main.destination_ideas') }}" class="glass-nav-item active text-xs font-bold px-4 py-2">
+                        Destination Ideas
+                        <span class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-sky-500 rounded-full shadow-[0_0_8px_rgba(56,189,248,0.8)]"></span>
+                    </a>
+                    <a href="{{ url_for('main.budget_planner') }}" class="glass-nav-item text-xs font-semibold px-4 py-2">Budget Planner</a>
+                    <a href="{{ url_for('main.travel_itinerary') }}" class="glass-nav-item text-xs font-semibold px-4 py-2">Travel Itinerary</a>
+                    <a href="{{ url_for('main.packing_list') }}" class="glass-nav-item text-xs font-semibold px-4 py-2">Packing List</a>
+                    <a href="{{ url_for('main.hotels') }}" class="glass-nav-item text-xs font-semibold px-4 py-2">Hotels</a>
+                </div>
+
+                <!-- Right Side Action -->
+                <div class="hidden md:flex items-center">
+                    <a href="{{ url_for('main.index') }}"
+                        class="px-5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-bold uppercase tracking-widest text-white transition-all">
+                        Back Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow pt-10 pb-20 px-4 max-w-7xl mx-auto w-full relative z-10">
+        
+        <!-- Header Section -->
+        <header class="text-center mb-10">
+            <div class="inline-flex items-center bg-sky-500/10 px-4 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-widest mb-4 text-sky-400 border border-sky-500/25">
+                <i data-lucide="globe" class="w-4 h-4 mr-2"></i> 10 Countries • 100 Iconic Cities
+            </div>
+            <h1 class="text-4xl md:text-6xl font-black text-white mb-4 tracking-tight leading-tight">
+                Global Travel <span class="gradient-text-premium">Destination Directory</span>
+            </h1>
+            <p class="text-slate-400 text-base md:text-lg max-w-2xl mx-auto font-medium">
+                Explore 10 handpicked iconic cities across 10 top countries. Filter by country or travel style.
+            </p>
+        </header>
+
+        <!-- Search & Filter Controls -->
+        <div class="glass-card-premium p-6 mb-8 border border-white/10">
+            <!-- Search bar -->
+            <div class="relative mb-6">
+                <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400"></i>
+                <input type="text" id="destination-search" placeholder="Search by place name, city, landmark or country (e.g. Eiffel Tower, Kyoto, Bali)..."
+                    class="w-full pl-12 pr-10 py-3.5 rounded-xl search-input text-sm font-medium placeholder-slate-500"
+                    oninput="handleSearchInput()">
+                <button id="clear-search-btn" onclick="clearSearch()" class="hidden absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Country Selection Tabs (10 Countries) -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-3 mb-4 scrollbar-thin">
+                <button onclick="filterByCountry('ALL')" class="country-tab active px-4 py-2 rounded-xl text-xs font-bold cursor-pointer" id="ctab-ALL">
+                    🌍 All Countries
+                </button>
+                <button onclick="filterByCountry('Japan')" class="country-tab px-4 py-2 rounded-xl text-xs font-bold cursor-pointer" id="ctab-Japan">
+                    🇯🇵 Japan
+                </button>
+                <button onclick="filterByCountry('France')" class="country-tab px-4 py-2 rounded-xl text-xs font-bold cursor-pointer" id="ctab-France">
+                    🇫🇷 France
+                </button>
+                <button onclick="filterByCountry('Italy')" class="country-tab px-4 py-2 rounded-xl text-xs font-bold cursor-pointer" id="ctab-Italy">
+                    🇮🇹 Italy
+                </button>
+                <button onclick="filterByCountry('India')" class="country-tab px-4 py-2 rounded-xl text-xs font-bold cursor-pointer" id="ctab-India">
+                    🇮🇳 India
+                </button>
+                <button onclick="filterByCountry('USA')" class="country-tab px-4 py-2 rounded-xl text-xs font-bold cursor-pointer" id="ctab-USA">
+                    🇺🇸 USA
+                </button>
+                <button onclick="filterByCountry('Indonesia')" class="country-tab px-4 py-2 rounded-xl text-xs font-bold cursor-pointer" id="ctab-Indonesia">
+                    🇮🇩 Indonesia
+                </button>
+                <button onclick="filterByCountry('Greece')" class="country-tab px-4 py-2 rounded-xl text-xs font-bold cursor-pointer" id="ctab-Greece">
+                    🇬🇷 Greece
+                </button>
+                <button onclick="filterByCountry('Switzerland')" class="country-tab px-4 py-2 rounded-xl text-xs font-bold cursor-pointer" id="ctab-Switzerland">
+                    🇨🇭 Switzerland
+                </button>
+                <button onclick="filterByCountry('Thailand')" class="country-tab px-4 py-2 rounded-xl text-xs font-bold cursor-pointer" id="ctab-Thailand">
+                    🇹🇭 Thailand
+                </button>
+                <button onclick="filterByCountry('Spain')" class="country-tab px-4 py-2 rounded-xl text-xs font-bold cursor-pointer" id="ctab-Spain">
+                    🇪🇸 Spain
+                </button>
+            </div>
+
+            <!-- Category Filter Chips -->
+            <div class="flex flex-wrap items-center gap-2 text-xs">
+                <span class="text-slate-400 font-bold uppercase tracking-wider text-[10px] mr-1">Style:</span>
+                <button onclick="filterByCategory('ALL')" class="tag-chip active px-3 py-1.5 rounded-lg cursor-pointer" id="cat-ALL">All Styles</button>
+                <button onclick="filterByCategory('Heritage')" class="tag-chip px-3 py-1.5 rounded-lg cursor-pointer" id="cat-Heritage">🏛️ Heritage & Culture</button>
+                <button onclick="filterByCategory('Beach')" class="tag-chip px-3 py-1.5 rounded-lg cursor-pointer" id="cat-Beach">🏖️ Beaches & Islands</button>
+                <button onclick="filterByCategory('Mountain')" class="tag-chip px-3 py-1.5 rounded-lg cursor-pointer" id="cat-Mountain">🏔️ Mountains & Lakes</button>
+                <button onclick="filterByCategory('Urban')" class="tag-chip px-3 py-1.5 rounded-lg cursor-pointer" id="cat-Urban">🏙️ Modern Cities</button>
+                <button onclick="filterByCategory('Nature')" class="tag-chip px-3 py-1.5 rounded-lg cursor-pointer" id="cat-Nature">🌿 Nature & Wildlife</button>
+            </div>
+        </div>
+
+        <!-- Active Filter Indicator Bar -->
+        <div class="flex items-center justify-between mb-6">
+            <p class="text-xs font-semibold text-slate-400" id="result-count-label">Showing all 100 cities</p>
+            <div class="flex items-center gap-2">
+                <span class="text-xs text-slate-400">Sorted by:</span>
+                <select id="sort-select" onchange="renderDestinations()" class="bg-slate-900 border border-white/10 text-xs text-slate-200 rounded-lg px-2.5 py-1 focus:outline-none">
+                    <option value="popular">Most Popular</option>
+                    <option value="budget_low">Budget: Low to High</option>
+                    <option value="budget_high">Budget: High to Low</option>
+                    <option value="alpha">Alphabetical (A-Z)</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Destination Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="destinations-grid">
+            <!-- Cards rendered dynamically via JS -->
+        </div>
+
+        <!-- Empty Results State -->
+        <div id="no-results" class="hidden glass-card-premium p-12 text-center border border-sky-500/20 my-8">
+            <i data-lucide="map-pin-off" class="w-12 h-12 text-sky-400 mx-auto mb-3"></i>
+            <h3 class="text-xl font-bold text-white mb-2">No Destinations Found</h3>
+            <p class="text-slate-400 text-sm mb-4">Try clearing your search query or selecting a different country filter.</p>
+            <button onclick="resetAllFilters()" class="px-5 py-2.5 rounded-xl bg-sky-500 text-white font-bold text-xs uppercase tracking-wider">Reset All Filters</button>
+        </div>
+
+    </main>
+
+    <!-- Detail View Modal -->
+    <div id="detailModal" class="hidden fixed inset-0 z-50 modal-backdrop flex items-center justify-center p-4">
+        <div class="glass-card-premium max-w-2xl w-full p-6 border border-sky-500/30 relative shadow-2xl overflow-y-auto max-h-[90vh]">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white cursor-pointer z-10 bg-slate-900/60 p-2 rounded-full border border-white/10">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <div id="modal-content">
+                <!-- Dynamically filled -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 border-t border-white/5 text-slate-400 py-8 px-4 mt-auto">
+        <div class="max-w-7xl mx-auto text-center text-xs">
+            <p>&copy; 2026 Smart Cart Plan My Trip. 10 Countries, 100 Iconic Cities.</p>
+        </div>
+    </footer>
+
+    <!-- Database Script -->
+    <script>
+        // 10 Cities x 10 Countries = 100 Curated Iconic Cities
+        const DESTINATIONS = [
+            // JAPAN (10)
+            { id: 'jp-1', name: 'Tokyo', country: 'Japan', flag: '🇯🇵', category: 'Urban', price: 120000, img: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80', desc: 'Futuristic capital blending neon skyscrapers, Shibuya Crossing, Senso-ji temple, and culinary delights.', highlights: ['Shibuya Crossing', 'Tokyo Skytree', 'Senso-ji Temple'], bestTime: 'Mar - May, Oct - Nov' },
+            { id: 'jp-2', name: 'Osaka', country: 'Japan', flag: '🇯🇵', category: 'Urban', price: 105000, img: 'https://images.unsplash.com/photo-1590559899731-a382839e5549?w=800&q=80', desc: 'Dynamic street food capital known for Dotonbori neon signs, Osaka Castle, and vibrant nightlife.', highlights: ['Dotonbori', 'Osaka Castle', 'Universal Studios Japan'], bestTime: 'Mar - May, Sep - Nov' },
+            { id: 'jp-3', name: 'Kyoto', country: 'Japan', flag: '🇯🇵', category: 'Heritage', price: 110000, img: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80', desc: 'Cultural capital famous for classical Buddhist temples, gardens, imperial palaces, and geisha traditions.', highlights: ['Fushimi Inari Shrine', 'Arashiyama Bamboo Grove', 'Kinkaku-ji Pagoda'], bestTime: 'Mar - Apr, Oct - Nov' },
+            { id: 'jp-4', name: 'Yokohama', country: 'Japan', flag: '🇯🇵', category: 'Urban', price: 95000, img: 'https://images.unsplash.com/photo-1533050487297-09b450131914?w=800&q=80', desc: 'Bayside port city featuring Minato Mirai skyline, ferris wheel, and Japan\'s largest Chinatown.', highlights: ['Minato Mirai 21', 'Yokohama Chinatown', 'Yamashita Park'], bestTime: 'Year-round' },
+            { id: 'jp-5', name: 'Nagoya', country: 'Japan', flag: '🇯🇵', category: 'Heritage', price: 92000, img: 'https://images.unsplash.com/photo-1578637387939-43c525550085?w=800&q=80', desc: 'Industrial heart of Japan home to historic Nagoya Castle, Toyota museum, and Atsuta Shrine.', highlights: ['Nagoya Castle', 'Atsuta Shrine', 'Osu Shopping Street'], bestTime: 'Spring & Autumn' },
+            { id: 'jp-6', name: 'Sapporo', country: 'Japan', flag: '🇯🇵', category: 'Mountain', price: 125000, img: 'https://images.unsplash.com/photo-1542051841857-5f90071e7989?w=800&q=80', desc: 'Capital of Hokkaido famous for its annual snow festival, ski resorts, ramen, and Sapporo beer.', highlights: ['Sapporo Snow Festival', 'Odori Park', 'Mount Moiwa'], bestTime: 'Dec - Feb' },
+            { id: 'jp-7', name: 'Fukuoka', country: 'Japan', flag: '🇯🇵', category: 'Urban', price: 90000, img: 'https://images.unsplash.com/photo-1608889825205-eebdb9fc5806?w=800&q=80', desc: 'Coastal gateway on Kyushu island famous for open-air Yatai food stalls, beaches, and ancient temples.', highlights: ['Yatai Food Stalls', 'Ohori Park', 'Canal City Hakata'], bestTime: 'Mar - May, Oct - Nov' },
+            { id: 'jp-8', name: 'Hiroshima', country: 'Japan', flag: '🇯🇵', category: 'Heritage', price: 98000, img: 'https://images.unsplash.com/photo-1526481280693-3bfa7568e0f3?w=800&q=80', desc: 'Historic city of peace featuring the Peace Memorial Park and nearby Miyajima floating Torii gate.', highlights: ['Peace Memorial Park', 'Itsukushima Shrine', 'Miyajima Island'], bestTime: 'Spring & Autumn' },
+            { id: 'jp-9', name: 'Kobe', country: 'Japan', flag: '🇯🇵', category: 'Urban', price: 96000, img: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=800&q=80', desc: 'Cosmopolitan port city famed worldwide for marbled Kobe Beef, harbor tower, and Mount Rokko.', highlights: ['Kobe Harborland', 'Kobe Beef Dining', 'Mount Rokko Cable Car'], bestTime: 'Spring & Autumn' },
+            { id: 'jp-10', name: 'Nara', country: 'Japan', flag: '🇯🇵', category: 'Heritage', price: 88000, img: 'https://images.unsplash.com/photo-1524413840807-0c3cb6fa808d?w=800&q=80', desc: 'Ancient former capital famous for friendly free-roaming deer park and Todai-ji Giant Buddha.', highlights: ['Nara Deer Park', 'Todai-ji Temple', 'Kasuga Taisha Shrine'], bestTime: 'Mar - May, Oct - Nov' },
+
+            // FRANCE (10)
+            { id: 'fr-1', name: 'Paris', country: 'France', flag: '🇫🇷', category: 'Urban', price: 145000, img: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&q=80', desc: 'The City of Light. Romantic capital featuring Eiffel Tower, Louvre museum, and Champs-Élysées.', highlights: ['Eiffel Tower', 'Louvre Museum', 'Arc de Triomphe'], bestTime: 'Apr - Jun, Sep - Oct' },
+            { id: 'fr-2', name: 'Marseille', country: 'France', flag: '🇫🇷', category: 'Beach', price: 105000, img: 'https://images.unsplash.com/photo-1576085898323-218337e3e43c?w=800&q=80', desc: 'Oldest city in France featuring the vibrant Vieux-Port, Notre-Dame de la Garde, and Calanques cliffs.', highlights: ['Vieux-Port', 'Basilique Notre-Dame', 'Calanques National Park'], bestTime: 'May - Sep' },
+            { id: 'fr-3', name: 'Lyon', country: 'France', flag: '🇫🇷', category: 'Heritage', price: 110000, img: 'https://images.unsplash.com/photo-1605721911519-3dfeb3be25e7?w=800&q=80', desc: 'Gastronomic capital with Renaissance UNESCO Old Town, Traboules secret passages, and Fourvière hill.', highlights: ['Vieux Lyon Traboules', 'Fourviere Basilica', 'Bouchon Dining'], bestTime: 'Apr - Oct' },
+            { id: 'fr-4', name: 'Toulouse', country: 'France', flag: '🇫🇷', category: 'Urban', price: 98000, img: 'https://images.unsplash.com/photo-1569949381669-ecf31ae8e613?w=800&q=80', desc: 'The Pink City \'La Ville Rose\' known for terracotta brick architecture and European aerospace hub.', highlights: ['Place du Capitole', 'Cité de l\'Espace', 'Garonne River Promenade'], bestTime: 'May - Oct' },
+            { id: 'fr-5', name: 'Nice', country: 'France', flag: '🇫🇷', category: 'Beach', price: 135000, img: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?w=800&q=80', desc: 'French Riviera jewel featuring the palm-lined Promenade des Anglais, Mediterranean bay, and Old Town.', highlights: ['Promenade des Anglais', 'Castle Hill Viewpoint', 'Old Town Nice'], bestTime: 'May - Sep' },
+            { id: 'fr-6', name: 'Bordeaux', country: 'France', flag: '🇫🇷', category: 'Heritage', price: 115000, img: 'https://images.unsplash.com/photo-1549880338-65ddcdfd017b?w=800&q=80', desc: 'World capital of wine with grand 18th-century architecture, Miroir d\'Eau, and vineyard estates.', highlights: ['Place de la Bourse', 'Cité du Vin', 'Saint-Émilion Vineyards'], bestTime: 'May - Oct' },
+            { id: 'fr-7', name: 'Strasbourg', country: 'France', flag: '🇫🇷', category: 'Heritage', price: 108000, img: 'https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=800&q=80', desc: 'Alsatian capital blending French and German heritage, timber-framed canals, and Gothic cathedral.', highlights: ['La Petite France', 'Strasbourg Cathedral', 'European Parliament'], bestTime: 'May - Oct, Dec' },
+            { id: 'fr-8', name: 'Lille', country: 'France', flag: '🇫🇷', category: 'Urban', price: 95000, img: 'https://images.unsplash.com/photo-1598301257982-0cf014dabbcd?w=800&q=80', desc: 'Northern French cultural hub featuring Flemish-influenced architecture, Grand Place, and art museums.', highlights: ['Grand Place Lille', 'Palais des Beaux-Arts', 'Vieux Lille'], bestTime: 'May - Oct' },
+            { id: 'fr-9', name: 'Cannes', country: 'France', flag: '🇫🇷', category: 'Beach', price: 145000, img: 'https://images.unsplash.com/photo-1517400508447-f8dd518b86db?w=800&q=80', desc: 'Glamorous resort town on the French Riviera famous for its international Film Festival and boulevard.', highlights: ['Boulevard de la Croisette', 'Palais des Festivals', 'Le Suquet Old Town'], bestTime: 'May - Sep' },
+            { id: 'fr-10', name: 'Nantes', country: 'France', flag: '🇫🇷', category: 'Urban', price: 94000, img: 'https://images.unsplash.com/photo-1610484826967-09c5720778c7?w=800&q=80', desc: 'Creative city on the Loire River home to the Machines of the Isle of Nantes and historic castle.', highlights: ['Château des Ducs', 'Les Machines de l\'Île', 'Jardin des Plantes'], bestTime: 'May - Oct' },
+
+            // ITALY (10)
+            { id: 'it-1', name: 'Rome', country: 'Italy', flag: '🇮🇹', category: 'Heritage', price: 130000, img: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=800&q=80', desc: 'The Eternal City featuring Colosseum, Vatican Museums, Trevi Fountain, Pantheon, and Roman Forum.', highlights: ['Colosseum', 'Vatican City', 'Trevi Fountain'], bestTime: 'Apr - Jun, Sep - Oct' },
+            { id: 'it-2', name: 'Milan', country: 'Italy', flag: '🇮🇹', category: 'Urban', price: 135000, img: 'https://images.unsplash.com/photo-1513581166391-887a96ddeafd?w=800&q=80', desc: 'Global capital of fashion and design featuring the magnificent Gothic Duomo di Milano.', highlights: ['Duomo di Milano', 'Galleria Vittorio Emanuele', 'Sforza Castle'], bestTime: 'Apr - May, Sep - Oct' },
+            { id: 'it-3', name: 'Venice', country: 'Italy', flag: '🇮🇹', category: 'Heritage', price: 140000, img: 'https://images.unsplash.com/photo-1514896856000-91cb6de818e0?w=800&q=80', desc: 'Romantic city of canals, gondolas, St. Mark\'s Square, Grand Canal, and historic bridges.', highlights: ['Grand Canal Gondola', 'St. Mark\'s Basilica', 'Rialto Bridge'], bestTime: 'Apr - May, Sep - Nov' },
+            { id: 'it-4', name: 'Florence', country: 'Italy', flag: '🇮🇹', category: 'Heritage', price: 125000, img: 'https://images.unsplash.com/photo-1543429776-2782fc8e1acd?w=800&q=80', desc: 'Birthplace of the Renaissance with iconic Duomo cathedral, Uffizi Gallery, and Ponte Vecchio.', highlights: ['Florence Duomo', 'Uffizi Gallery', 'Ponte Vecchio Bridge'], bestTime: 'May - Oct' },
+            { id: 'it-5', name: 'Naples', country: 'Italy', flag: '🇮🇹', category: 'Heritage', price: 105000, img: 'https://images.unsplash.com/photo-1596706973307-5643445e998d?w=800&q=80', desc: 'Vibrant historic port city, birthplace of authentic pizza, and gateway to Mount Vesuvius.', highlights: ['Mount Vesuvius View', 'Spaccanapoli Street', 'Castel Nuovo'], bestTime: 'Apr - May, Sep - Oct' },
+            { id: 'it-6', name: 'Turin', country: 'Italy', flag: '🇮🇹', category: 'Urban', price: 108000, img: 'https://images.unsplash.com/photo-1587330979470-3595ac045ab0?w=800&q=80', desc: 'Northern cultural hub known for refined baroque architecture, Mole Antonelliana, and Royal Palace.', highlights: ['Mole Antonelliana', 'Piazza Castello', 'Royal Palace of Turin'], bestTime: 'Apr - May, Sep - Oct' },
+            { id: 'it-7', name: 'Bologna', country: 'Italy', flag: '🇮🇹', category: 'Heritage', price: 112000, img: 'https://images.unsplash.com/photo-1568792923760-d70635a89fdc?w=800&q=80', desc: 'Culinary capital of Italy famous for medieval porticoes, Two Towers, and Bolognese gastronomy.', highlights: ['Piazza Maggiore', 'Two Towers of Bologna', 'San Petronio Basilica'], bestTime: 'Apr - Oct' },
+            { id: 'it-8', name: 'Verona', country: 'Italy', flag: '🇮🇹', category: 'Heritage', price: 115000, img: 'https://images.unsplash.com/photo-1597081372670-c85782b07a49?w=800&q=80', desc: 'Romantic city famous as setting for Shakespeare\'s Romeo and Juliet and ancient Roman Arena.', highlights: ['Verona Roman Arena', 'Juliet\'s Balcony', 'Castelvecchio Bridge'], bestTime: 'Apr - Oct' },
+            { id: 'it-9', name: 'Palermo', country: 'Italy', flag: '🇮🇹', category: 'Heritage', price: 102000, img: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&q=80', desc: 'Capital of Sicily featuring Arab-Norman palaces, Byzantine mosaics, and bustling street markets.', highlights: ['Palermo Cathedral', 'Teatro Massimo', 'Ballarò Market'], bestTime: 'May - Oct' },
+            { id: 'it-10', name: 'Pisa', country: 'Italy', flag: '🇮🇹', category: 'Heritage', price: 90000, img: 'https://images.unsplash.com/photo-1520175480921-4edfa2983e0f?w=800&q=80', desc: 'Tuscan city world-famous for its iconic Leaning Tower in the Square of Miracles.', highlights: ['Leaning Tower of Pisa', 'Piazza dei Miracoli', 'Pisa Cathedral'], bestTime: 'Apr - May, Sep - Oct' },
+
+            // INDIA (10)
+            { id: 'in-1', name: 'Mumbai', country: 'India', flag: '🇮🇳', category: 'Urban', price: 35000, img: 'https://images.unsplash.com/photo-1567157577867-05ccb1388e66?w=800&q=80', desc: 'Financial hub of India featuring Gateway of India, Marine Drive promenade, and Bollywood studios.', highlights: ['Gateway of India', 'Marine Drive', 'Chhatrapati Shivaji Terminus'], bestTime: 'Oct - Mar' },
+            { id: 'in-2', name: 'Delhi', country: 'India', flag: '🇮🇳', category: 'Heritage', price: 30000, img: 'https://images.unsplash.com/photo-1587474260584-136574528ed5?w=800&q=80', desc: 'Historic capital city home to India Gate, Qutub Minar, Red Fort, and vibrant Chandni Chowk bazaars.', highlights: ['India Gate', 'Qutub Minar', 'Red Fort'], bestTime: 'Oct - Mar' },
+            { id: 'in-3', name: 'Bengaluru', country: 'India', flag: '🇮🇳', category: 'Urban', price: 32000, img: 'https://images.unsplash.com/photo-1596176530529-78163a4f7af2?w=800&q=80', desc: 'Silicon Valley of India known for its tech parks, pleasant climate, Lalbagh gardens, and pub culture.', highlights: ['Vidhana Soudha', 'Lalbagh Botanical Garden', 'Bangalore Palace'], bestTime: 'Oct - Feb' },
+            { id: 'in-4', name: 'Hyderabad', country: 'India', flag: '🇮🇳', category: 'Heritage', price: 28000, img: 'https://images.unsplash.com/photo-1605389659305-18868f04495e?w=800&q=80', desc: 'City of Pearls featuring the iconic Charminar, Golconda Fort, and world-famous Hyderabadi Biryani.', highlights: ['Charminar', 'Golconda Fort', 'Hussain Sagar Lake'], bestTime: 'Oct - Mar' },
+            { id: 'in-5', name: 'Chennai', country: 'India', flag: '🇮🇳', category: 'Beach', price: 26000, img: 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?w=800&q=80', desc: 'Capital of Tamil Nadu featuring long Marina Beach, Dravidian temples, and classical Carnatic music.', highlights: ['Marina Beach', 'Kapaleeshwarar Temple', 'Santhome Cathedral'], bestTime: 'Nov - Feb' },
+            { id: 'in-6', name: 'Kolkata', country: 'India', flag: '🇮🇳', category: 'Heritage', price: 27000, img: 'https://images.unsplash.com/photo-1558431382-27e303142255?w=800&q=80', desc: 'Cultural capital of India featuring Victoria Memorial, iconic Howrah Bridge, and street cuisine.', highlights: ['Victoria Memorial', 'Howrah Bridge', 'Dakshineswar Temple'], bestTime: 'Oct - Mar' },
+            { id: 'in-7', name: 'Ahmedabad', country: 'India', flag: '🇮🇳', category: 'Heritage', price: 25000, img: 'https://images.unsplash.com/photo-1609946727109-20567f0794c3?w=800&q=80', desc: 'UNESCO World Heritage city featuring Sabarmati Ashram, stepwells, and textiles.', highlights: ['Sabarmati Ashram', 'Atal Bridge', 'Adalaj Stepwell'], bestTime: 'Nov - Feb' },
+            { id: 'in-8', name: 'Pune', country: 'India', flag: '🇮🇳', category: 'Urban', price: 24000, img: 'https://images.unsplash.com/photo-1627916607164-7b20241db935?w=800&q=80', desc: 'Cultural capital of Maharashtra home to historic Shaniwar Wada fort, Aga Khan Palace, and hills.', highlights: ['Shaniwar Wada', 'Aga Khan Palace', 'Sinhagad Fort'], bestTime: 'Oct - Mar' },
+            { id: 'in-9', name: 'Jaipur', country: 'India', flag: '🇮🇳', category: 'Heritage', price: 32000, img: 'https://images.unsplash.com/photo-1477587458883-47145ed94245?w=800&q=80', desc: 'The Pink City of Rajasthan featuring Hawa Mahal, grand Amer Fort, City Palace, and bazaars.', highlights: ['Hawa Mahal', 'Amer Fort', 'City Palace Jaipur'], bestTime: 'Oct - Mar' },
+            { id: 'in-10', name: 'Goa', country: 'India', flag: '🇮🇳', category: 'Beach', price: 35000, img: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=800&q=80', desc: 'India\'s premier beach paradise with golden sands, water sports, Portuguese churches, and night markets.', highlights: ['Baga Beach', 'Dudhsagar Waterfalls', 'Basilica of Bom Jesus'], bestTime: 'Nov - Feb' },
+
+            // USA (10)
+            { id: 'us-1', name: 'New York City', country: 'USA', flag: '🇺🇸', category: 'Urban', price: 210000, img: 'https://images.unsplash.com/photo-1518391846015-55a9cc00bb86?w=800&q=80', desc: 'The Big Apple featuring Times Square, Central Park, Statue of Liberty, and Manhattan skyline.', highlights: ['Times Square', 'Central Park', 'Statue of Liberty'], bestTime: 'Apr - Jun, Sep - Nov' },
+            { id: 'us-2', name: 'Los Angeles', country: 'USA', flag: '🇺🇸', category: 'Urban', price: 195000, img: 'https://images.unsplash.com/photo-1580655653885-65763b2597d0?w=800&q=80', desc: 'Entertainment capital home to Hollywood Sign, Santa Monica Pier, and Beverly Hills boulevard.', highlights: ['Hollywood Sign', 'Santa Monica Pier', 'Universal Studios'], bestTime: 'Mar - May, Sep - Nov' },
+            { id: 'us-3', name: 'Chicago', country: 'USA', flag: '🇺🇸', category: 'Urban', price: 180000, img: 'https://images.unsplash.com/photo-1477959858617-67f30ac72604?w=800&q=80', desc: 'Windy City famous for architectural river cruises, Millennium Park \'Bean\', and deep-dish pizza.', highlights: ['Millennium Park Bean', 'Navy Pier', 'Willis Tower Skydeck'], bestTime: 'May - Sep' },
+            { id: 'us-4', name: 'San Francisco', country: 'USA', flag: '🇺🇸', category: 'Urban', price: 200000, img: 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=800&q=80', desc: 'Iconic city featuring Golden Gate Bridge, cable cars, Alcatraz Island, and Fisherman\'s Wharf.', highlights: ['Golden Gate Bridge', 'Alcatraz Island', 'Fisherman\'s Wharf'], bestTime: 'Sep - Nov' },
+            { id: 'us-5', name: 'Las Vegas', country: 'USA', flag: '🇺🇸', category: 'Urban', price: 175000, img: 'https://images.unsplash.com/photo-1506146332389-18140dc7b2fb?w=800&q=80', desc: 'The Entertainment Capital of the World famous for mega resort casinos and Bellagio Fountains.', highlights: ['Las Vegas Strip', 'Bellagio Fountains', 'Fremont Street'], bestTime: 'Mar - May, Sep - Nov' },
+            { id: 'us-6', name: 'Miami', country: 'USA', flag: '🇺🇸', category: 'Beach', price: 190000, img: 'https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=800&q=80', desc: 'Vibrant coastal city known for Art Deco architecture, South Beach nightlife, and ocean drives.', highlights: ['South Beach Miami', 'Art Deco District', 'Wynwood Walls'], bestTime: 'Nov - Apr' },
+            { id: 'us-7', name: 'Washington D.C.', country: 'USA', flag: '🇺🇸', category: 'Heritage', price: 185000, img: 'https://images.unsplash.com/photo-1501469537001-d408945e2de8?w=800&q=80', desc: 'Capital of the United States featuring the US Capitol, White House, National Mall, and museums.', highlights: ['US Capitol', 'Lincoln Memorial', 'Washington Monument'], bestTime: 'Mar - May, Sep - Nov' },
+            { id: 'us-8', name: 'Boston', country: 'USA', flag: '🇺🇸', category: 'Heritage', price: 175000, img: 'https://images.unsplash.com/photo-1506551907302-608621c9a672?w=800&q=80', desc: 'Historic New England city featuring Freedom Trail, Harvard University, and Boston Harbor.', highlights: ['Freedom Trail', 'Harvard Square', 'Fenway Park'], bestTime: 'May - Oct' },
+            { id: 'us-9', name: 'Seattle', country: 'USA', flag: '🇺🇸', category: 'Urban', price: 185000, img: 'https://images.unsplash.com/photo-1502175353174-a7a70e73b362?w=800&q=80', desc: 'Pacific Northwest metropolis dominated by Space Needle, Pike Place Market, and Puget Sound.', highlights: ['Space Needle', 'Pike Place Market', 'Chihuly Garden'], bestTime: 'Jun - Sep' },
+            { id: 'us-10', name: 'San Diego', country: 'USA', flag: '🇺🇸', category: 'Beach', price: 180000, img: 'https://images.unsplash.com/photo-1513682121497-80211f36a7d3?w=800&q=80', desc: 'Southern California coastal hub famous for sunny beaches, Gaslamp Quarter, and Balboa Park.', highlights: ['Balboa Park', 'Gaslamp Quarter', 'Coronado Island'], bestTime: 'May - Oct' },
+
+            // INDONESIA (10)
+            { id: 'id-1', name: 'Jakarta', country: 'Indonesia', flag: '🇮🇩', category: 'Urban', price: 68000, img: 'https://images.unsplash.com/photo-1555899434-94d1368aa7af?w=800&q=80', desc: 'Dynamic capital of Indonesia featuring Monas National Monument, Kota Tua Old Town, and shopping malls.', highlights: ['Monas National Monument', 'Kota Tua Old Town', 'Istiqlal Mosque'], bestTime: 'May - Sep' },
+            { id: 'id-2', name: 'Bali', country: 'Indonesia', flag: '🇮🇩', category: 'Nature', price: 85000, img: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800&q=80', desc: 'Tropical island paradise famous for emerald rice terraces, sea temples, and wellness retreats.', highlights: ['Tegallalang Rice Terraces', 'Ubud Monkey Forest', 'Tanah Lot Temple'], bestTime: 'Apr - Oct' },
+            { id: 'id-3', name: 'Bandung', country: 'Indonesia', flag: '🇮🇩', category: 'Nature', price: 62000, img: 'https://images.unsplash.com/photo-1588668214407-6ea9a6d8c272?w=800&q=80', desc: 'Cool crater-surrounded city known for tea plantations, volcano craters, and factory outlets.', highlights: ['Kawah Putih Crater', 'Tangkuban Perahu', 'Lembang Tea Hills'], bestTime: 'May - Sep' },
+            { id: 'id-4', name: 'Surabaya', country: 'Indonesia', flag: '🇮🇩', category: 'Urban', price: 65000, img: 'https://images.unsplash.com/photo-1605883705077-8d3d3a66f224?w=800&q=80', desc: 'Second-largest Indonesian city, historic City of Heroes featuring Suramadu Bridge and heritage landmarks.', highlights: ['Suramadu Bridge', 'Submarine Monument', 'House of Sampoerna'], bestTime: 'May - Sep' },
+            { id: 'id-5', name: 'Yogyakarta', country: 'Indonesia', flag: '🇮🇩', category: 'Heritage', price: 72000, img: 'https://images.unsplash.com/photo-1541079998400-58e2e52720f6?w=800&q=80', desc: 'Cultural soul of Java home to world\'s largest Buddhist temple Borobudur and Prambanan temple.', highlights: ['Borobudur Temple', 'Prambanan Temple', 'Kraton Sultan Palace'], bestTime: 'May - Oct' },
+            { id: 'id-6', name: 'Medan', country: 'Indonesia', flag: '🇮🇩', category: 'Heritage', price: 60000, img: 'https://images.unsplash.com/photo-1601058268499-e52658b8bb86?w=800&q=80', desc: 'Capital of North Sumatra featuring royal Maimun Palace, Great Mosque, and lake getaway access.', highlights: ['Maimun Palace', 'Great Mosque of Medan', 'Tjong A Fie Mansion'], bestTime: 'May - Sep' },
+            { id: 'id-7', name: 'Semarang', country: 'Indonesia', flag: '🇮🇩', category: 'Heritage', price: 58000, img: 'https://images.unsplash.com/photo-1616489953149-75ac17855365?w=800&q=80', desc: 'Central Java port city famous for historic colonial Lawang Sewu and Sam Poo Kong Chinese temple.', highlights: ['Lawang Sewu', 'Sam Poo Kong Temple', 'Old Town Semarang'], bestTime: 'May - Sep' },
+            { id: 'id-8', name: 'Makassar', country: 'Indonesia', flag: '🇮🇩', category: 'Beach', price: 64000, img: 'https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?w=800&q=80', desc: 'South Sulawesi coastal port city famous for Losari Beach sunsets, Fort Rotterdam, and seafood.', highlights: ['Losari Beach', 'Fort Rotterdam', 'Samalona Island'], bestTime: 'May - Sep' },
+            { id: 'id-9', name: 'Denpasar', country: 'Indonesia', flag: '🇮🇩', category: 'Heritage', price: 75000, img: 'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=800&q=80', desc: 'Provincial capital of Bali featuring Bajra Sandhi Monument, traditional markets, and Sanur beach.', highlights: ['Bajra Sandhi Monument', 'Sanur Beach', 'Badung Traditional Market'], bestTime: 'May - Oct' },
+            { id: 'id-10', name: 'Malang', country: 'Indonesia', flag: '🇮🇩', category: 'Mountain', price: 66000, img: 'https://images.unsplash.com/photo-1516690561799-46d8f74df9ab?w=800&q=80', desc: 'Cool mountain city in East Java featuring colorful Jodipan village and Mount Bromo volcano base.', highlights: ['Jodipan Rainbow Village', 'Mount Bromo Gateway', 'Batu Hill Resort'], bestTime: 'Jul - Sep' },
+
+            // GREECE (10)
+            { id: 'gr-1', name: 'Athens', country: 'Greece', flag: '🇬🇷', category: 'Heritage', price: 115000, img: 'https://images.unsplash.com/photo-1603565816030-6b389eeb23cb?w=800&q=80', desc: 'Cradle of Western Civilization featuring ancient Acropolis, Parthenon, and Plaka neighborhood.', highlights: ['Acropolis & Parthenon', 'Plaka Neighborhood', 'Acropolis Museum'], bestTime: 'Apr - May, Sep - Oct' },
+            { id: 'gr-2', name: 'Thessaloniki', country: 'Greece', flag: '🇬🇷', category: 'Heritage', price: 108000, img: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800&q=80', desc: 'Greece\'s cultural capital on the Aegean Sea featuring the iconic White Tower and seafront promenade.', highlights: ['White Tower of Thessaloniki', 'Aristotelous Square', 'Rotunda Monument'], bestTime: 'May - Oct' },
+            { id: 'gr-3', name: 'Santorini', country: 'Greece', flag: '🇬🇷', category: 'Beach', price: 180000, img: 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=800&q=80', desc: 'White-washed cliffside villages, blue-domed churches, volcanic caldera, and sunset views in Oia.', highlights: ['Oia Sunset View', 'Fira Cliff Walks', 'Blue Dome Churches'], bestTime: 'May - Oct' },
+            { id: 'gr-4', name: 'Mykonos', country: 'Greece', flag: '🇬🇷', category: 'Beach', price: 175000, img: 'https://images.unsplash.com/photo-1601581875309-fafbf2d3ed3a?w=800&q=80', desc: 'Glamorous Cycladic island famous for iconic windmills, Little Venice waterfront, and beach clubs.', highlights: ['Mykonos Windmills', 'Little Venice Mykonos', 'Super Paradise Beach'], bestTime: 'Jun - Sep' },
+            { id: 'gr-5', name: 'Rhodes', country: 'Greece', flag: '🇬🇷', category: 'Heritage', price: 125000, img: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80', desc: 'Medieval fortified UNESCO Old Town built by Knights Hospitaller alongside Lindos Acropolis.', highlights: ['Palace of the Grand Master', 'Lindos Acropolis', 'Street of the Knights'], bestTime: 'May - Oct' },
+            { id: 'gr-6', name: 'Heraklion', country: 'Greece', flag: '🇬🇷', category: 'Heritage', price: 120000, img: 'https://images.unsplash.com/photo-1560703650-ef3e0f254ae0?w=800&q=80', desc: 'Capital of Crete home to Palace of Knossos, Venetian Koules fortress, and Mediterranean beaches.', highlights: ['Palace of Knossos', 'Koules Fortress', 'Heraklion Archaeological Museum'], bestTime: 'May - Oct' },
+            { id: 'gr-7', name: 'Patras', country: 'Greece', flag: '🇬🇷', category: 'Urban', price: 105000, img: 'https://images.unsplash.com/photo-1584467541268-b040f83be3fd?w=800&q=80', desc: 'Major port city in Western Greece famous for the engineering marvel Rion-Antirion Bridge and carnival.', highlights: ['Rio-Antirrio Bridge', 'Patras Castle', 'Agios Andreas Cathedral'], bestTime: 'May - Oct' },
+            { id: 'gr-8', name: 'Chania', country: 'Greece', flag: '🇬🇷', category: 'Beach', price: 130000, img: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&q=80', desc: 'Picturesque Cretan city featuring 14th-century Venetian harbor, lighthouse, and pink sand beaches.', highlights: ['Venetian Harbor Chania', 'Elafonisi Pink Beach', 'Old Town Chania'], bestTime: 'May - Oct' },
+            { id: 'gr-9', name: 'Corfu', country: 'Greece', flag: '🇬🇷', category: 'Beach', price: 122000, img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80', desc: 'Lush Ionian island combining Venetian, French, and British architecture with turquoise coves.', highlights: ['Corfu Old Town UNESCO', 'Paleokastritsa Monastery', 'Achilleion Palace'], bestTime: 'May - Oct' },
+            { id: 'gr-10', name: 'Nafplio', country: 'Greece', flag: '🇬🇷', category: 'Heritage', price: 112000, img: 'https://images.unsplash.com/photo-1586724237569-f3d0c1dee8c6?w=800&q=80', desc: 'Romantic coastal city in Peloponnese featuring hilltop Palamidi fortress and sea-bound Bourtzi castle.', highlights: ['Palamidi Fortress', 'Bourtzi Castle', 'Syntagma Square Nafplio'], bestTime: 'May - Oct' },
+
+            // SWITZERLAND (10)
+            { id: 'ch-1', name: 'Zurich', country: 'Switzerland', flag: '🇨🇭', category: 'Urban', price: 160000, img: 'https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?w=800&q=80', desc: 'Global financial capital on Lake Zurich with medieval Altstadt old town and Bahnhofstrasse shopping.', highlights: ['Lake Zurich Promenade', 'Grossmünster Church', 'Altstadt Old Town'], bestTime: 'May - Sep, Dec' },
+            { id: 'ch-2', name: 'Geneva', country: 'Switzerland', flag: '🇨🇭', category: 'Urban', price: 150000, img: 'https://images.unsplash.com/photo-1573108037320-00839e946a36?w=800&q=80', desc: 'Global diplomatic hub home to UN headquarters, Jet d\'Eau fountain on Lake Geneva, and watchmakers.', highlights: ['Jet d\'Eau Fountain', 'Palais des Nations UN', 'Lake Geneva Waterfront'], bestTime: 'May - Sep' },
+            { id: 'ch-3', name: 'Bern', country: 'Switzerland', flag: '🇨🇭', category: 'Heritage', price: 140000, img: 'https://images.unsplash.com/photo-1584003564911-a7a321c84e1c?w=800&q=80', desc: 'UNESCO-listed Swiss capital with Zytglogge clock tower, turquoise Aare River, and sandstone arcades.', highlights: ['Zytglogge Clock Tower', 'Bear Park Bern', 'Federal Palace'], bestTime: 'May - Sep' },
+            { id: 'ch-4', name: 'Lucerne', country: 'Switzerland', flag: '🇨🇭', category: 'Mountain', price: 155000, img: 'https://images.unsplash.com/photo-1527668752968-14dc70a27c95?w=800&q=80', desc: 'Picturesque city on Lake Lucerne featuring 14th-century wooden Chapel Bridge and Mount Pilatus.', highlights: ['Chapel Bridge Kapellbrücke', 'Mount Pilatus Cogwheel Train', 'Lion Monument'], bestTime: 'May - Sep, Dec' },
+            { id: 'ch-5', name: 'Basel', country: 'Switzerland', flag: '🇨🇭', category: 'Heritage', price: 145000, img: 'https://images.unsplash.com/photo-1594914175317-09d57a9f939e?w=800&q=80', desc: 'Cultural capital on the Rhine river bordering France and Germany, famous for Art Basel and Minster.', highlights: ['Basel Minster Cathedral', 'Rhine River Promenade', 'Rathaus Town Hall'], bestTime: 'May - Oct' },
+            { id: 'ch-6', name: 'Lausanne', country: 'Switzerland', flag: '🇨🇭', category: 'Urban', price: 148000, img: 'https://images.unsplash.com/photo-1549144511-f099e773c147?w=800&q=80', desc: 'Olympic capital set on Lake Geneva slopes featuring Gothic Cathedral and waterfront Ouchy promenade.', highlights: ['Olympic Museum', 'Lausanne Cathedral', 'Ouchy Waterfront'], bestTime: 'May - Sep' },
+            { id: 'ch-7', name: 'Interlaken', country: 'Switzerland', flag: '🇨🇭', category: 'Mountain', price: 165000, img: 'https://images.unsplash.com/photo-1528728329032-2972f65dfb3f?w=800&q=80', desc: 'Alpine adventure capital nestled between Lake Thun and Lake Brienz with Jungfrau mountain views.', highlights: ['Harder Kulm Panorama', 'Paragliding Interlaken', 'Lake Brienz Boat Cruise'], bestTime: 'Jun - Sep, Dec - Mar' },
+            { id: 'ch-8', name: 'Zermatt', country: 'Switzerland', flag: '🇨🇭', category: 'Mountain', price: 190000, img: 'https://images.unsplash.com/photo-1531366936337-7c91f33455a7?w=800&q=80', desc: 'Car-free alpine resort town dominated by the world-famous pyramid peak of the Matterhorn.', highlights: ['Matterhorn Viewpoint', 'Gornergrat Railway', 'Glacier Paradise'], bestTime: 'Dec - Mar (Ski), Jul - Sep' },
+            { id: 'ch-9', name: 'St. Moritz', country: 'Switzerland', flag: '🇨🇭', category: 'Mountain', price: 210000, img: 'https://images.unsplash.com/photo-1517411032315-54ef2cb783bb?w=800&q=80', desc: 'Ultra-exclusive luxury alpine resort twice host to Winter Olympics, famous for frozen lakes.', highlights: ['St. Moritz Lake', 'Corviglia Skiing', 'Bernina Express Railway'], bestTime: 'Dec - Mar, Jul - Aug' },
+            { id: 'ch-10', name: 'Montreux', country: 'Switzerland', flag: '🇨🇭', category: 'Heritage', price: 148000, img: 'https://images.unsplash.com/photo-1562674330-830df2845914?w=800&q=80', desc: 'Swiss Riviera resort town on Lake Geneva famous for Montreux Jazz Festival and medieval Chillon Castle.', highlights: ['Chillon Castle', 'Montreux Promenade', 'Rochers-de-Naye Cogwheel'], bestTime: 'May - Sep, Jul (Jazz Fest)' },
+
+            // THAILAND (10)
+            { id: 'th-1', name: 'Bangkok', country: 'Thailand', flag: '🇹🇭', category: 'Urban', price: 45000, img: 'https://images.unsplash.com/photo-1508009603885-50cf7c579365?w=800&q=80', desc: 'Vibrant capital featuring Grand Palace, Wat Arun, floating markets, and world-renowned street food.', highlights: ['Grand Palace', 'Wat Arun Temple', 'Chatuchak Market'], bestTime: 'Nov - Feb' },
+            { id: 'th-2', name: 'Phuket', country: 'Thailand', flag: '🇹🇭', category: 'Beach', price: 55000, img: 'https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?w=800&q=80', desc: 'Thailand\'s largest island known for Patong Beach, Big Buddha, James Bond Island, and Phi Phi trips.', highlights: ['Patong Beach', 'Big Buddha Phuket', 'James Bond Island'], bestTime: 'Nov - Apr' },
+            { id: 'th-3', name: 'Chiang Mai', country: 'Thailand', flag: '🇹🇭', category: 'Heritage', price: 42000, img: 'https://images.unsplash.com/photo-1512553353614-82a7370096dc?w=800&q=80', desc: 'Mountainous northern hub with hundreds of sacred temples, Night Bazaar, and elephant sanctuaries.', highlights: ['Wat Phra That Doi Suthep', 'Elephant Nature Park', 'Night Bazaar'], bestTime: 'Nov - Feb' },
+            { id: 'th-4', name: 'Pattaya', country: 'Thailand', flag: '🇹🇭', category: 'Beach', price: 38000, img: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800&q=80', desc: 'Bustling beach resort town famous for Sanctuary of Truth wooden temple and Walking Street nightlife.', highlights: ['Sanctuary of Truth', 'Koh Larn Coral Island', 'Pattaya Beach'], bestTime: 'Nov - Apr' },
+            { id: 'th-5', name: 'Krabi', country: 'Thailand', flag: '🇹🇭', category: 'Beach', price: 52000, img: 'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=800&q=80', desc: 'Stunning limestone karsts rising out of emerald Andaman sea, Railay Beach, and 4-Island tours.', highlights: ['Railay Beach Karsts', 'Emerald Pool', '4-Island Boat Tour'], bestTime: 'Nov - Apr' },
+            { id: 'th-6', name: 'Ayutthaya', country: 'Thailand', flag: '🇹🇭', category: 'Heritage', price: 40000, img: 'https://images.unsplash.com/photo-1563492065599-3520f775eeed?w=800&q=80', desc: 'UNESCO ancient Siam capital with stone Buddha head embedded in tree roots and grand temple ruins.', highlights: ['Wat Mahathat Buddha Head', 'Wat Chaiwatthanaram', 'Ayutthaya River Cruise'], bestTime: 'Nov - Feb' },
+            { id: 'th-7', name: 'Hua Hin', country: 'Thailand', flag: '🇹🇭', category: 'Beach', price: 46000, img: 'https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800&q=80', desc: 'Royal beach resort town near Bangkok featuring Cicada night market, palaces, and sandy coastlines.', highlights: ['Hua Hin Beach', 'Phraya Nakhon Cave', 'Cicada Night Market'], bestTime: 'Nov - Apr' },
+            { id: 'th-8', name: 'Chiang Rai', country: 'Thailand', flag: '🇹🇭', category: 'Heritage', price: 44000, img: 'https://images.unsplash.com/photo-1528181304800-259b08848526?w=800&q=80', desc: 'Northern province famous for the surreal contemporary Wat Rong Khun (White Temple) and Blue Temple.', highlights: ['Wat Rong Khun White Temple', 'Wat Rong Suea Ten Blue Temple', 'Golden Triangle'], bestTime: 'Nov - Feb' },
+            { id: 'th-9', name: 'Koh Samui', country: 'Thailand', flag: '🇹🇭', category: 'Beach', price: 62000, img: 'https://images.unsplash.com/photo-1537956965359-7573183d1f57?w=800&q=80', desc: 'Gulf of Thailand palm-fringed island featuring luxury resorts, Big Buddha temple, and marine park.', highlights: ['Chaweng Beach', 'Ang Thong Marine Park', 'Big Buddha Temple'], bestTime: 'Dec - Aug' },
+            { id: 'th-10', name: 'Pai', country: 'Thailand', flag: '🇹🇭', category: 'Nature', price: 38000, img: 'https://images.unsplash.com/photo-1558862107-d49ef2a04d72?w=800&q=80', desc: 'Relaxed mountain valley village in northern Thailand famous for Pai Canyon, hot springs, and waterfalls.', highlights: ['Pai Canyon Sunset', 'Sai Ngam Hot Springs', 'Pai Walking Street'], bestTime: 'Nov - Feb' },
+
+            // SPAIN (10)
+            { id: 'es-1', name: 'Madrid', country: 'Spain', flag: '🇪🇸', category: 'Urban', price: 120000, img: 'https://images.unsplash.com/photo-1543783207-ec64e4d95325?w=800&q=80', desc: 'Royal capital of Spain featuring Prado Museum, Royal Palace, El Retiro Park, and bustling Plaza Mayor.', highlights: ['Plaza Mayor Madrid', 'Royal Palace', 'Prado Museum'], bestTime: 'Apr - May, Sep - Oct' },
+            { id: 'es-2', name: 'Barcelona', country: 'Spain', flag: '🇪🇸', category: 'Urban', price: 125000, img: 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=800&q=80', desc: 'Catalan capital featuring Antoni Gaudí\'s Sagrada Família, Park Güell, La Rambla, and Gothic Quarter.', highlights: ['Sagrada Família', 'Park Güell', 'La Rambla Boulevard'], bestTime: 'May - Jun, Sep - Oct' },
+            { id: 'es-3', name: 'Seville', country: 'Spain', flag: '🇪🇸', category: 'Heritage', price: 110000, img: 'https://images.unsplash.com/photo-1559564484-e48b3e040ff4?w=800&q=80', desc: 'Heart of Andalusia famous for Flamenco dancing, grand Plaza de España, and Real Alcázar palace.', highlights: ['Plaza de España', 'Real Alcázar Palace', 'Seville Cathedral Giralda'], bestTime: 'Mar - May, Sep - Oct' },
+            { id: 'es-4', name: 'Valencia', country: 'Spain', flag: '🇪🇸', category: 'Urban', price: 105000, img: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=800&q=80', desc: 'Birthplace of authentic Paella, featuring futuristic City of Arts and Sciences and Mediterranean beaches.', highlights: ['City of Arts & Sciences', 'La Lonja de la Seda', 'Valencia Paella & Beach'], bestTime: 'Apr - Jun, Sep - Oct' },
+            { id: 'es-5', name: 'Malaga', country: 'Spain', flag: '🇪🇸', category: 'Beach', price: 112000, img: 'https://images.unsplash.com/photo-1561542320-9a18cf340867?w=800&q=80', desc: 'Costa del Sol hub featuring Moorish Alcazaba fortress, Picasso Museum, and Mediterranean beaches.', highlights: ['Alcazaba Fortress Malaga', 'Gibralfaro Castle View', 'Malagueta Beach'], bestTime: 'May - Oct' },
+            { id: 'es-6', name: 'Bilbao', country: 'Spain', flag: '🇪🇸', category: 'Urban', price: 118000, img: 'https://images.unsplash.com/photo-1565008447742-97f6f38c985c?w=800&q=80', desc: 'Basque industrial city transformed by Frank Gehry\'s titanium Guggenheim Museum Bilbao.', highlights: ['Guggenheim Museum Bilbao', 'Casco Viejo Old Town', 'Zubizuri Bridge'], bestTime: 'May - Oct' },
+            { id: 'es-7', name: 'Granada', country: 'Spain', flag: '🇪🇸', category: 'Heritage', price: 115000, img: 'https://images.unsplash.com/photo-1568084680786-a84f91d1b534?w=800&q=80', desc: 'Moorish palace fortress Alhambra set against Sierra Nevada mountains in Andalusia.', highlights: ['Alhambra Palace Granada', 'Generalife Gardens', 'Albaicín Quarter'], bestTime: 'Apr - May, Sep - Oct' },
+            { id: 'es-8', name: 'Alicante', country: 'Spain', flag: '🇪🇸', category: 'Beach', price: 102000, img: 'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=800&q=80', desc: 'Costa Blanca port city featuring hilltop Santa Bárbara Castle, Explanada promenade, and beaches.', highlights: ['Santa Bárbara Castle', 'Explanada de España', 'Postiguet Beach'], bestTime: 'May - Oct' },
+            { id: 'es-9', name: 'Ibiza', country: 'Spain', flag: '🇪🇸', category: 'Beach', price: 160000, img: 'https://images.unsplash.com/photo-1512100356356-de1b84283e1d?w=800&q=80', desc: 'Balearic island world-famous for Dalt Vila old town UNESCO, sunset coves, and nightlife.', highlights: ['Dalt Vila UNESCO Old Town', 'Es Vedrà Sunset View', 'Cala Salada Cove'], bestTime: 'May - Oct' },
+            { id: 'es-10', name: 'Palma de Mallorca', country: 'Spain', flag: '🇪🇸', category: 'Beach', price: 135000, img: 'https://images.unsplash.com/photo-1572455857811-045fb4255b5d?w=800&q=80', desc: 'Balearic capital featuring Gothic Cathedral of Santa Maria (La Seu), Bellver Castle, and calas.', highlights: ['Palma Cathedral La Seu', 'Bellver Castle', 'Cala Major Beach'], bestTime: 'May - Oct' }
+        ];
+
+        let selectedCountry = 'ALL';
+        let selectedCategory = 'ALL';
+        let searchQuery = '';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderDestinations();
+        });
+
+        function filterByCountry(countryName) {
+            selectedCountry = countryName;
+            document.querySelectorAll('.country-tab').forEach(btn => btn.classList.remove('active'));
+            const activeTab = document.getElementById(`ctab-${countryName}`);
+            if (activeTab) activeTab.classList.add('active');
+
+            renderDestinations();
+        }
+
+        function filterByCategory(catName) {
+            selectedCategory = catName;
+            document.querySelectorAll('.tag-chip').forEach(btn => btn.classList.remove('active'));
+            const activeChip = document.getElementById(`cat-${catName}`);
+            if (activeChip) activeChip.classList.add('active');
+
+            renderDestinations();
+        }
+
+        function handleSearchInput() {
+            const input = document.getElementById('destination-search');
+            searchQuery = input.value.trim().toLowerCase();
+            const clearBtn = document.getElementById('clear-search-btn');
+
+            if (searchQuery) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+            renderDestinations();
+        }
+
+        function clearSearch() {
+            document.getElementById('destination-search').value = '';
+            searchQuery = '';
+            document.getElementById('clear-search-btn').classList.add('hidden');
+            renderDestinations();
+        }
+
+        function resetAllFilters() {
+            clearSearch();
+            filterByCountry('ALL');
+            filterByCategory('ALL');
+        }
+
+        function handleImgError(imgElement, id) {
+            imgElement.onerror = null;
+            const item = DESTINATIONS.find(d => d.id === id);
+            const cityName = item ? item.name : 'Destination';
+            const countryName = item ? item.country : 'Explore';
+            const flag = item ? item.flag : '🌍';
+            const category = item ? item.category : 'Travel';
+
+            const cleanId = (id || 'card').replace(/[^a-zA-Z0-9_-]/g, '');
+            const svgStr = `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+                <defs>
+                    <linearGradient id="g_${cleanId}" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#0b1329"/>
+                        <stop offset="50%" stop-color="#1e1b4b"/>
+                        <stop offset="100%" stop-color="#0f172a"/>
+                    </linearGradient>
+                    <linearGradient id="accent_${cleanId}" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#38bdf8"/>
+                        <stop offset="100%" stop-color="#818cf8"/>
+                    </linearGradient>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#g_${cleanId})"/>
+                <circle cx="400" cy="250" r="180" fill="#38bdf8" opacity="0.05"/>
+                <circle cx="400" cy="250" r="100" fill="#818cf8" opacity="0.08"/>
+                <line x1="0" y1="250" x2="800" y2="250" stroke="white" opacity="0.05" stroke-dasharray="8 8"/>
+                <line x1="400" y1="0" x2="400" y2="500" stroke="white" opacity="0.05" stroke-dasharray="8 8"/>
+                <text x="50%" y="38%" fill="#ffffff" font-family="Plus Jakarta Sans, system-ui, sans-serif" font-size="54" text-anchor="middle">${flag}</text>
+                <text x="50%" y="54%" fill="url(#accent_${cleanId})" font-family="Plus Jakarta Sans, system-ui, sans-serif" font-size="34" font-weight="900" text-anchor="middle" letter-spacing="1">${cityName}</text>
+                <text x="50%" y="65%" fill="#94a3b8" font-family="Plus Jakarta Sans, system-ui, sans-serif" font-size="20" font-weight="600" text-anchor="middle" letter-spacing="2">${countryName.toUpperCase()}</text>
+                <rect x="320" y="365" width="160" height="32" rx="16" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.15)"/>
+                <text x="50%" y="386" fill="#cbd5e1" font-family="Plus Jakarta Sans, system-ui, sans-serif" font-size="13" font-weight="700" text-anchor="middle">${category} Guide</text>
+            </svg>`;
+            imgElement.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgStr)));
+        }
+
+        function renderDestinations() {
+            const grid = document.getElementById('destinations-grid');
+            const noResults = document.getElementById('no-results');
+            const label = document.getElementById('result-count-label');
+            const sortVal = document.getElementById('sort-select').value;
+
+            // Filter logic
+            let filtered = DESTINATIONS.filter(item => {
+                const matchCountry = (selectedCountry === 'ALL') || (item.country === selectedCountry);
+                const matchCategory = (selectedCategory === 'ALL') || (item.category === selectedCategory);
+                const matchSearch = !searchQuery || 
+                    item.name.toLowerCase().includes(searchQuery) ||
+                    item.country.toLowerCase().includes(searchQuery) ||
+                    item.desc.toLowerCase().includes(searchQuery) ||
+                    item.highlights.some(h => h.toLowerCase().includes(searchQuery));
+
+                return matchCountry && matchCategory && matchSearch;
+            });
+
+            // Sorting logic
+            if (sortVal === 'budget_low') {
+                filtered.sort((a, b) => a.price - b.price);
+            } else if (sortVal === 'budget_high') {
+                filtered.sort((a, b) => b.price - a.price);
+            } else if (sortVal === 'alpha') {
+                filtered.sort((a, b) => a.name.localeCompare(b.name));
+            }
+
+            label.innerText = `Showing ${filtered.length} of ${DESTINATIONS.length} places` + (selectedCountry !== 'ALL' ? ` in ${selectedCountry}` : '');
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                noResults.classList.remove('hidden');
+                return;
+            }
+
+            noResults.classList.add('hidden');
+            grid.innerHTML = '';
+
+            // Group by country
+            const grouped = {};
+            filtered.forEach(item => {
+                if (!grouped[item.country]) {
+                    grouped[item.country] = [];
+                }
+                grouped[item.country].push(item);
+            });
+
+            const countryKeys = Object.keys(grouped);
+
+            countryKeys.forEach((cName, index) => {
+                const items = grouped[cName];
+                const flag = items[0]?.flag || '🌍';
+
+                // Section header for country
+                const header = document.createElement('div');
+                header.className = `col-span-full flex items-center justify-between border-b border-sky-500/20 pb-3 ${index > 0 ? 'mt-10' : 'mt-2'} mb-2`;
+                header.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="text-3xl">${flag}</span>
+                        <div>
+                            <h2 class="text-2xl font-black text-white tracking-tight">${cName}</h2>
+                            <p class="text-xs text-sky-400 font-bold">${items.length} Iconic Cities in ${cName}</p>
+                        </div>
+                    </div>
+                    <span class="text-xs font-extrabold uppercase tracking-widest px-3 py-1 rounded-full bg-sky-500/10 text-sky-300 border border-sky-500/20">
+                        ${cName} Guide
+                    </span>
+                `;
+                grid.appendChild(header);
+
+                items.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = "glass-card-premium group flex flex-col justify-between";
+
+                    const highlightsHtml = item.highlights.map(h => 
+                        `<span class="text-[10px] font-semibold bg-white/5 text-slate-300 px-2 py-0.5 rounded border border-white/10">• ${h}</span>`
+                    ).join('');
+
+                    card.innerHTML = `
+                        <div>
+                            <div class="h-56 overflow-hidden relative">
+                                <img src="${item.img}" alt="${item.name}" 
+                                    onerror="handleImgError(this, '${item.id}')"
+                                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent"></div>
+                                
+                                <div class="absolute top-4 left-4 flex items-center gap-2">
+                                    <span class="bg-slate-900/80 backdrop-blur-md text-white px-2.5 py-1 rounded-full text-xs font-bold border border-white/10 flex items-center gap-1">
+                                        <span>${item.flag}</span> ${item.country}
+                                    </span>
+                                </div>
+
+                                <div class="absolute bottom-4 left-4 right-4 flex items-end justify-between">
+                                    <div>
+                                        <h3 class="text-2xl font-black text-white tracking-tight">${item.name}</h3>
+                                    </div>
+                                    <span class="cost-tag">Est. ₹${item.price.toLocaleString('en-IN')}</span>
+                                </div>
+                            </div>
+
+                            <div class="p-5">
+                                <p class="text-slate-300 text-xs leading-relaxed mb-4 font-medium line-clamp-2">
+                                    ${item.desc}
+                                </p>
+
+                                <div class="flex flex-wrap gap-1.5 mb-2">
+                                    ${highlightsHtml}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="px-5 pb-5 pt-2 flex items-center justify-between border-t border-white/5 mt-auto">
+                            <span class="text-[10px] font-extrabold uppercase tracking-wider text-sky-400 font-mono">${item.category}</span>
+                            <button onclick="openModal('${item.id}')" 
+                                class="px-3.5 py-1.5 rounded-xl bg-sky-500/10 hover:bg-sky-500 text-sky-300 hover:text-white border border-sky-500/30 text-xs font-bold transition-all flex items-center gap-1.5 group-hover:shadow-[0_0_15px_rgba(56,189,248,0.4)]">
+                                View Details <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                            </button>
+                        </div>
+                    `;
+
+                    grid.appendChild(card);
+                });
+            });
+
+            lucide.createIcons();
+        }
+
+        function openModal(id) {
+            const item = DESTINATIONS.find(d => d.id === id);
+            if (!item) return;
+
+            const modalContent = document.getElementById('modal-content');
+            modalContent.innerHTML = `
+                <div class="h-64 rounded-2xl overflow-hidden relative mb-6">
+                    <img src="${item.img}" alt="${item.name}" onerror="handleImgError(this, '${item.id}')" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
+                    <div class="absolute bottom-4 left-4">
+                        <span class="text-xs font-bold text-sky-400 uppercase tracking-widest bg-sky-950/80 px-3 py-1 rounded-full border border-sky-500/30 mb-2 inline-block">${item.flag} ${item.country}</span>
+                        <h2 class="text-3xl font-black text-white">${item.name}</h2>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <p class="text-slate-300 text-sm leading-relaxed">${item.desc}</p>
+
+                    <div class="grid grid-cols-2 gap-3 bg-white/5 p-4 rounded-xl border border-white/10 text-xs">
+                        <div>
+                            <span class="text-slate-400 block font-semibold mb-0.5">Estimated Budget:</span>
+                            <span class="text-emerald-400 font-extrabold text-base">₹${item.price.toLocaleString('en-IN')}</span>
+                        </div>
+                        <div>
+                            <span class="text-slate-400 block font-semibold mb-0.5">Best Time to Visit:</span>
+                            <span class="text-white font-bold">${item.bestTime || 'Year-round'}</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-400 mb-2">Top Attractions & Highlights:</h4>
+                        <div class="flex flex-wrap gap-2">
+                            ${item.highlights.map(h => `<span class="bg-sky-500/10 text-sky-300 border border-sky-500/30 px-3 py-1 rounded-lg text-xs font-semibold">📍 ${h}</span>`).join('')}
+                        </div>
+                    </div>
+
+                    <div class="pt-4 flex gap-3">
+                        <a href="{{ url_for('main.travel_itinerary') }}?destination=${encodeURIComponent(item.name + ', ' + item.country)}&days=5" 
+                            class="flex-1 text-center py-3 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-bold text-sm shadow-lg shadow-sky-500/25 transition-all">
+                            Build Itinerary for ${item.name} →
+                        </a>
+                    </div>
+                </div>
+            `;
+            document.getElementById('detailModal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeModal() {
+            document.getElementById('detailModal').classList.add('hidden');
+        }
+    </script>
+</body>
+
+</html>

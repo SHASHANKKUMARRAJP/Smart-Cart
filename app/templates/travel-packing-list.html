@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Gear & Packing List | Plan My Trip</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --accent-emerald: #10b981;
+            --accent-sky: #38bdf8;
+            --accent-amber: #f59e0b;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0f172a;
+            color: #f1f5f9;
+            margin: 0;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .aurora-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            overflow: hidden;
+            background: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 100%);
+        }
+
+        .aurora-blob {
+            position: absolute;
+            filter: blur(160px);
+            opacity: 0.25;
+            animation: floatBlob 25s infinite ease-in-out alternate;
+            border-radius: 50%;
+        }
+
+        .blob-1 {
+            top: -10%;
+            left: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: rgba(16, 185, 129, 0.2);
+        }
+
+        .blob-2 {
+            bottom: -20%;
+            right: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: rgba(56, 189, 248, 0.15);
+            animation-delay: -5s;
+        }
+
+        .blob-3 {
+            top: 30%;
+            left: 35%;
+            width: 50vw;
+            height: 50vw;
+            background: rgba(245, 158, 11, 0.12);
+            animation-delay: -10s;
+        }
+
+        @keyframes floatBlob {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(4%, 6%) scale(1.08); }
+            100% { transform: translate(-3%, -4%) scale(0.95); }
+        }
+
+        .grid-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+
+        .glass-card-premium {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.01) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            box-shadow: var(--glass-shadow);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-nav-item {
+            padding: 8px 16px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            position: relative;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .glass-nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+        }
+
+        .glass-nav-item.active {
+            color: white;
+            font-weight: 700;
+        }
+
+        .glass-button-action {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .glass-button-action:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.03);
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(56, 189, 248, 0.2) 100%);
+            border-color: rgba(16, 185, 129, 0.5);
+            color: #34d399;
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+        }
+
+        .gear-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 18px 20px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .gear-card:hover {
+            border-color: rgba(56, 189, 248, 0.3);
+            background: rgba(30, 41, 59, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .gear-card.packed {
+            border-color: rgba(16, 185, 129, 0.4);
+            background: rgba(6, 78, 59, 0.2);
+        }
+
+        .gear-card.packed .item-title {
+            text-decoration: line-through;
+            color: #94a3b8;
+        }
+
+        .custom-checkbox {
+            width: 22px;
+            height: 22px;
+            border-radius: 6px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .gear-card.packed .custom-checkbox {
+            background: #10b981;
+            border-color: #10b981;
+        }
+
+        .progress-bar-fill {
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @media print {
+            body { background: white; color: black; }
+            .aurora-bg, nav, footer, .no-print { display: none !important; }
+            .glass-card-premium, .gear-card { border: 1px solid #ccc; background: none; color: black; box-shadow: none; }
+            .gear-card .item-title { color: black !important; }
+        }
+    </style>
+</head>
+
+<body class="text-gray-100 selection:bg-emerald-500/30">
+    <div class="aurora-bg">
+        <div class="aurora-blob blob-1"></div>
+        <div class="aurora-blob blob-2"></div>
+        <div class="aurora-blob blob-3"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 w-full z-50 glass-card-premium !rounded-none !border-x-0 !border-t-0 border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="{{ url_for('main.plan_trip') }}" class="flex items-center space-x-3 group">
+                    <div class="w-10 h-10 bg-gradient-to-br from-emerald-600 to-sky-600 rounded-xl flex items-center justify-center border border-white/10 shadow-lg group-hover:scale-105 transition-transform">
+                        <i data-lucide="package-check" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <span class="text-xl font-black text-white tracking-tight uppercase">Plan My Trip</span>
+                </a>
+
+                <div class="hidden md:flex items-center space-x-1">
+                    <a href="{{ url_for('main.index') }}" class="glass-nav-item">Home</a>
+                    <a href="{{ url_for('main.plan_trip') }}" class="glass-nav-item">Hub</a>
+                    <a href="{{ url_for('main.destination_ideas') }}" class="glass-nav-item">Destination Ideas</a>
+                    <a href="{{ url_for('main.budget_planner') }}" class="glass-nav-item">Budget Planner</a>
+                    <a href="{{ url_for('main.travel_itinerary') }}" class="glass-nav-item">Itinerary</a>
+                    <a href="{{ url_for('main.packing_list') }}" class="glass-nav-item active">
+                        Packing List
+                        <span class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-emerald-400 rounded-full shadow-[0_0_8px_rgba(52,211,153,0.8)]"></span>
+                    </a>
+                    <a href="{{ url_for('main.hotels') }}" class="glass-nav-item">Hotels</a>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-4">
+                    {% if session.get('user') %}
+                    <a href="#" onclick="event.preventDefault(); fetch('{{ url_for('main.auth_logout') }}', {method: 'POST'}).then(() => window.location.href='/');"
+                        class="glass-button-action px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-widest text-slate-300 hover:text-white">
+                        Logout
+                    </a>
+                    {% else %}
+                    <a href="{{ url_for('main.login') }}" class="glass-button-action px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-widest text-emerald-400 hover:text-emerald-300">
+                        Login
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-20 relative z-10">
+
+        <!-- Header -->
+        <div class="text-center max-w-3xl mx-auto mb-10">
+            <div class="inline-flex items-center bg-emerald-500/10 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest text-emerald-400 border border-emerald-500/20 mb-4">
+                <i data-lucide="shield-check" class="w-4 h-4 mr-2"></i> Comprehensive Travel Gear & Checklist
+            </div>
+            <h1 class="text-4xl md:text-6xl font-black text-white uppercase tracking-tight mb-3">
+                Smart <span class="bg-gradient-to-r from-emerald-400 via-sky-400 to-amber-300 bg-clip-text text-transparent">Packing Essentials</span>
+            </h1>
+            <p class="text-slate-400 text-sm md:text-base font-medium">
+                Tailored gear checklists for Mountain Trekking, Beach Trips, Winter Expeditions, Wild Camping, and Executive Travel. Track what’s packed & compare prices in real-time.
+            </p>
+        </div>
+
+        <!-- Packing Progress Bar Card -->
+        <div class="glass-card-premium p-6 md:p-8 mb-10 border border-emerald-500/20 relative overflow-hidden">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+                <div class="space-y-1">
+                    <div class="flex items-center gap-3">
+                        <h3 class="text-2xl font-black text-white uppercase tracking-tight">Packing Progress</h3>
+                        <span id="packing-status-badge" class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                            Getting Ready
+                        </span>
+                    </div>
+                    <p class="text-slate-400 text-xs font-semibold">
+                        <span id="packed-count" class="text-emerald-400 font-bold">0</span> of <span id="total-count" class="text-white font-bold">0</span> essential items packed
+                    </p>
+                </div>
+
+                <div class="flex items-center gap-3 no-print">
+                    <button onclick="openCustomModal()" class="glass-button-action px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider text-sky-400 flex items-center gap-2">
+                        <i data-lucide="plus-circle" class="w-4 h-4"></i> Add Gear Item
+                    </button>
+                    <button onclick="window.print()" class="glass-button-action px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+                        <i data-lucide="printer" class="w-4 h-4"></i> Print List
+                    </button>
+                    <button onclick="resetPackingState()" class="glass-button-action px-3 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider text-rose-400 hover:bg-rose-500/20" title="Reset all checkmarks">
+                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Progress Meter Bar -->
+            <div class="mt-6 w-full bg-slate-800/80 rounded-full h-4 overflow-hidden border border-white/5 relative">
+                <div id="progress-fill" class="progress-bar-fill h-full bg-gradient-to-r from-emerald-500 via-sky-400 to-emerald-300 rounded-full w-0 shadow-[0_0_12px_rgba(52,211,153,0.8)]"></div>
+            </div>
+        </div>
+
+        <!-- Filter & Category Tabs -->
+        <div class="space-y-6 mb-8 no-print">
+            <div class="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-none">
+                <button onclick="filterCategory('all')" class="tab-btn active" data-cat="all">
+                    <i data-lucide="layers" class="w-4 h-4"></i> All Gear
+                </button>
+                <button onclick="filterCategory('mountain')" class="tab-btn" data-cat="mountain">
+                    <i data-lucide="mountain" class="w-4 h-4 text-emerald-400"></i> Mountain & Trekking
+                </button>
+                <button onclick="filterCategory('beach')" class="tab-btn" data-cat="beach">
+                    <i data-lucide="sun" class="w-4 h-4 text-amber-400"></i> Beach & Island
+                </button>
+                <button onclick="filterCategory('winter')" class="tab-btn" data-cat="winter">
+                    <i data-lucide="snowflake" class="w-4 h-4 text-sky-400"></i> Snow & Winter
+                </button>
+                <button onclick="filterCategory('camping')" class="tab-btn" data-cat="camping">
+                    <i data-lucide="tent" class="w-4 h-4 text-emerald-300"></i> Wild Camping
+                </button>
+                <button onclick="filterCategory('city')" class="tab-btn" data-cat="city">
+                    <i data-lucide="building-2" class="w-4 h-4 text-indigo-400"></i> City Break
+                </button>
+                <button onclick="filterCategory('business')" class="tab-btn" data-cat="business">
+                    <i data-lucide="briefcase" class="w-4 h-4 text-rose-400"></i> Business Executive
+                </button>
+            </div>
+
+            <!-- Search and Priority Filter -->
+            <div class="grid grid-cols-1 sm:grid-cols-12 gap-4">
+                <div class="sm:col-span-8 relative">
+                    <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                    <input type="text" id="search-input" onkeyup="renderGearList()" placeholder="Search gear (e.g. Trekking Boots, Support Stick, Power Bank)..." 
+                        class="w-full pl-11 pr-4 py-3 bg-slate-900/80 border border-white/10 rounded-xl text-sm font-medium text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500/50">
+                </div>
+                <div class="sm:col-span-4">
+                    <select id="priority-filter" onchange="renderGearList()" class="w-full py-3 px-4 bg-slate-900/80 border border-white/10 rounded-xl text-sm font-semibold text-white focus:outline-none focus:border-emerald-500/50">
+                        <option value="all">All Priorities</option>
+                        <option value="Must-Have">Must-Have Only</option>
+                        <option value="Recommended">Recommended</option>
+                        <option value="Optional">Optional</option>
+                        <option value="unpacked">Unpacked Only</option>
+                        <option value="packed">Packed Only</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gear Items Grid -->
+        <div id="gear-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <!-- Dynamically populated via JS -->
+        </div>
+
+    </main>
+
+    <!-- Modal for Adding Custom Gear Item -->
+    <div id="custom-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
+        <div class="glass-card-premium p-8 max-w-lg w-full relative">
+            <button onclick="closeCustomModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+
+            <h3 class="text-2xl font-black text-white uppercase mb-1">Add Custom Gear</h3>
+            <p class="text-slate-400 text-xs mb-6">Add extra equipment or personalized item to your packing checklist.</p>
+
+            <form onsubmit="handleAddCustomItem(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Item Name</label>
+                    <input type="text" id="custom-name" placeholder="e.g. Action Camera, Altitude Tablets" required
+                        class="w-full px-4 py-3 bg-slate-900/80 border border-white/10 rounded-xl text-sm font-medium text-white">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Category</label>
+                        <select id="custom-cat" class="w-full px-4 py-3 bg-slate-900/80 border border-white/10 rounded-xl text-sm font-medium text-white">
+                            <option value="mountain">Mountain & Trekking</option>
+                            <option value="beach">Beach & Island</option>
+                            <option value="winter">Snow & Winter</option>
+                            <option value="camping">Wild Camping</option>
+                            <option value="city">City Break</option>
+                            <option value="business">Business</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Priority</label>
+                        <select id="custom-priority" class="w-full px-4 py-3 bg-slate-900/80 border border-white/10 rounded-xl text-sm font-medium text-white">
+                            <option value="Must-Have">Must-Have</option>
+                            <option value="Recommended">Recommended</option>
+                            <option value="Optional">Optional</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 uppercase mb-2">Item Specification / Notes</label>
+                    <input type="text" id="custom-spec" placeholder="e.g. Waterproof, 4K resolution, Spare batteries"
+                        class="w-full px-4 py-3 bg-slate-900/80 border border-white/10 rounded-xl text-sm font-medium text-white">
+                </div>
+
+                <div class="pt-4 flex justify-end gap-3">
+                    <button type="button" onclick="closeCustomModal()" class="px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-white">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-6 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black rounded-xl text-xs uppercase tracking-wider shadow-lg">
+                        Add to List
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-black/40 backdrop-blur-xl border-t border-white/10 text-slate-400 py-8 px-4 mt-auto no-print">
+        <div class="max-w-7xl mx-auto text-center text-xs">
+            <p>&copy; 2026 Smart Cart - Plan My Trip. Verified Travel Gear Checklist.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Master Gear Database
+        const defaultGearItems = [
+            // Mountain & Trekking
+            { id: "m1", category: "mountain", icon: "footprints", title: "Trekking Boots", spec: "Waterproof ankle-support boots with anti-slip rubber grip", priority: "Must-Have", estPrice: 3499 },
+            { id: "m2", category: "mountain", icon: "shield", title: "Trekking Support Sticks", spec: "Collapsible walking sticks / poles for balance & knee support", priority: "Must-Have", estPrice: 1299 },
+            { id: "m3", category: "mountain", icon: "cloud-rain", title: "Rain & Wind Jacket", spec: "Waterproof thermal jacket with hood for high mountain weather", priority: "Must-Have", estPrice: 2899 },
+            { id: "m4", category: "mountain", icon: "backpack", title: "Hiking Backpack (30L)", spec: "Lightweight bag with rain cover & comfortable shoulder straps", priority: "Must-Have", estPrice: 2199 },
+            { id: "m5", category: "mountain", icon: "zap", title: "Head Torch / Headlamp", spec: "Rechargeable LED night torch for night walking & camp safety", priority: "Recommended", estPrice: 799 },
+            { id: "m6", category: "mountain", icon: "droplet", title: "Water Pouch / Hydration Bag", spec: "Hands-free drinking water reservoir for your backpack", priority: "Recommended", estPrice: 650 },
+            { id: "m7", category: "mountain", icon: "cross", title: "First Aid & Medicines", spec: "Bandages, antiseptic wipes, pain relievers & altitude pills", priority: "Must-Have", estPrice: 550 },
+            { id: "m8", category: "mountain", icon: "thermometer", title: "Thermal Inner Wear", spec: "Warm merino wool thermal top & bottoms for cold weather", priority: "Recommended", estPrice: 1899 },
+
+            // Beach & Island
+            { id: "b1", category: "beach", icon: "sun", title: "Sunscreen Lotion (SPF 50)", spec: "Water-resistant UV protection for face & body", priority: "Must-Have", estPrice: 450 },
+            { id: "b2", category: "beach", icon: "glasses", title: "Sunglasses", spec: "UV400 anti-glare ocean sunglasses with protective case", priority: "Must-Have", estPrice: 1199 },
+            { id: "b3", category: "beach", icon: "smartphone", title: "Waterproof Phone Pouch", spec: "Underwater touch dry pouch for phone & cash", priority: "Recommended", estPrice: 350 },
+            { id: "b4", category: "beach", icon: "waves", title: "Quick-Dry Beach Towel", spec: "Sand-resistant fast drying compact towel", priority: "Recommended", estPrice: 599 },
+            { id: "b5", category: "beach", icon: "eye", title: "Snorkel Mask & Goggles", spec: "Clear vision underwater mask with breathing tube", priority: "Optional", estPrice: 1499 },
+            { id: "b6", category: "beach", icon: "shirt", title: "Swimsuit & Rash Guard", spec: "UV protection swimwear shirt for ocean swimming & water sports", priority: "Must-Have", estPrice: 1299 },
+            { id: "b7", category: "beach", icon: "footprints", title: "Beach Flip Flops / Slides", spec: "Waterproof anti-slip rubber sandals & slippers", priority: "Must-Have", estPrice: 499 },
+            { id: "b8", category: "beach", icon: "umbrella", title: "Sun Hat / Beach Cap", spec: "Wide-brim hat to shield face & neck from tropical heat", priority: "Recommended", estPrice: 399 },
+            { id: "b9", category: "beach", icon: "sparkles", title: "After-Sun Aloe Vera Gel", spec: "Soothing skin gel for sunburn relief & deep skin hydration", priority: "Recommended", estPrice: 299 },
+            { id: "b10", category: "beach", icon: "speaker", title: "Waterproof Travel Speaker", spec: "Portable IPX7 Bluetooth speaker for beach music", priority: "Optional", estPrice: 1899 },
+            { id: "b11", category: "beach", icon: "glass-water", title: "Insulated Cold Water Bottle", spec: "Stainless steel flask keeps water icy cold for 24 hours", priority: "Recommended", estPrice: 799 },
+
+            // Snow & Winter
+            { id: "w1", category: "winter", icon: "snowflake", title: "Snow Boots", spec: "Warm fleece-lined waterproof boots for walking in snow", priority: "Must-Have", estPrice: 3999 },
+            { id: "w2", category: "winter", icon: "hand", title: "Winter Ski Gloves", spec: "Waterproof warm gloves with touchscreen tips", priority: "Must-Have", estPrice: 999 },
+            { id: "w3", category: "winter", icon: "flame", title: "Hand & Pocket Warmers", spec: "Air-activated heat pads for cold fingers & toes", priority: "Recommended", estPrice: 499 },
+            { id: "w4", category: "winter", icon: "goggles", title: "Ski Goggles", spec: "Anti-fog snow glare protective goggles", priority: "Recommended", estPrice: 1699 },
+            { id: "w5", category: "winter", icon: "shield", title: "Heavy Down Jacket / Parka", spec: "Windproof & insulated winter coat rated for freezing temperatures", priority: "Must-Have", estPrice: 4500 },
+            { id: "w6", category: "winter", icon: "smile", title: "Thermal Beanie & Woolen Cap", spec: "Fleece-lined warm cap covering ears against icy winds", priority: "Must-Have", estPrice: 399 },
+            { id: "w7", category: "winter", icon: "sun", title: "Fleece Neck Warmer / Muffler", spec: "Soft wind-proof neck gaiter for snow walks & skiing", priority: "Must-Have", estPrice: 350 },
+            { id: "w8", category: "winter", icon: "footprints", title: "Merino Wool Winter Socks", spec: "Extra thick thermal socks (Pack of 3) to keep feet warm", priority: "Must-Have", estPrice: 699 },
+            { id: "w9", category: "winter", icon: "coffee", title: "Insulated Hot Thermos Flask", spec: "Vacuum flask keeps tea, coffee & hot water hot for 12+ hours", priority: "Recommended", estPrice: 899 },
+            { id: "w10", category: "winter", icon: "compass", title: "Anti-Slip Ice Grippers for Boots", spec: "Spike rubber bands for shoes to prevent slipping on frozen roads", priority: "Optional", estPrice: 599 },
+
+            // Wild Camping
+            { id: "c1", category: "camping", icon: "tent", title: "Camping Tent", spec: "Lightweight 2-person waterproof setup tent", priority: "Must-Have", estPrice: 4800 },
+            { id: "c2", category: "camping", icon: "moon", title: "Sleeping Bag & Mat", spec: "Warm thermal sleeping bag & inflatable ground mat", priority: "Must-Have", estPrice: 2999 },
+            { id: "c3", category: "camping", icon: "flame", title: "Camp Stove & Cooking Pot", spec: "Mini gas burner & portable cooking bowl", priority: "Recommended", estPrice: 1250 },
+            { id: "c4", category: "camping", icon: "filter", title: "Water Filter Straw", spec: "Portable filter straw for clean drinking water outdoors", priority: "Must-Have", estPrice: 899 },
+
+            // City Break
+            { id: "ct1", category: "city", icon: "footprints", title: "Walking Shoes / Sneakers", spec: "Comfortable memory foam shoes for long city walks", priority: "Must-Have", estPrice: 2499 },
+            { id: "ct2", category: "city", icon: "lock", title: "Travel Daypack", spec: "Lightweight anti-theft backpack with USB charging port", priority: "Recommended", estPrice: 1899 },
+            { id: "ct3", category: "city", icon: "globe", title: "Universal Power Adapter", spec: "All-in-one international plug adapter for mobile chargers", priority: "Must-Have", estPrice: 999 },
+            { id: "ct4", category: "city", icon: "battery-charging", title: "Power Bank (Portable Charger)", spec: "Fast-charging 20,000mAh battery for phone & camera", priority: "Must-Have", estPrice: 1499 },
+
+            // Business
+            { id: "bs1", category: "business", icon: "briefcase", title: "Suit & Clothes Carry Bag", spec: "Wrinkle-free foldable bag for formal suits & dresses", priority: "Must-Have", estPrice: 2200 },
+            { id: "bs2", category: "business", icon: "headphones", title: "Noise-Canceling Headphones", spec: "Wireless airplane noise-canceling headphones for quiet travel", priority: "Recommended", estPrice: 5999 },
+            { id: "bs3", category: "business", icon: "shirt", title: "Portable Clothes Steamer", spec: "Handheld compact steamer for quick clothes wrinkle removal", priority: "Optional", estPrice: 1599 }
+        ];
+
+        let gearItems = [];
+        let currentCat = 'all';
+        let packedStates = {};
+
+        // Load persisted state or initialize
+        function initList() {
+            const savedCustom = localStorage.getItem('smartcart_custom_gear');
+            if (savedCustom) {
+                try {
+                    const parsed = JSON.parse(savedCustom);
+                    gearItems = [...defaultGearItems, ...parsed];
+                } catch(e) {
+                    gearItems = [...defaultGearItems];
+                }
+            } else {
+                gearItems = [...defaultGearItems];
+            }
+
+            const savedStates = localStorage.getItem('smartcart_packed_states');
+            if (savedStates) {
+                try {
+                    packedStates = JSON.parse(savedStates);
+                } catch(e) {
+                    packedStates = {};
+                }
+            }
+            renderGearList();
+        }
+
+        function toggleItemPacked(id) {
+            packedStates[id] = !packedStates[id];
+            localStorage.setItem('smartcart_packed_states', JSON.stringify(packedStates));
+            renderGearList();
+        }
+
+        function filterCategory(cat) {
+            currentCat = cat;
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                if (btn.dataset.cat === cat) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            renderGearList();
+        }
+
+        function renderGearList() {
+            const grid = document.getElementById('gear-grid');
+            const searchQuery = (document.getElementById('search-input').value || '').toLowerCase().trim();
+            const priorityVal = document.getElementById('priority-filter').value;
+
+            let filtered = gearItems.filter(item => {
+                const matchesCat = currentCat === 'all' || item.category === currentCat;
+                const matchesSearch = item.title.toLowerCase().includes(searchQuery) || item.spec.toLowerCase().includes(searchQuery);
+                let matchesPriority = true;
+                
+                if (priorityVal === 'packed') {
+                    matchesPriority = !!packedStates[item.id];
+                } else if (priorityVal === 'unpacked') {
+                    matchesPriority = !packedStates[item.id];
+                } else if (priorityVal !== 'all') {
+                    matchesPriority = item.priority === priorityVal;
+                }
+
+                return matchesCat && matchesSearch && matchesPriority;
+            });
+
+            // Calculate overall packing statistics
+            const totalCount = gearItems.length;
+            const packedCount = Object.keys(packedStates).filter(k => packedStates[k]).length;
+            const percentage = totalCount > 0 ? Math.round((packedCount / totalCount) * 100) : 0;
+
+            document.getElementById('packed-count').innerText = packedCount;
+            document.getElementById('total-count').innerText = totalCount;
+            document.getElementById('progress-fill').style.width = `${percentage}%`;
+
+            const badge = document.getElementById('packing-status-badge');
+            if (percentage === 100) {
+                badge.innerText = "Fully Packed! 🎒✨";
+                badge.className = "px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/40";
+            } else if (percentage >= 50) {
+                badge.innerText = "Halfway There!";
+                badge.className = "px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-sky-500/20 text-sky-300 border border-sky-500/40";
+            } else {
+                badge.innerText = "Getting Ready";
+                badge.className = "px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30";
+            }
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-16 text-center text-slate-500">
+                        <i data-lucide="package-search" class="w-12 h-12 mx-auto mb-3 text-slate-600"></i>
+                        <p class="font-bold text-lg text-slate-400">No items found matching filter criteria.</p>
+                        <p class="text-xs text-slate-500 mt-1">Try resetting search or priority filter.</p>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            grid.innerHTML = filtered.map(item => {
+                const isPacked = !!packedStates[item.id];
+                const prioColor = item.priority === 'Must-Have' ? 'bg-amber-500/10 text-amber-400 border-amber-500/30' :
+                                 (item.priority === 'Recommended' ? 'bg-sky-500/10 text-sky-400 border-sky-500/30' : 'bg-slate-700/50 text-slate-400 border-slate-600/30');
+
+                return `
+                    <div class="gear-card ${isPacked ? 'packed' : ''}">
+                        <div class="flex items-start justify-between gap-3 mb-3">
+                            <div class="flex items-center gap-3">
+                                <div onclick="toggleItemPacked('${item.id}')" class="custom-checkbox">
+                                    ${isPacked ? '<i data-lucide="check" class="w-4 h-4 text-slate-950 font-black"></i>' : ''}
+                                </div>
+                                <div>
+                                    <h4 class="item-title font-bold text-white text-base leading-snug">${item.title}</h4>
+                                    <span class="inline-block mt-1 px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider border ${prioColor}">
+                                        ${item.priority}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="text-xs text-slate-400 mb-4 pl-8 line-clamp-2">${item.spec}</p>
+
+                        <div class="pt-3 border-t border-white/5 flex items-center justify-between pl-8 no-print">
+                            <div class="text-xs">
+                                <span class="text-slate-500 font-semibold">Est. Price:</span>
+                                <span class="text-emerald-400 font-bold ml-1">₹${item.estPrice ? item.estPrice.toLocaleString() : '---'}</span>
+                            </div>
+                            <a href="https://www.amazon.in/s?k=${encodeURIComponent(item.title)}" target="_blank"
+                                class="text-[11px] font-bold text-sky-400 hover:text-sky-300 flex items-center gap-1">
+                                Find Price <i data-lucide="external-link" class="w-3 h-3"></i>
+                            </a>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            lucide.createIcons();
+        }
+
+        function resetPackingState() {
+            if (confirm("Reset all packed checkboxes?")) {
+                packedStates = {};
+                localStorage.removeItem('smartcart_packed_states');
+                renderGearList();
+            }
+        }
+
+        function openCustomModal() {
+            document.getElementById('custom-modal').classList.remove('hidden');
+        }
+
+        function closeCustomModal() {
+            document.getElementById('custom-modal').classList.add('hidden');
+        }
+
+        function handleAddCustomItem(e) {
+            e.preventDefault();
+            const name = document.getElementById('custom-name').value.trim();
+            const cat = document.getElementById('custom-cat').value;
+            const priority = document.getElementById('custom-priority').value;
+            const spec = document.getElementById('custom-spec').value.trim() || 'Custom travel gear item';
+
+            if (!name) return;
+
+            const newItem = {
+                id: 'cust_' + Date.now(),
+                category: cat,
+                icon: 'package',
+                title: name,
+                spec: spec,
+                priority: priority,
+                estPrice: 999
+            };
+
+            const savedCustom = localStorage.getItem('smartcart_custom_gear');
+            let customArr = savedCustom ? JSON.parse(savedCustom) : [];
+            customArr.push(newItem);
+            localStorage.setItem('smartcart_custom_gear', JSON.stringify(customArr));
+
+            gearItems.push(newItem);
+            closeCustomModal();
+            document.getElementById('custom-name').value = '';
+            document.getElementById('custom-spec').value = '';
+            renderGearList();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initList();
+        });
+    </script>
+</body>
+
+</html>

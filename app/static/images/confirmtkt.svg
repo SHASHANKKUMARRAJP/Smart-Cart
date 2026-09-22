@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <rect width="400" height="400" rx="80" fill="#3B9A45"/>
+  <g fill="white">
+    <path d="M 140 160 Q 200 80 260 160 L 270 240 L 130 240 Z"/>
+    <path d="M 150 170 L 250 170 L 245 210 L 155 210 Z" fill="#3B9A45"/>
+    <circle cx="170" cy="225" r="12" fill="#3B9A45"/>
+    <circle cx="230" cy="225" r="12" fill="#3B9A45"/>
+    <path d="M 145 255 L 125 295 L 150 295 L 170 255 Z" fill="white"/>
+    <path d="M 255 255 L 275 295 L 250 295 L 230 255 Z" fill="white"/>
+    <path d="M 160 270 L 240 270 L 240 285 L 160 285 Z" fill="white"/>
+    <path d="M 170 120 L 230 120 L 230 135 L 170 135 Z" fill="white"/>
+    <path d="M 150 240 L 250 240 L 240 255 L 160 255 Z" fill="white"/>
+  </g>
+  <text x="200" y="340" font-family="Arial, sans-serif" font-weight="bold" font-size="48" fill="white" text-anchor="middle">Confirmtkt</text>
+</svg>

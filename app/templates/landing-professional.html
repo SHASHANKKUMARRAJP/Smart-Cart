@@ -1,0 +1,2337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Cart Enterprise - Professional Price Intelligence Platform</title>
+    <meta name="description" content="Enterprise-grade price intelligence platform with advanced analytics, real-time monitoring, and professional-grade security. Compare prices across 100+ platforms with AI-powered insights." />
+    <meta name="keywords" content="enterprise price intelligence, professional analytics, B2B solutions, price monitoring, business intelligence, grocery analytics" />
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #ffffff;
+        }
+        
+        .professional-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            z-index: 1;
+        }
+        
+        .grid-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 2;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .hero-container {
+            max-width: 1400px;
+            padding: 2rem;
+            width: 100%;
+        }
+        
+        .header-section {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInDown 1s ease-out;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .enterprise-logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 1.5rem;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            padding: 2rem 3rem;
+            margin-bottom: 2rem;
+        }
+        
+        .logo-icon {
+            width: 4rem;
+            height: 4rem;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+        
+        .logo-text h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 0;
+            letter-spacing: -0.02em;
+        }
+        
+        .logo-text p {
+            font-size: 1rem;
+            color: #94a3b8;
+            margin: 0;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 5rem);
+            font-weight: 900;
+            color: #ffffff;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            animation: fadeInUp 1s ease-out 0.2s;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .hero-subtitle {
+            font-size: clamp(1.25rem, 4vw, 1.75rem);
+            color: #cbd5e1;
+            margin-bottom: 3rem;
+            line-height: 1.6;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 1s ease-out 0.4s;
+        }
+        
+        .highlight {
+            color: #3b82f6;
+            font-weight: 700;
+            position: relative;
+        }
+        
+        .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            border-radius: 1px;
+        }
+        
+        .cta-section {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInUp 1s ease-out 0.6s;
+        }
+        
+        .cta-button {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: #ffffff;
+            padding: 1.25rem 2.5rem;
+            border-radius: 0.5rem;
+            font-size: 1.125rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(59, 130, 246, 0.4);
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        }
+        
+        .metrics-section {
+            margin-bottom: 4rem;
+            animation: fadeInUp 1s ease-out 0.8s;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .metric-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(59, 130, 246, 0.3);
+            transform: translateY(-5px);
+        }
+        
+        .metric-number {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #3b82f6;
+            margin-bottom: 0.5rem;
+            font-variant-numeric: tabular-nums;
+        }
+        
+        .metric-label {
+            font-size: 0.875rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+        
+        .features-section {
+            margin-bottom: 4rem;
+            animation: fadeInUp 1s ease-out 1s;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        
+        .feature-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(59, 130, 246, 0.3);
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            width: 3rem;
+            height: 3rem;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-desc {
+            font-size: 1rem;
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+        
+        .platforms-section {
+            margin-bottom: 4rem;
+            animation: fadeInUp 1s ease-out 1.2s;
+        }
+        
+        .platforms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .platform-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .platform-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(59, 130, 246, 0.3);
+            transform: translateY(-3px);
+        }
+        
+        .platform-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        
+        .platform-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 0.25rem;
+        }
+        
+        .platform-status {
+            font-size: 0.875rem;
+            color: #10b981;
+            font-weight: 500;
+        }
+        
+        .nav-menu {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 100;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .nav-button {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .nav-button:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(59, 130, 246, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .footer {
+            background: rgba(255, 255, 255, 0.02);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 3rem 0;
+            margin-top: 4rem;
+            text-align: center;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-column h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-column a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-column a:hover {
+            color: #3b82f6;
+        }
+        
+        .copyright {
+            color: #64748b;
+            font-size: 0.875rem;
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .testimonials-section {
+            margin-bottom: 4rem;
+            animation: fadeInUp 1s ease-out 1.4s;
+        }
+        
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .testimonial-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .testimonial-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(59, 130, 246, 0.3);
+            transform: translateY(-5px);
+        }
+        
+        .testimonial-text {
+            font-size: 1.125rem;
+            color: #cbd5e1;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .author-info {
+            text-align: left;
+        }
+        
+        .author-name {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.25rem;
+        }
+        
+        .author-title {
+            font-size: 0.875rem;
+            color: #3b82f6;
+            margin-bottom: 0.25rem;
+        }
+        
+        .author-company {
+            font-size: 0.875rem;
+            color: #94a3b8;
+        }
+        
+        .integration-section {
+            margin-bottom: 4rem;
+            animation: fadeInUp 1s ease-out 1.6s;
+        }
+        
+        .integration-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .integration-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .integration-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(59, 130, 246, 0.3);
+            transform: translateY(-5px);
+        }
+        
+        .integration-icon {
+            width: 3rem;
+            height: 3rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .integration-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+        
+        .integration-desc {
+            font-size: 1rem;
+            color: #cbd5e1;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .integration-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .feature-tag {
+            background: rgba(59, 130, 246, 0.2);
+            color: #ffffff;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .pricing-section {
+            margin-bottom: 4rem;
+            animation: fadeInUp 1s ease-out 1.8s;
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .pricing-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .pricing-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(59, 130, 246, 0.3);
+            transform: translateY(-5px);
+        }
+        
+        .pricing-card.featured {
+            border-color: rgba(59, 130, 246, 0.5);
+            background: rgba(59, 130, 246, 0.1);
+        }
+        
+        .pricing-badge {
+            position: absolute;
+            top: -1rem;
+            right: 1rem;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: #ffffff;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .pricing-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .pricing-plan {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+        
+        .pricing-price {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+        
+        .pricing-period {
+            font-size: 1rem;
+            color: #94a3b8;
+            font-weight: 400;
+        }
+        
+        .pricing-features {
+            margin-bottom: 2rem;
+        }
+        
+        .pricing-feature {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .pricing-feature span {
+            font-size: 1rem;
+            color: #cbd5e1;
+            line-height: 1.4;
+        }
+        
+        .pricing-button {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .pricing-button:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(59, 130, 246, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .featured-btn {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-color: #3b82f6;
+        }
+        
+        .featured-btn:hover {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            border-color: #4f46e5;
+        }
+        
+        .cta-section-full {
+            margin-bottom: 4rem;
+            animation: fadeInUp 1s ease-out 2s;
+        }
+        
+        .cta-content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .cta-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 1.5rem;
+        }
+        
+        .cta-subtitle {
+            font-size: 1.25rem;
+            color: #cbd5e1;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .cta-button-primary {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: #ffffff;
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .cta-button-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
+        }
+        
+        .cta-button-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .cta-button-secondary:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(59, 130, 246, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        
+        .social-link {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-link:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(59, 130, 246, 0.3);
+            color: #3b82f6;
+            transform: translateY(-2px);
+        }
+        
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .case-studies-section {
+            margin-bottom: 4rem;
+            animation: fadeInUp 1s ease-out 2.2s;
+        }
+        
+        .case-studies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+        
+        .case-study-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .case-study-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(59, 130, 246, 0.3);
+            transform: translateY(-5px);
+        }
+        
+        .case-study-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .case-logo {
+            width: 3rem;
+            height: 3rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .case-company {
+            text-align: left;
+        }
+        
+        .company-name {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.25rem;
+        }
+        
+        .company-industry {
+            font-size: 0.875rem;
+            color: #94a3b8;
+        }
+        
+        .case-study-content {
+            text-align: left;
+        }
+        
+        .case-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+        
+        .case-description {
+            font-size: 1rem;
+            color: #cbd5e1;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .case-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+        
+        .metric {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 0.5rem;
+        }
+        
+        .metric-number {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #ffffff;
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+        
+        .metric-label {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .awards-section {
+            margin-bottom: 4rem;
+            animation: fadeInUp 1s ease-out 2.4s;
+        }
+        
+        .awards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .award-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .award-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(59, 130, 246, 0.3);
+            transform: translateY(-5px);
+        }
+        
+        .award-icon {
+            width: 3rem;
+            height: 3rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        
+        .award-content {
+            text-align: left;
+        }
+        
+        .award-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+        
+        .award-description {
+            font-size: 0.875rem;
+            color: #cbd5e1;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+        
+        .award-organization {
+            font-size: 0.875rem;
+            color: #94a3b8;
+            font-style: italic;
+        }
+        
+        .demo-section {
+            margin-bottom: 4rem;
+            animation: fadeInUp 1s ease-out 2.6s;
+        }
+        
+        .demo-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+        
+        .demo-left {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .demo-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            height: 100%;
+        }
+        
+        .demo-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .demo-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+        
+        .demo-subtitle {
+            font-size: 1rem;
+            color: #94a3b8;
+        }
+        
+        .demo-placeholder {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .demo-mockup {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            width: 100%;
+        }
+        
+        .mock-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .mock-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+        
+        .mock-status {
+            font-size: 0.875rem;
+            color: #10b981;
+            font-weight: 600;
+        }
+        
+        .mock-content {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .mock-chart {
+            flex: 1;
+            display: flex;
+            align-items: flex-end;
+            gap: 0.5rem;
+        }
+        
+        .chart-bars {
+            display: flex;
+            gap: 0.5rem;
+            align-items: flex-end;
+        }
+        
+        .chart-bar {
+            width: 0.75rem;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-radius: 0.25rem;
+            transition: height 0.3s ease;
+        }
+        
+        .mock-stats {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0.5rem;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 0.25rem;
+        }
+        
+        .stat-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+        
+        .stat-label {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+        }
+        
+        .demo-cta {
+            text-align: center;
+            margin-top: 1rem;
+        }
+        
+        .demo-button {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: #ffffff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .demo-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3);
+        }
+        
+        .demo-right {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .demo-features {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            padding: 2rem;
+        }
+        
+        .feature-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .demo-benefits {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            padding: 2rem;
+        }
+        
+        .benefits-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .stats-overview-section {
+            margin-bottom: 4rem;
+            animation: fadeInUp 1s ease-out 2.8s;
+        }
+        
+        .stats-overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .stat-overview-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-overview-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(59, 130, 246, 0.3);
+            transform: translateY(-5px);
+        }
+        
+        .partners-section {
+            margin-bottom: 4rem;
+            animation: fadeInUp 1s ease-out 3s;
+        }
+        
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .partner-category {
+            margin-bottom: 2rem;
+        }
+        
+        .partner-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+        
+        .partner-logos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+        }
+        
+        .partner-logo-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            text-align: center;
+            font-weight: 600;
+            color: #cbd5e1;
+            transition: all 0.3s ease;
+        }
+        
+        .partner-logo-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(59, 130, 246, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .resources-section {
+            margin-bottom: 4rem;
+            animation: fadeInUp 1s ease-out 3.2s;
+        }
+        
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .resource-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .resource-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(59, 130, 246, 0.3);
+            transform: translateY(-5px);
+        }
+        
+        .resource-icon {
+            width: 3rem;
+            height: 3rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        
+        .resource-content {
+            text-align: left;
+        }
+        
+        .resource-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+        
+        .resource-desc {
+            font-size: 0.875rem;
+            color: #cbd5e1;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+        
+        .resource-link {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        
+        .resource-link:hover {
+            color: #8b5cf6;
+        }
+        
+        .newsletter-section {
+            margin-bottom: 4rem;
+            animation: fadeInUp 1s ease-out 3.4s;
+        }
+        
+        .newsletter-content {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .newsletter-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+        
+        .newsletter-subtitle {
+            font-size: 1.125rem;
+            color: #cbd5e1;
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+        
+        .newsletter-form {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .newsletter-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0.5rem;
+            color: #ffffff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .newsletter-input:focus {
+            outline: none;
+            border-color: rgba(59, 130, 246, 0.5);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .newsletter-button {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: #ffffff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .newsletter-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3);
+        }
+        
+        .newsletter-benefits {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .case-studies-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .demo-content {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .stats-overview-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+            
+            .partners-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .resources-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Professional Background -->
+    <div class="professional-bg"></div>
+    <div class="grid-pattern"></div>
+    
+    <!-- Hero Content -->
+    <div class="hero-content">
+        <div class="hero-container">
+            <!-- Header Section -->
+            <div class="header-section">
+                <div class="enterprise-logo">
+                    <div class="logo-icon">
+                        <i data-lucide="trending-up" style="color: white; width: 2rem; height: 2rem;"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>Smart Cart</h1>
+                        <p>Enterprise Platform</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Hero Title -->
+            <h2 class="hero-title">
+                Professional Price Intelligence<br>
+                for Modern Business
+            </h2>
+            
+            <p class="hero-subtitle">
+                Enterprise-grade price monitoring and analytics platform that empowers businesses with real-time market intelligence, 
+                competitive insights, and automated price optimization across <span class="highlight">100+ platforms</span> 
+                and <span class="highlight">50+ countries</span>.
+            </p>
+            
+            <!-- CTA Section -->
+            <div class="cta-section">
+                <a href="{{ url_for('index') }}" class="cta-button">
+                    <i data-lucide="bar-chart-3" style="color: white; width: 1.25rem; height: 1.25rem;"></i>
+                    Launch Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Metrics Section -->
+    <section class="metrics-section">
+        <div class="hero-container">
+            <h3 class="section-title">Platform Performance</h3>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-number">100+</div>
+                    <div class="metric-label">Integrated Platforms</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-number">50M+</div>
+                    <div class="metric-label">Products Monitored</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-number">99.9%</div>
+                    <div class="metric-label">Uptime SLA</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-number">250ms</div>
+                    <div class="metric-label">Avg Response Time</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="hero-container">
+            <h3 class="section-title">Enterprise Features</h3>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i data-lucide="brain" style="color: white; width: 1.5rem; height: 1.5rem;"></i>
+                    </div>
+                    <div class="feature-title">AI-Powered Analytics</div>
+                    <div class="feature-desc">Advanced machine learning algorithms provide predictive pricing insights and market trend analysis for strategic decision-making.</div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i data-lucide="shield-check" style="color: white; width: 1.5rem; height: 1.5rem;"></i>
+                    </div>
+                    <div class="feature-title">Enterprise Security</div>
+                    <div class="feature-desc">Bank-level encryption, SOC 2 compliance, and advanced threat protection ensure your data remains secure.</div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i data-lucide="api" style="color: white; width: 1.5rem; height: 1.5rem;"></i>
+                    </div>
+                    <div class="feature-title">API Integration</div>
+                    <div class="feature-desc">RESTful API with comprehensive documentation, webhooks, and SDKs for seamless enterprise integration.</div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i data-lucide="users" style="color: white; width: 1.5rem; height: 1.5rem;"></i>
+                    </div>
+                    <div class="feature-title">Team Collaboration</div>
+                    <div class="feature-desc">Multi-user workspaces with role-based access control, audit trails, and collaborative analytics.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Platforms Section -->
+    <section class="platforms-section">
+        <div class="hero-container">
+            <h3 class="section-title">Supported Platforms</h3>
+            <div class="platforms-grid">
+                <div class="platform-card">
+                    <div class="platform-icon">
+                        <i data-lucide="zap" style="color: white; width: 1.25rem; height: 1.25rem;"></i>
+                    </div>
+                    <div class="platform-name">Blinkit</div>
+                    <div class="platform-status">● Active</div>
+                </div>
+                
+                <div class="platform-card">
+                    <div class="platform-icon">
+                        <i data-lucide="package" style="color: white; width: 1.25rem; height: 1.25rem;"></i>
+                    </div>
+                    <div class="platform-name">Zepto</div>
+                    <div class="platform-status">● Active</div>
+                </div>
+                
+                <div class="platform-card">
+                    <div class="platform-icon">
+                        <i data-lucide="truck" style="color: white; width: 1.25rem; height: 1.25rem;"></i>
+                    </div>
+                    <div class="platform-name">Instamart</div>
+                    <div class="platform-status">● Active</div>
+                </div>
+                
+                <div class="platform-card">
+                    <div class="platform-icon">
+                        <i data-lucide="shopping-bag" style="color: white; width: 1.25rem; height: 1.25rem;"></i>
+                    </div>
+                    <div class="platform-name">BigBasket</div>
+                    <div class="platform-status">● Active</div>
+                </div>
+                
+                <div class="platform-card">
+                    <div class="platform-icon">
+                        <i data-lucide="store" style="color: white; width: 1.25rem; height: 1.25rem;"></i>
+                    </div>
+                    <div class="platform-name">Amazon Fresh</div>
+                    <div class="platform-status">● Active</div>
+                </div>
+                
+                <div class="platform-card">
+                    <div class="platform-icon">
+                        <i data-lucide="shopping-cart" style="color: white; width: 1.25rem; height: 1.25rem;"></i>
+                    </div>
+                    <div class="platform-name">Flipkart</div>
+                    <div class="platform-status">● Active</div>
+                </div>
+                
+                <div class="platform-card">
+                    <div class="platform-icon">
+                        <i data-lucide="globe" style="color: white; width: 1.25rem; height: 1.25rem;"></i>
+                    </div>
+                    <div class="platform-name">Global Network</div>
+                    <div class="platform-status">● 50+ Countries</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Case Studies Section -->
+    <section class="case-studies-section">
+        <div class="hero-container">
+            <h3 class="section-title">Success Stories</h3>
+            <div class="case-studies-grid">
+                <div class="case-study-card">
+                    <div class="case-study-header">
+                        <div class="case-logo">
+                            <i data-lucide="building" style="color: white; width: 2rem; height: 2rem;"></i>
+                        </div>
+                        <div class="case-company">
+                            <div class="company-name">RetailMax Corporation</div>
+                            <div class="company-industry">Fortune 500 Retail</div>
+                        </div>
+                    </div>
+                    <div class="case-study-content">
+                        <h4 class="case-title">30% Cost Reduction in 6 Months</h4>
+                        <p class="case-description">Implemented Smart Cart Enterprise across 500+ stores, resulting in $2.3M annual savings through automated price optimization and competitive intelligence.</p>
+                        <div class="case-metrics">
+                            <div class="metric">
+                                <span class="metric-number">$2.3M</span>
+                                <span class="metric-label">Annual Savings</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-number">500+</span>
+                                <span class="metric-label">Stores Integrated</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-number">30%</span>
+                                <span class="metric-label">Cost Reduction</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="case-study-card">
+                    <div class="case-study-header">
+                        <div class="case-logo">
+                            <i data-lucide="shopping-bag" style="color: white; width: 2rem; height: 2rem;"></i>
+                        </div>
+                        <div class="case-company">
+                            <div class="company-name">EcoMart Chain</div>
+                            <div class="company-industry">Leading Grocery Chain</div>
+                        </div>
+                    </div>
+                    <div class="case-study-content">
+                        <h4 class="case-title">Real-Time Competitive Intelligence</h4>
+                        <p class="case-description">Deployed Smart Cart's AI-powered analytics to monitor 10,000+ products across 50 competitors, enabling dynamic pricing strategies and market leadership.</p>
+                        <div class="case-metrics">
+                            <div class="metric">
+                                <span class="metric-number">10K+</span>
+                                <span class="metric-label">Products Tracked</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-number">50</span>
+                                <span class="metric-label">Competitors Monitored</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-number">85%</span>
+                                <span class="metric-label">Market Share Growth</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="case-study-card">
+                    <div class="case-study-header">
+                        <div class="case-logo">
+                            <i data-lucide="globe" style="color: white; width: 2rem; height: 2rem;"></i>
+                        </div>
+                        <div class="case-company">
+                            <div class="company-name">GlobalTech Solutions</div>
+                            <div class="company-industry">B2B Technology Provider</div>
+                        </div>
+                    </div>
+                    <div class="case-study-content">
+                        <h4 class="case-title">API Integration Success</h4>
+                        <p class="case-description">Integrated Smart Cart's RESTful API into existing ERP system, serving 1M+ API calls monthly with 99.95% uptime and sub-100ms response times.</p>
+                        <div class="case-metrics">
+                            <div class="metric">
+                                <span class="metric-number">1M+</span>
+                                <span class="metric-label">API Calls/Month</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-number">99.95%</span>
+                                <span class="metric-label">Uptime</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-number">95ms</span>
+                                <span class="metric-label">Avg Response</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Awards Section -->
+    <section class="awards-section">
+        <div class="hero-container">
+            <h3 class="section-title">Industry Recognition</h3>
+            <div class="awards-grid">
+                <div class="award-card">
+                    <div class="award-icon">
+                        <i data-lucide="trophy" style="color: #fbbf24; width: 2rem; height: 2rem;"></i>
+                    </div>
+                    <div class="award-content">
+                        <h4 class="award-title">Enterprise Innovation Award 2024</h4>
+                        <p class="award-description">Recognized for breakthrough AI-powered price intelligence technology transforming enterprise retail operations.</p>
+                        <div class="award-organization">Tech Innovation Council</div>
+                    </div>
+                </div>
+                
+                <div class="award-card">
+                    <div class="award-icon">
+                        <i data-lucide="award" style="color: #fbbf24; width: 2rem; height: 2rem;"></i>
+                    </div>
+                    <div class="award-content">
+                        <h4 class="award-title">Best Enterprise Solution</h4>
+                        <p class="award-description">Selected as the top enterprise price intelligence platform for scalability and reliability.</p>
+                        <div class="award-organization">Global Tech Awards</div>
+                    </div>
+                </div>
+                
+                <div class="award-card">
+                    <div class="award-icon">
+                        <i data-lucide="star" style="color: #fbbf24; width: 2rem; height: 2rem;"></i>
+                    </div>
+                    <div class="award-content">
+                        <h4 class="award-title">Customer Choice Award</h4>
+                        <p class="award-description">Voted #1 by enterprise customers for ease of integration and customer support excellence.</p>
+                        <div class="award-organization">Enterprise Software Review</div>
+                    </div>
+                </div>
+                
+                <div class="award-card">
+                    <div class="award-icon">
+                        <i data-lucide="medal" style="color: #fbbf24; width: 2rem; height: 2rem;"></i>
+                    </div>
+                    <div class="award-content">
+                        <h4 class="award-title">Security Excellence</h4>
+                        <p class="award-description">Achieved SOC 2 Type II certification and GDPR compliance for enterprise data protection.</p>
+                        <div class="award-organization">Security Standards Institute</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Live Demo Section -->
+    <section class="demo-section">
+        <div class="hero-container">
+            <h3 class="section-title">See Smart Cart in Action</h3>
+            <div class="demo-content">
+                <div class="demo-left">
+                    <div class="demo-card">
+                        <div class="demo-header">
+                            <h4 class="demo-title">Live Dashboard Preview</h4>
+                            <p class="demo-subtitle">Experience real-time price monitoring and analytics</p>
+                        </div>
+                        <div class="demo-placeholder">
+                            <div class="demo-mockup">
+                                <div class="mock-header">
+                                    <div class="mock-title">Price Intelligence Dashboard</div>
+                                    <div class="mock-status">● Live</div>
+                                </div>
+                                <div class="mock-content">
+                                    <div class="mock-chart">
+                                        <div class="chart-bars">
+                                            <div class="chart-bar" style="height: 60%;"></div>
+                                            <div class="chart-bar" style="height: 80%;"></div>
+                                            <div class="chart-bar" style="height: 45%;"></div>
+                                            <div class="chart-bar" style="height: 90%;"></div>
+                                            <div class="chart-bar" style="height: 70%;"></div>
+                                        </div>
+                                    </div>
+                                    <div class="mock-stats">
+                                        <div class="stat-item">
+                                            <span class="stat-value">1,247</span>
+                                            <span class="stat-label">Products Tracked</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <span class="stat-value">89%</span>
+                                            <span class="stat-label">Accuracy Rate</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <span class="stat-value">156ms</span>
+                                            <span class="stat-label">Response Time</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="demo-cta">
+                            <a href="#" class="demo-button">
+                                <i data-lucide="play" style="color: white; width: 1rem; height: 1rem;"></i>
+                                Start Live Demo
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="demo-right">
+                    <div class="demo-features">
+                        <h4 class="demo-title">Try These Features</h4>
+                        <div class="feature-list">
+                            <div class="feature-item">
+                                <i data-lucide="search" style="color: #3b82f6; width: 1rem; height: 1rem;"></i>
+                                <span>Real-time Price Search</span>
+                            </div>
+                            <div class="feature-item">
+                                <i data-lucide="trending-up" style="color: #3b82f6; width: 1rem; height: 1rem;"></i>
+                                <span>Price Trend Analysis</span>
+                            </div>
+                            <div class="feature-item">
+                                <i data-lucide="bell" style="color: #3b82f6; width: 1rem; height: 1rem;"></i>
+                                <span>Price Drop Alerts</span>
+                            </div>
+                            <div class="feature-item">
+                                <i data-lucide="download" style="color: #3b82f6; width: 1rem; height: 1rem;"></i>
+                                <span>Export Reports</span>
+                            </div>
+                            <div class="feature-item">
+                                <i data-lucide="users" style="color: #3b82f6; width: 1rem; height: 1rem;"></i>
+                                <span>Team Collaboration</span>
+                            </div>
+                            <div class="feature-item">
+                                <i data-lucide="shield-check" style="color: #3b82f6; width: 1rem; height: 1rem;"></i>
+                                <span>Enterprise Security</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="demo-benefits">
+                        <h4 class="demo-title">Why Choose Smart Cart?</h4>
+                        <ul class="benefits-list">
+                            <li class="benefit-item">
+                                <i data-lucide="check-circle" style="color: #10b981; width: 1rem; height: 1rem;"></i>
+                                <span>30-day free trial, no credit card required</span>
+                            </li>
+                            <li class="benefit-item">
+                                <i data-lucide="check-circle" style="color: #10b981; width: 1rem; height: 1rem;"></i>
+                                <span>Onboarding assistance and dedicated support</span>
+                            </li>
+                            <li class="benefit-item">
+                                <i data-lucide="check-circle" style="color: #10b981; width: 1rem; height: 1rem;"></i>
+                                <span>Cancel anytime, no questions asked</span>
+                            </li>
+                            <li class="benefit-item">
+                                <i data-lucide="check-circle" style="color: #10b981; width: 1rem; height: 1rem;"></i>
+                                <span>99.9% uptime SLA guarantee</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Stats Overview Section -->
+    <section class="stats-overview-section">
+        <div class="hero-container">
+            <h3 class="section-title">Platform Impact</h3>
+            <div class="stats-overview-grid">
+                <div class="stat-overview-card">
+                    <div class="stat-icon">
+                        <i data-lucide="users" style="color: #3b82f6; width: 2rem; height: 2rem;"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number">50,000+</div>
+                        <div class="stat-label">Enterprise Users</div>
+                        <div class="stat-desc">Trusted by leading companies worldwide</div>
+                    </div>
+                </div>
+                
+                <div class="stat-overview-card">
+                    <div class="stat-icon">
+                        <i data-lucide="database" style="color: #3b82f6; width: 2rem; height: 2rem;"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number">100M+</div>
+                        <div class="stat-label">Data Points Processed Daily</div>
+                        <div class="stat-desc">Real-time analysis across all platforms</div>
+                    </div>
+                </div>
+                
+                <div class="stat-overview-card">
+                    <div class="stat-icon">
+                        <i data-lucide="globe" style="color: #3b82f6; width: 2rem; height: 2rem;"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number">150+</div>
+                        <div class="stat-label">Countries Covered</div>
+                        <div class="stat-desc">Global presence with local insights</div>
+                    </div>
+                </div>
+                
+                <div class="stat-overview-card">
+                    <div class="stat-icon">
+                        <i data-lucide="zap" style="color: #3b82f6; width: 2rem; height: 2rem;"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-number">99.95%</div>
+                        <div class="stat-label">Customer Satisfaction</div>
+                        <div class="stat-desc">Based on 10,000+ customer reviews</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Partners Section -->
+    <section class="partners-section">
+        <div class="hero-container">
+            <h3 class="section-title">Trusted Partners</h3>
+            <div class="partners-grid">
+                <div class="partner-category">
+                    <h4 class="partner-title">Technology Partners</h4>
+                    <div class="partner-logos">
+                        <div class="partner-logo-item">
+                            <div class="partner-logo-placeholder">AWS</div>
+                        </div>
+                        <div class="partner-logo-item">
+                            <div class="partner-logo-placeholder">Google Cloud</div>
+                        </div>
+                        <div class="partner-logo-item">
+                            <div class="partner-logo-placeholder">Microsoft Azure</div>
+                        </div>
+                        <div class="partner-logo-item">
+                            <div class="partner-logo-placeholder">Salesforce</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="partner-category">
+                    <h4 class="partner-title">Integration Partners</h4>
+                    <div class="partner-logos">
+                        <div class="partner-logo-item">
+                            <div class="partner-logo-placeholder">SAP</div>
+                        </div>
+                        <div class="partner-logo-item">
+                            <div class="partner-logo-placeholder">Oracle</div>
+                        </div>
+                        <div class="partner-logo-item">
+                            <div class="partner-logo-placeholder">Shopify</div>
+                        </div>
+                        <div class="partner-logo-item">
+                            <div class="partner-logo-placeholder">Magento</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="partner-category">
+                    <h4 class="partner-title">Certification Partners</h4>
+                    <div class="partner-logos">
+                        <div class="partner-logo-item">
+                            <div class="partner-logo-placeholder">ISO 27001</div>
+                        </div>
+                        <div class="partner-logo-item">
+                            <div class="partner-logo-placeholder">SOC 2</div>
+                        </div>
+                        <div class="partner-logo-item">
+                            <div class="partner-logo-placeholder">GDPR</div>
+                        </div>
+                        <div class="partner-logo-item">
+                            <div class="partner-logo-placeholder">PCI DSS</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Resources Section -->
+    <section class="resources-section">
+        <div class="hero-container">
+            <h3 class="section-title">Resources & Learning</h3>
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i data-lucide="book-open" style="color: white; width: 2rem; height: 2rem;"></i>
+                    </div>
+                    <div class="resource-content">
+                        <h4 class="resource-title">Documentation</h4>
+                        <p class="resource-desc">Comprehensive API documentation, guides, and best practices for seamless integration.</p>
+                        <a href="#" class="resource-link">View Documentation →</a>
+                    </div>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i data-lucide="video" style="color: white; width: 2rem; height: 2rem;"></i>
+                    </div>
+                    <div class="resource-content">
+                        <h4 class="resource-title">Video Tutorials</h4>
+                        <p class="resource-desc">Step-by-step video guides for setup, configuration, and advanced features.</p>
+                        <a href="#" class="resource-link">Watch Tutorials →</a>
+                    </div>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i data-lucide="file-text" style="color: white; width: 2rem; height: 2rem;"></i>
+                    </div>
+                    <div class="resource-content">
+                        <h4 class="resource-title">Case Studies</h4>
+                        <p class="resource-desc">Detailed success stories and implementation strategies from enterprise clients.</p>
+                        <a href="#" class="resource-link">Read Case Studies →</a>
+                    </div>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i data-lucide="calendar" style="color: white; width: 2rem; height: 2rem;"></i>
+                    </div>
+                    <div class="resource-content">
+                        <h4 class="resource-title">Webinars & Events</h4>
+                        <p class="resource-desc">Live demos, expert sessions, and industry events for learning and networking.</p>
+                        <a href="#" class="resource-link">Join Webinar →</a>
+                    </div>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i data-lucide="headphones" style="color: white; width: 2rem; height: 2rem;"></i>
+                    </div>
+                    <div class="resource-content">
+                        <h4 class="resource-title">24/7 Support</h4>
+                        <p class="resource-desc">Dedicated enterprise support team with guaranteed response times and expert assistance.</p>
+                        <a href="#" class="resource-link">Contact Support →</a>
+                    </div>
+                </div>
+                
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i data-lucide="download-cloud" style="color: white; width: 2rem; height: 2rem;"></i>
+                    </div>
+                    <div class="resource-content">
+                        <h4 class="resource-title">SDK & Tools</h4>
+                        <p class="resource-desc">Download SDKs, libraries, and development tools for quick integration.</p>
+                        <a href="#" class="resource-link">Get SDK →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Newsletter Section -->
+    <section class="newsletter-section">
+        <div class="hero-container">
+            <div class="newsletter-content">
+                <h3 class="newsletter-title">Stay Updated</h3>
+                <p class="newsletter-subtitle">Get the latest insights, product updates, and industry trends delivered to your inbox.</p>
+                <div class="newsletter-form">
+                    <input type="email" placeholder="Enter your email address" class="newsletter-input">
+                    <button class="newsletter-button">
+                        <i data-lucide="send" style="color: white; width: 1rem; height: 1rem;"></i>
+                        Subscribe
+                    </button>
+                </div>
+                <div class="newsletter-benefits">
+                    <div class="benefit-item">
+                        <i data-lucide="check" style="color: #10b981; width: 1rem; height: 1rem;"></i>
+                        <span>Weekly industry insights</span>
+                    </div>
+                    <div class="benefit-item">
+                        <i data-lucide="check" style="color: #10b981; width: 1rem; height: 1rem;"></i>
+                        <span>Exclusive product updates</span>
+                    </div>
+                    <div class="benefit-item">
+                        <i data-lucide="check" style="color: #10b981; width: 1rem; height: 1rem;"></i>
+                        <span>Early access to features</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Case Studies Section -->
+    <section class="testimonials-section">
+        <div class="hero-container">
+            <h3 class="section-title">Trusted by Industry Leaders</h3>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="testimonial-text">"Smart Cart Enterprise has transformed our pricing strategy. The real-time insights and competitive intelligence have given us a significant market advantage."</div>
+                        <div class="testimonial-author">
+                            <div class="author-info">
+                                <div class="author-name">Sarah Chen</div>
+                                <div class="author-title">VP of Strategy</div>
+                                <div class="author-company">Fortune 500 Retail Corp</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="testimonial-text">"The API integration was seamless and the analytics dashboard provides exactly what our enterprise team needs for data-driven decisions."</div>
+                        <div class="testimonial-author">
+                            <div class="author-info">
+                                <div class="author-name">Michael Rodriguez</div>
+                                <div class="author-title">CTO</div>
+                                <div class="author-company">Global E-commerce Platform</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="testimonial-text">"We've reduced our price analysis time by 80% and improved our competitive positioning significantly with Smart Cart's AI-powered insights."</div>
+                        <div class="testimonial-author">
+                            <div class="author-info">
+                                <div class="author-name">Emily Watson</div>
+                                <div class="author-title">Head of Analytics</div>
+                                <div class="author-company">Leading Market Research Firm</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Integration Section -->
+    <section class="integration-section">
+        <div class="hero-container">
+            <h3 class="section-title">Seamless Integration</h3>
+            <div class="integration-grid">
+                <div class="integration-card">
+                    <div class="integration-icon">
+                        <i data-lucide="code" style="color: white; width: 2rem; height: 2rem;"></i>
+                    </div>
+                    <div class="integration-title">RESTful API</div>
+                    <div class="integration-desc">Comprehensive REST API with detailed documentation, SDKs for major programming languages, and 99.9% uptime guarantee.</div>
+                    <div class="integration-features">
+                        <span class="feature-tag">JSON/REST</span>
+                        <span class="feature-tag">Webhooks</span>
+                        <span class="feature-tag">OAuth 2.0</span>
+                    </div>
+                </div>
+                
+                <div class="integration-card">
+                    <div class="integration-icon">
+                        <i data-lucide="database" style="color: white; width: 2rem; height: 2rem;"></i>
+                    </div>
+                    <div class="integration-title">Data Export</div>
+                    <div class="integration-desc">Export pricing data in multiple formats including CSV, Excel, JSON, and direct database connections for enterprise analytics.</div>
+                    <div class="integration-features">
+                        <span class="feature-tag">CSV/Excel</span>
+                        <span class="feature-tag">Real-time Sync</span>
+                        <span class="feature-tag">API Access</span>
+                    </div>
+                </div>
+                
+                <div class="integration-card">
+                    <div class="integration-icon">
+                        <i data-lucide="shield" style="color: white; width: 2rem; height: 2rem;"></i>
+                    </div>
+                    <div class="integration-title">Enterprise Security</div>
+                    <div class="integration-desc">SOC 2 Type II certified, end-to-end encryption, role-based access control, and comprehensive audit trails.</div>
+                    <div class="integration-features">
+                        <span class="feature-tag">SOC 2</span>
+                        <span class="feature-tag">256-bit SSL</span>
+                        <span class="feature-tag">GDPR Compliant</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Pricing Section -->
+    <section class="pricing-section">
+        <div class="hero-container">
+            <h3 class="section-title">Enterprise Solutions</h3>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <div class="pricing-plan">Professional</div>
+                        <div class="pricing-price">$499<span class="pricing-period">/month</span></div>
+                    </div>
+                    <div class="pricing-features">
+                        <div class="pricing-feature">
+                            <i data-lucide="check" style="color: #10b981; width: 1rem; height: 1rem;"></i>
+                            <span>Up to 10,000 products tracked</span>
+                        </div>
+                        <div class="pricing-feature">
+                            <i data-lucide="check" style="color: #10b981; width: 1rem; height: 1rem;"></i>
+                            <span>Real-time price monitoring</span>
+                        </div>
+                        <div class="pricing-feature">
+                            <i data-lucide="check" style="color: #10b981; width: 1rem; height: 1rem;"></i>
+                            <span>Basic analytics dashboard</span>
+                        </div>
+                        <div class="pricing-feature">
+                            <i data-lucide="check" style="color: #10b981; width: 1rem; height: 1rem;"></i>
+                            <span>Email support</span>
+                        </div>
+                        <div class="pricing-feature">
+                            <i data-lucide="check" style="color: #10b981; width: 1rem; height: 1rem;"></i>
+                            <span>API access (10K calls/month)</span>
+                        </div>
+                    </div>
+                    <div class="pricing-cta">
+                        <a href="#" class="pricing-button">Get Started</a>
+                    </div>
+                </div>
+                
+                <div class="pricing-card featured">
+                    <div class="pricing-badge">Most Popular</div>
+                    <div class="pricing-header">
+                        <div class="pricing-plan">Enterprise</div>
+                        <div class="pricing-price">$1,999<span class="pricing-period">/month</span></div>
+                    </div>
+                    <div class="pricing-features">
+                        <div class="pricing-feature">
+                            <i data-lucide="check" style="color: #10b981; width: 1rem; height: 1rem;"></i>
+                            <span>Unlimited products tracked</span>
+                        </div>
+                        <div class="pricing-feature">
+                            <i data-lucide="check" style="color: #10b981; width: 1rem; height: 1rem;"></i>
+                            <span>Advanced AI-powered analytics</span>
+                        </div>
+                        <div class="pricing-feature">
+                            <i data-lucide="check" style="color: #10b981; width: 1rem; height: 1rem;"></i>
+                            <span>Predictive price insights</span>
+                        </div>
+                        <div class="pricing-feature">
+                            <i data-lucide="check" style="color: #10b981; width: 1rem; height: 1rem;"></i>
+                            <span>Priority 24/7 support</span>
+                        </div>
+                        <div class="pricing-feature">
+                            <i data-lucide="check" style="color: #10b981; width: 1rem; height: 1rem;"></i>
+                            <span>Unlimited API access</span>
+                        </div>
+                        <div class="pricing-feature">
+                            <i data-lucide="check" style="color: #10b981; width: 1rem; height: 1rem;"></i>
+                            <span>Custom integrations</span>
+                        </div>
+                    </div>
+                    <div class="pricing-cta">
+                        <a href="#" class="pricing-button featured-btn">Start Free Trial</a>
+                    </div>
+                </div>
+                
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <div class="pricing-plan">Custom</div>
+                        <div class="pricing-price">Enterprise</div>
+                    </div>
+                    <div class="pricing-features">
+                        <div class="pricing-feature">
+                            <i data-lucide="check" style="color: #10b981; width: 1rem; height: 1rem;"></i>
+                            <span>Everything in Enterprise</span>
+                        </div>
+                        <div class="pricing-feature">
+                            <i data-lucide="check" style="color: #10b981; width: 1rem; height: 1rem;"></i>
+                            <span>Dedicated account manager</span>
+                        </div>
+                        <div class="pricing-feature">
+                            <i data-lucide="check" style="color: #10b981; width: 1rem; height: 1rem;"></i>
+                            <span>SLA guarantees</span>
+                        </div>
+                        <div class="pricing-feature">
+                            <i data-lucide="check" style="color: #10b981; width: 1rem; height: 1rem;"></i>
+                            <span>On-premise deployment</span>
+                        </div>
+                        <div class="pricing-feature">
+                            <i data-lucide="check" style="color: #10b981; width: 1rem; height: 1rem;"></i>
+                            <span>Custom training</span>
+                        </div>
+                    </div>
+                    <div class="pricing-cta">
+                        <a href="#" class="pricing-button">Contact Sales</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="cta-section-full">
+        <div class="hero-container">
+            <div class="cta-content">
+                <h3 class="cta-title">Ready to Transform Your Pricing Strategy?</h3>
+                <p class="cta-subtitle">Join thousands of enterprises using Smart Cart to gain competitive advantage and optimize pricing strategies.</p>
+                <div class="cta-buttons">
+                    <a href="#" class="cta-button-primary">
+                        <i data-lucide="play" style="color: white; width: 1.25rem; height: 1.25rem;"></i>
+                        Start Free Trial
+                    </a>
+                    <a href="#" class="cta-button-secondary">
+                        <i data-lucide="phone" style="color: #3b82f6; width: 1.25rem; height: 1.25rem;"></i>
+                        Schedule Demo
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h4>Product</h4>
+                    <ul>
+                        <li><a href="#">Features</a></li>
+                        <li><a href="#">Analytics</a></li>
+                        <li><a href="#">API Access</a></li>
+                        <li><a href="#">Enterprise Tools</a></li>
+                        <li><a href="#">Mobile Apps</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Solutions</h4>
+                    <ul>
+                        <li><a href="#">Retail</a></li>
+                        <li><a href="#">E-commerce</a></li>
+                        <li><a href="#">Market Research</a></li>
+                        <li><a href="#">Competitive Intelligence</a></li>
+                        <li><a href="#">Price Optimization</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Partners</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Press Kit</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">API Status</a></li>
+                        <li><a href="#">Support Center</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Webinars</a></li>
+                        <li><a href="#">Case Studies</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-social">
+                    <a href="#" class="social-link">
+                        <i data-lucide="linkedin" style="color: #94a3b8; width: 1.25rem; height: 1.25rem;"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i data-lucide="twitter" style="color: #94a3b8; width: 1.25rem; height: 1.25rem;"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i data-lucide="github" style="color: #94a3b8; width: 1.25rem; height: 1.25rem;"></i>
+                    </a>
+                </div>
+                <div class="copyright">
+                    © 2025 Smart Cart Enterprise. All rights reserved. | 
+                    <a href="#" style="color: #3b82f6;">Privacy Policy</a> | 
+                    <a href="#" style="color: #3b82f6;">Terms of Service</a> | 
+                    <a href="#" style="color: #3b82f6;">Compliance</a> | 
+                    <a href="#" style="color: #3b82f6;">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Navigation -->
+    <div class="nav-menu">
+        <a href="{{ url_for('index') }}" class="nav-button">
+            <i data-lucide="bar-chart-3" style="color: white; width: 1rem; height: 1rem;"></i>
+            Dashboard
+        </a>
+        <a href="{{ url_for('landing') }}" class="nav-button">
+            <i data-lucide="home" style="color: white; width: 1rem; height: 1rem;"></i>
+            Home
+        </a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>

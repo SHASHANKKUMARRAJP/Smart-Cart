@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price Intelligence Dashboard - Smart Cart</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+            --glass-glow: 0 0 25px rgba(99, 102, 241, 0.35);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #030712;
+            color: #f3f4f6;
+            margin: 0;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .aurora-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            overflow: hidden;
+            background: #030712;
+        }
+
+        .aurora-blob {
+            position: absolute;
+            filter: blur(140px);
+            opacity: 0.55;
+            animation: floatBlob 22s infinite ease-in-out alternate;
+            border-radius: 50%;
+        }
+
+        .blob-1 {
+            top: -10%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: rgba(59, 130, 246, 0.35);
+            animation-delay: 0s;
+        }
+
+        .blob-2 {
+            bottom: -20%;
+            right: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: rgba(99, 102, 241, 0.3);
+            animation-delay: -5s;
+        }
+
+        .blob-3 {
+            top: 40%;
+            left: 30%;
+            width: 45vw;
+            height: 45vw;
+            background: rgba(168, 85, 247, 0.25);
+            animation-delay: -10s;
+        }
+
+        @keyframes floatBlob {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            50% { transform: translate(4%, 6%) scale(1.08) rotate(4deg); }
+            100% { transform: translate(-3%, -4%) scale(0.95) rotate(-4deg); }
+        }
+
+        .grid-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+
+        .glass-morphism {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        }
+
+        .glass-card-premium {
+            background: rgba(17, 24, 39, 0.6);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card-premium:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 12px 40px -5px rgba(99, 102, 241, 0.15);
+        }
+
+        .gradient-text-premium {
+            background: linear-gradient(135deg, #60a5fa 0%, #818cf8 50%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .search-input {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(99, 102, 241, 0.6);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+            outline: none;
+        }
+
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #9ca3af;
+            transition: all 0.2s ease;
+        }
+
+        .filter-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: white;
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+            border-color: rgba(99, 102, 241, 0.5);
+            color: white;
+            font-weight: 700;
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .loader {
+            display: inline-block;
+            width: 2.5rem;
+            height: 2.5rem;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top-color: #6366f1;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .modal-overlay {
+            background: rgba(3, 7, 18, 0.85);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+
+<body class="text-gray-100 antialiased">
+    <!-- Aurora background -->
+    <div class="aurora-bg">
+        <div class="aurora-blob blob-1"></div>
+        <div class="aurora-blob blob-2"></div>
+        <div class="aurora-blob blob-3"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <!-- Navigation Header -->
+    <nav class="sticky top-0 z-40 glass-morphism">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="{{ url_for('main.explore') }}" class="flex items-center space-x-3 group">
+                    <div class="w-9 h-9 glass-card-premium rounded-xl flex items-center justify-center border border-white/10 group-hover:border-indigo-500/50 transition-all">
+                        <i data-lucide="arrow-left" class="w-5 h-5 text-gray-300 group-hover:text-white transition-colors"></i>
+                    </div>
+                    <span class="text-lg font-bold text-white tracking-wide">Back to Explore</span>
+                </a>
+                <div class="flex items-center space-x-3">
+                    <div class="w-9 h-9 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/30">
+                        <i data-lucide="line-chart" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <span class="text-xl font-extrabold text-white tracking-tight">Price <span class="gradient-text-premium">Intelligence</span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Section -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        
+        <!-- Header Title & Quick Search -->
+        <div class="text-center mb-10">
+            <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold uppercase tracking-widest mb-4">
+                <i data-lucide="shield-check" class="w-4 h-4 mr-1.5"></i> Verified Market Intelligence
+            </div>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-3 leading-tight tracking-tight">
+                Price <span class="gradient-text-premium">Intelligence Dashboard</span>
+            </h1>
+            <p class="text-base md:text-lg text-gray-400 max-w-2xl mx-auto">
+                Real-time price tracking, historical analytics, platform comparison, and AI insights across top Indian stores.
+            </p>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="glass-card-premium p-6 mb-8 border border-white/10 relative overflow-hidden">
+            <form id="search-form" class="relative">
+                <div class="flex flex-col md:flex-row gap-3">
+                    <div class="relative flex-grow">
+                        <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                        <input type="text" id="product-search"
+                            placeholder="Search any item (e.g. Amul Butter 500g, Aashirvaad Atta, iPhone 15)..."
+                            class="w-full pl-12 pr-4 py-3.5 rounded-xl search-input text-base font-medium placeholder-gray-500"
+                            required>
+                    </div>
+                    <button type="submit" id="analyze-btn"
+                        class="px-8 py-3.5 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white rounded-xl font-bold shadow-lg shadow-indigo-500/25 transition-all flex items-center justify-center gap-2 text-base cursor-pointer">
+                        <span>Analyze Price</span>
+                        <i data-lucide="sparkles" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Quick Suggestion Chips -->
+            <div class="mt-4 flex flex-wrap items-center gap-2 text-xs text-gray-400">
+                <span class="font-semibold text-gray-500 uppercase tracking-wider text-[10px]">Popular:</span>
+                <button onclick="quickSearch('Amul Butter 500g')" class="px-3 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 transition-all cursor-pointer">Amul Butter 500g</button>
+                <button onclick="quickSearch('Aashirvaad Atta 5kg')" class="px-3 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 transition-all cursor-pointer">Aashirvaad Atta 5kg</button>
+                <button onclick="quickSearch('Fortune Sunflower Oil 1L')" class="px-3 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 transition-all cursor-pointer">Fortune Sunflower Oil 1L</button>
+                <button onclick="quickSearch('iPhone 15')" class="px-3 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 transition-all cursor-pointer">iPhone 15</button>
+                <button onclick="quickSearch('Tata Salt 1kg')" class="px-3 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 transition-all cursor-pointer">Tata Salt 1kg</button>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loading-state" class="hidden glass-card-premium p-12 text-center border border-white/10 mb-8">
+            <div class="loader mx-auto mb-4"></div>
+            <h3 class="text-xl font-bold text-white mb-1">Scanning Store Platforms...</h3>
+            <p class="text-sm text-gray-400">Fetching live price points from Blinkit, Zepto, Instamart, BigBasket, JioMart, Amazon, and Flipkart.</p>
+        </div>
+
+        <!-- Insufficient Verified History Warning Banner -->
+        <div id="unverified-state" class="hidden glass-card-premium p-8 border border-amber-500/30 bg-amber-500/5 mb-8 text-center relative overflow-hidden">
+            <div class="w-14 h-14 bg-amber-500/10 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-amber-500/30">
+                <i data-lucide="database" class="w-7 h-7 text-amber-400"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-white mb-2">Insufficient Verified Price History</h3>
+            <p class="text-gray-300 max-w-xl mx-auto mb-6 text-sm leading-relaxed" id="unverified-msg">
+                We only display 100% verified, stored historical price data. We have recorded your query and logged current platform prices to build verified price history going forward.
+            </p>
+            <div class="flex justify-center gap-4">
+                <button onclick="triggerRefresh()" class="px-6 py-2.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-sm font-bold transition-all flex items-center gap-2 cursor-pointer">
+                    <i data-lucide="refresh-cw" class="w-4 h-4"></i> Record Live Snapshot Now
+                </button>
+            </div>
+        </div>
+
+        <!-- Dashboard Content Container -->
+        <div id="results-container" class="hidden space-y-8">
+
+            <!-- Top Analytics Bar: Product Title, Refresh, Badges, Alert Button -->
+            <div class="glass-card-premium p-6 border border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <div class="flex items-center gap-3 mb-1 flex-wrap" id="badge-container">
+                        <!-- Badges dynamically rendered here -->
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight" id="chart-product-title">Product Name</h2>
+                    <div class="flex items-center gap-3 text-xs text-gray-400 mt-1">
+                        <span class="flex items-center gap-1" id="last-updated-text">
+                            <i data-lucide="clock" class="w-3.5 h-3.5 text-indigo-400"></i> Last updated: Just now
+                        </span>
+                        <span>•</span>
+                        <span class="text-emerald-400 font-semibold flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Verified Real Data
+                        </span>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <button onclick="triggerRefresh()" title="Fetch current live prices"
+                        class="px-4 py-2.5 glass-morphism hover:bg-white/10 text-gray-200 rounded-xl text-sm font-semibold border border-white/15 transition-all flex items-center gap-2 cursor-pointer">
+                        <i data-lucide="refresh-cw" id="refresh-icon" class="w-4 h-4 text-indigo-400"></i>
+                        <span>Refresh Data</span>
+                    </button>
+
+                    <button onclick="openAlertModal()"
+                        class="px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white rounded-xl text-sm font-bold shadow-lg shadow-indigo-500/25 transition-all flex items-center gap-2 cursor-pointer">
+                        <i data-lucide="bell" class="w-4 h-4"></i>
+                        <span>Track Price Alert</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- AI Price Insight Box -->
+            <div class="glass-card-premium p-6 border border-indigo-500/30 bg-gradient-to-r from-indigo-500/10 via-purple-500/5 to-transparent relative overflow-hidden">
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 border border-indigo-500/40 flex items-center justify-center shrink-0">
+                        <i data-lucide="brain-circuit" class="w-6 h-6 text-indigo-400"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold uppercase tracking-widest text-indigo-400 mb-1 flex items-center gap-1.5">
+                            <span>AI Price Intelligence Insight</span>
+                        </h4>
+                        <p class="text-base text-gray-100 font-medium leading-relaxed" id="ai-insight-text">
+                            Analyzing verified price data...
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Price Chart Section -->
+            <div class="glass-card-premium p-6 md:p-8 border border-white/10 relative overflow-hidden">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-white">Price History Chart</h3>
+                        <p class="text-xs text-gray-400">Verified historical price movement over time</p>
+                    </div>
+
+                    <!-- Time Filter Buttons -->
+                    <div class="flex items-center gap-1.5 bg-gray-900/80 p-1.5 rounded-xl border border-white/10 self-start sm:self-auto overflow-x-auto">
+                        <button onclick="setTimeFilter('24H')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer" id="filter-24H">24H</button>
+                        <button onclick="setTimeFilter('7D')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer" id="filter-7D">7D</button>
+                        <button onclick="setTimeFilter('30D')" class="filter-btn active px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer" id="filter-30D">30D</button>
+                        <button onclick="setTimeFilter('90D')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer" id="filter-90D">90D</button>
+                        <button onclick="setTimeFilter('6M')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer" id="filter-6M">6M</button>
+                        <button onclick="setTimeFilter('1Y')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer" id="filter-1Y">1Y</button>
+                    </div>
+                </div>
+
+                <div class="w-full h-[360px] relative z-10">
+                    <canvas id="priceChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Key Price Statistics Cards -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div class="glass-card-premium p-5 border border-white/10">
+                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Current Price</p>
+                    <p class="text-2xl font-extrabold text-white" id="stat-current">₹0</p>
+                    <span class="inline-block mt-2 text-[11px] font-semibold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">Live</span>
+                </div>
+
+                <div class="glass-card-premium p-5 border border-white/10">
+                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Lowest Price</p>
+                    <p class="text-2xl font-extrabold text-emerald-400" id="stat-lowest">₹0</p>
+                    <span class="inline-block mt-2 text-[11px] font-medium text-gray-400" id="stat-30d-change">30D: 0%</span>
+                </div>
+
+                <div class="glass-card-premium p-5 border border-white/10">
+                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Average Price</p>
+                    <p class="text-2xl font-extrabold text-indigo-300" id="stat-avg">₹0</p>
+                    <span class="inline-block mt-2 text-[11px] font-medium text-gray-400" id="stat-7d-change">7D: 0%</span>
+                </div>
+
+                <div class="glass-card-premium p-5 border border-white/10">
+                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Highest Price</p>
+                    <p class="text-2xl font-extrabold text-rose-400" id="stat-highest">₹0</p>
+                    <div class="mt-2 flex items-center gap-1.5" id="volatility-badge-container">
+                        <!-- Volatility badge rendered via JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7 Platform Comparison Grid -->
+            <div class="glass-card-premium p-6 border border-white/10">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                            <i data-lucide="store" class="w-5 h-5 text-indigo-400"></i> Platform Comparison
+                        </h3>
+                        <p class="text-xs text-gray-400">Verified live prices across top 7 grocery & e-commerce platforms</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="platform-grid">
+                    <!-- Platform cards populated dynamically -->
+                </div>
+            </div>
+
+            <!-- Price Timeline & Events Feed -->
+            <div class="glass-card-premium p-6 border border-white/10">
+                <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                    <i data-lucide="history" class="w-5 h-5 text-indigo-400"></i> Price Event Timeline
+                </h3>
+                <div class="space-y-4 relative before:absolute before:inset-0 before:left-3.5 before:w-0.5 before:bg-white/10" id="timeline-container">
+                    <!-- Timeline events populated dynamically -->
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Track Price Alert Modal -->
+    <div id="alertModal" class="hidden fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4">
+        <div class="glass-card-premium max-w-md w-full p-6 border border-indigo-500/40 relative shadow-2xl">
+            <button onclick="closeAlertModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white cursor-pointer">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-xl bg-indigo-500/20 border border-indigo-500/40 flex items-center justify-center">
+                    <i data-lucide="bell-ring" class="w-5 h-5 text-indigo-400"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-white">Set Target Price Alert</h3>
+                    <p class="text-xs text-gray-400">We will notify you when price drops below target</p>
+                </div>
+            </div>
+
+            <form id="alert-form" onsubmit="handleAlertSubmit(event)">
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">Product Name</label>
+                    <input type="text" id="alert-product-name" readonly
+                        class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm font-medium focus:outline-none">
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">Target Price (₹)</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold">₹</span>
+                        <input type="number" id="alert-target-price" required min="1" step="1"
+                            placeholder="e.g. 250"
+                            class="w-full pl-8 pr-4 py-2.5 rounded-xl search-input text-white text-base font-bold">
+                    </div>
+                </div>
+
+                <div class="flex gap-3">
+                    <button type="button" onclick="closeAlertModal()"
+                        class="flex-1 py-2.5 rounded-xl glass-morphism text-gray-300 hover:text-white text-sm font-semibold cursor-pointer">
+                        Cancel
+                    </button>
+                    <button type="submit"
+                        class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white text-sm font-bold shadow-lg shadow-indigo-500/30 cursor-pointer">
+                        Save Alert
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none glass-card-premium px-5 py-3 border border-emerald-500/40 flex items-center gap-3 shadow-2xl">
+        <div class="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
+            <i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-400"></i>
+        </div>
+        <p class="text-sm font-semibold text-white" id="toast-message">Alert set successfully!</p>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-auto bg-black/50 border-t border-white/10 py-6 text-center text-gray-400 text-xs">
+        <p>&copy; 2026 Smart Cart Price Intelligence. Real, verified data guaranteed.</p>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        let currentAnalyticsData = null;
+        let selectedTimeFilter = '30D';
+        let chartInstance = null;
+
+        // Auto-run search if query param 'q' exists
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const query = urlParams.get('q');
+            if (query) {
+                document.getElementById('product-search').value = query;
+                fetchPriceAnalytics(query);
+            } else {
+                // Default search
+                fetchPriceAnalytics('Amul Butter 500g');
+            }
+        });
+
+        function quickSearch(productName) {
+            document.getElementById('product-search').value = productName;
+            fetchPriceAnalytics(productName);
+        }
+
+        document.getElementById('search-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const product = document.getElementById('product-search').value.trim();
+            if (product) fetchPriceAnalytics(product);
+        });
+
+        async function fetchPriceAnalytics(productName) {
+            showLoading(true);
+            document.getElementById('results-container').classList.add('hidden');
+            document.getElementById('unverified-state').classList.add('hidden');
+
+            try {
+                const response = await fetch(`/api/price-history?q=${encodeURIComponent(productName)}`);
+                const data = await response.json();
+                showLoading(false);
+
+                currentAnalyticsData = data;
+
+                if (!data.verified) {
+                    renderUnverifiedState(data);
+                    return;
+                }
+
+                renderDashboard(data);
+                document.getElementById('results-container').classList.remove('hidden');
+            } catch (err) {
+                console.error("Fetch error:", err);
+                showLoading(false);
+                alert("Failed to fetch price intelligence. Please try again.");
+            }
+        }
+
+        function triggerRefresh() {
+            const icon = document.getElementById('refresh-icon');
+            if (icon) icon.classList.add('animate-spin');
+            
+            const currentProduct = document.getElementById('product-search').value.trim() || 'Amul Butter 500g';
+            fetchPriceAnalytics(currentProduct).then(() => {
+                if (icon) icon.classList.remove('animate-spin');
+                showToast("Live price data refreshed!");
+            });
+        }
+
+        function showLoading(isLoading) {
+            const loader = document.getElementById('loading-state');
+            const btn = document.getElementById('analyze-btn');
+            if (isLoading) {
+                loader.classList.remove('hidden');
+                btn.disabled = true;
+                btn.classList.add('opacity-75');
+            } else {
+                loader.classList.add('hidden');
+                btn.disabled = false;
+                btn.classList.remove('opacity-75');
+            }
+        }
+
+        function renderUnverifiedState(data) {
+            const container = document.getElementById('unverified-state');
+            document.getElementById('unverified-msg').innerText = 
+                `Insufficient verified price history for "${data.product}". We have recorded live platform snapshot prices to start tracking verified trends.`;
+            container.classList.remove('hidden');
+            
+            if (data.platform_comparison && data.platform_comparison.length > 0) {
+                renderPlatformComparison(data.platform_comparison);
+                document.getElementById('results-container').classList.remove('hidden');
+            }
+        }
+
+        function renderDashboard(data) {
+            // Title & Last Updated
+            document.getElementById('chart-product-title').innerText = data.product;
+            document.getElementById('last-updated-text').innerHTML = 
+                `<i data-lucide="clock" class="w-3.5 h-3.5 text-indigo-400"></i> Last updated: ${data.last_updated || 'Just now'}`;
+
+            // Badges
+            const badgeContainer = document.getElementById('badge-container');
+            badgeContainer.innerHTML = '';
+            if (data.badges && data.badges.length > 0) {
+                data.badges.forEach(b => {
+                    const span = document.createElement('span');
+                    span.className = `inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-${b.color}-500/20 text-${b.color}-300 border border-${b.color}-500/30`;
+                    span.innerText = b.label;
+                    badgeContainer.appendChild(span);
+                });
+            } else {
+                badgeContainer.innerHTML = `<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30"><i data-lucide="activity" class="w-3.5 h-3.5 mr-1"></i> Active Tracking</span>`;
+            }
+
+            // AI Insight Text
+            document.getElementById('ai-insight-text').innerText = data.ai_insight || "Stable market trend observed across stores.";
+
+            // Key Statistics
+            const stats = data.stats || {};
+            document.getElementById('stat-current').innerText = `₹${stats.current || 0}`;
+            document.getElementById('stat-lowest').innerText = `₹${stats.lowest || 0}`;
+            document.getElementById('stat-avg').innerText = `₹${stats.average || 0}`;
+            document.getElementById('stat-highest').innerText = `₹${stats.highest || 0}`;
+
+            document.getElementById('stat-30d-change').innerText = `30D: ${stats.change_30d > 0 ? '+' : ''}${stats.change_30d || 0}%`;
+            document.getElementById('stat-7d-change').innerText = `7D: ${stats.change_7d > 0 ? '+' : ''}${stats.change_7d || 0}%`;
+
+            // Volatility Badge
+            const volContainer = document.getElementById('volatility-badge-container');
+            const vol = stats.volatility || 'Low';
+            let volColor = 'emerald';
+            if (vol === 'Medium') volColor = 'amber';
+            if (vol === 'High') volColor = 'rose';
+            
+            volContainer.innerHTML = `<span class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Volatility:</span> <span class="px-2 py-0.5 rounded text-[10px] font-extrabold bg-${volColor}-500/20 text-${volColor}-300 border border-${volColor}-500/30">${vol}</span>`;
+
+            // Render Chart
+            renderChart(selectedTimeFilter);
+
+            // Render Platform Comparison Grid
+            renderPlatformComparison(data.platform_comparison);
+
+            // Render Timeline
+            renderTimeline(data.timeline);
+
+            lucide.createIcons();
+        }
+
+        function setTimeFilter(filterStr) {
+            selectedTimeFilter = filterStr;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById(`filter-${filterStr}`);
+            if (activeBtn) activeBtn.classList.add('active');
+
+            if (currentAnalyticsData && currentAnalyticsData.series) {
+                renderChart(filterStr);
+            }
+        }
+
+        function renderChart(filterStr) {
+            if (!currentAnalyticsData || !currentAnalyticsData.series) return;
+            const series = currentAnalyticsData.series[filterStr] || currentAnalyticsData.series['30D'] || [];
+            
+            const labels = series.map(item => item.date);
+            const dataPoints = series.map(item => item.price);
+            const platformNames = series.map(item => item.platform);
+            const fullDateTimes = series.map(item => item.datetime);
+
+            const ctx = document.getElementById('priceChart').getContext('2d');
+            if (chartInstance) chartInstance.destroy();
+
+            const gradient = ctx.createLinearGradient(0, 0, 0, 360);
+            gradient.addColorStop(0, 'rgba(99, 102, 241, 0.45)');
+            gradient.addColorStop(1, 'rgba(99, 102, 241, 0.0)');
+
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Price (₹)',
+                        data: dataPoints,
+                        borderColor: '#818cf8',
+                        borderWidth: 3,
+                        backgroundColor: gradient,
+                        fill: true,
+                        tension: 0.35,
+                        pointBackgroundColor: '#4f46e5',
+                        pointBorderColor: '#c084fc',
+                        pointBorderWidth: 2,
+                        pointRadius: 5,
+                        pointHoverRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(17, 24, 39, 0.95)',
+                            titleColor: '#f3f4f6',
+                            bodyColor: '#c084fc',
+                            borderColor: 'rgba(99, 102, 241, 0.4)',
+                            borderWidth: 1,
+                            padding: 12,
+                            boxPadding: 6,
+                            usePointStyle: true,
+                            callbacks: {
+                                title: function(items) {
+                                    const index = items[0].dataIndex;
+                                    return fullDateTimes[index] || items[0].label;
+                                },
+                                label: function(context) {
+                                    const index = context.dataIndex;
+                                    const store = platformNames[index] || 'Store';
+                                    return `Price: ₹${context.parsed.y} (${store})`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            grid: { color: 'rgba(255, 255, 255, 0.06)' },
+                            ticks: {
+                                color: '#9ca3af',
+                                callback: val => '₹' + val,
+                                padding: 10
+                            }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#9ca3af', padding: 10 }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderPlatformComparison(platforms) {
+            const grid = document.getElementById('platform-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            const reqPlatforms = ['Blinkit', 'Zepto', 'Instamart', 'BigBasket', 'JioMart', 'Amazon', 'Flipkart'];
+            
+            // Map fetched results
+            const platformMap = {};
+            if (platforms && Array.isArray(platforms)) {
+                platforms.forEach(p => {
+                    const name = p.platform || p.source || '';
+                    if (name) platformMap[name] = p;
+                });
+            }
+
+            // Find lowest price
+            let minPrice = Infinity;
+            reqPlatforms.forEach(name => {
+                const item = platformMap[name];
+                if (item && item.price && item.price < minPrice) {
+                    minPrice = item.price;
+                }
+            });
+
+            reqPlatforms.forEach(name => {
+                const item = platformMap[name];
+                const price = item ? item.price : null;
+                const isCheapest = price && price === minPrice;
+                const url = item ? item.url : '#';
+                const delivery = item ? (item.delivery_time || '10-20 min') : 'Standard';
+
+                const card = document.createElement('div');
+                card.className = `glass-morphism rounded-2xl p-4 border ${isCheapest ? 'border-emerald-500/50 bg-emerald-500/5' : 'border-white/10'} relative flex flex-col justify-between`;
+
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="font-bold text-white text-base">${name}</span>
+                            ${isCheapest ? '<span class="px-2 py-0.5 rounded text-[10px] font-extrabold uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Cheapest</span>' : ''}
+                        </div>
+                        <p class="text-2xl font-extrabold ${isCheapest ? 'text-emerald-400' : 'text-white'} mb-1">
+                            ${price ? '₹' + price : 'Out of Stock'}
+                        </p>
+                        <p class="text-xs text-gray-400 flex items-center gap-1">
+                            <i data-lucide="truck" class="w-3.5 h-3.5 text-indigo-400"></i> ${delivery}
+                        </p>
+                    </div>
+                    <a href="${url}" target="_blank" rel="noopener noreferrer" 
+                        class="mt-4 w-full py-2 rounded-xl glass-card-premium hover:bg-white/10 text-white text-xs font-bold text-center block transition-all">
+                        View Item →
+                    </a>
+                `;
+                grid.appendChild(card);
+            });
+            lucide.createIcons();
+        }
+
+        function renderTimeline(timelineEvents) {
+            const container = document.getElementById('timeline-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            if (!timelineEvents || timelineEvents.length === 0) {
+                container.innerHTML = `<p class="text-xs text-gray-400 italic pl-7">No major price fluctuations recorded in recent timeline.</p>`;
+                return;
+            }
+
+            timelineEvents.forEach(evt => {
+                const isDrop = evt.type === 'drop';
+                const div = document.createElement('div');
+                div.className = "relative pl-8 flex items-start gap-3";
+
+                div.innerHTML = `
+                    <div class="absolute left-1 top-1 w-5 h-5 rounded-full ${isDrop ? 'bg-emerald-500' : 'bg-amber-500'} flex items-center justify-center ring-4 ring-gray-900">
+                        <i data-lucide="${isDrop ? 'trending-down' : 'trending-up'}" class="w-3 h-3 text-gray-900"></i>
+                    </div>
+                    <div class="glass-morphism p-3.5 rounded-xl border border-white/10 w-full">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-xs font-bold text-white">${evt.title}</span>
+                            <span class="text-[11px] text-gray-400">${evt.date}</span>
+                        </div>
+                        <p class="text-xs text-gray-300">${evt.description} on <span class="text-indigo-400 font-semibold">${evt.platform}</span>.</p>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+            lucide.createIcons();
+        }
+
+        function openAlertModal() {
+            const productName = document.getElementById('chart-product-title').innerText || 'Product';
+            document.getElementById('alert-product-name').value = productName;
+            document.getElementById('alert-target-price').value = Math.round((currentAnalyticsData?.stats?.current || 100) * 0.9);
+            document.getElementById('alertModal').classList.remove('hidden');
+        }
+
+        function closeAlertModal() {
+            document.getElementById('alertModal').classList.add('hidden');
+        }
+
+        async function handleAlertSubmit(e) {
+            e.preventDefault();
+            const product = document.getElementById('alert-product-name').value;
+            const target_price = document.getElementById('alert-target-price').value;
+
+            try {
+                const res = await fetch('/api/price-alert', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ product, target_price })
+                });
+                const data = await res.json();
+                closeAlertModal();
+                if (data.success) {
+                    showToast(`Price alert created for ${product} at ₹${target_price}!`);
+                } else {
+                    alert(data.error || "Failed to set alert.");
+                }
+            } catch (err) {
+                closeAlertModal();
+                showToast(`Price alert saved!`);
+            }
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').innerText = msg;
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 3000);
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Cart - AI Price Comparison Platform | Compare Prices Across Top Platforms</title>
+    <meta name="description"
+        content="Compare prices across Amazon, Flipkart, Blinkit, Zepto and more in seconds. Smart Cart uses AI to find you the best deals on groceries, electronics, and daily essentials.">
+    <meta name="keywords"
+        content="price comparison, smart shopping, AI comparison, Amazon vs Flipkart, grocery deals, best prices">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+
+    <style>
+        /* Ultra-Premium SaaS Aesthetic */
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            --glass-glow: 0 0 20px rgba(99, 102, 241, 0.4);
+            --glass-hover: rgba(255, 255, 255, 0.08);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #030712;
+            /* Deepest black/blue */
+            color: #f3f4f6;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .glass-morphism {
+            background: linear-gradient(135deg,
+                    rgba(255, 255, 255, 0.1) 0%,
+                    rgba(255, 255, 255, 0.05) 100%);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow:
+                0 0 40px rgba(31, 38, 135, 0.1),
+                0 8px 32px rgba(31, 38, 135, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+
+        .glass-morphism::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg,
+                    rgba(255, 255, 255, 0.1) 0%,
+                    transparent 50%,
+                    rgba(255, 255, 255, 0.05) 100%);
+            border-radius: inherit;
+            pointer-events: none;
+        }
+
+        .glass-morphism::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg,
+                    transparent 30%,
+                    rgba(255, 255, 255, 0.03) 50%,
+                    transparent 70%);
+            border-radius: inherit;
+            pointer-events: none;
+        }
+
+        .glass-card-premium {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            border-radius: 24px;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .glass-card-premium::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(145deg,
+                    rgba(255, 255, 255, 0.05) 0%,
+                    transparent 30%,
+                    rgba(255, 255, 255, 0.02) 100%);
+            border-radius: inherit;
+            pointer-events: none;
+        }
+
+        .glass-card-premium.card-hover:hover {
+            transform: translateY(-4px);
+            border-color: rgba(99, 102, 241, 0.4);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5), 0 0 20px rgba(99, 102, 241, 0.2);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .glass-button-premium {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .glass-button-premium:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(99, 102, 241, 0.6);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .glass-input-premium {
+            background: var(--glass-bg-secondary);
+            backdrop-filter: blur(20px) saturate(120%) contrast(1.05);
+            border: 1px solid var(--glass-border-light);
+            color: var(--glass-text-primary);
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .glass-input-premium:focus {
+            background: var(--glass-bg-primary);
+            border-color: var(--glass-accent-primary);
+            box-shadow: var(--glass-glow), inset 0 1px 3px rgba(0, 0, 0, 0.2);
+            outline: none;
+        }
+
+        .glass-input-premium::placeholder {
+            color: var(--glass-text-muted);
+        }
+
+        /* Ultra Premium Mesh Background System */
+        .aurora-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            overflow: hidden;
+            background: #030712;
+        }
+
+        .aurora-blob {
+            position: absolute;
+            filter: blur(140px);
+            opacity: 0.6;
+            animation: floatBlob 20s infinite ease-in-out alternate;
+            border-radius: 50%;
+        }
+
+        .blob-1 {
+            top: -10%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: rgba(79, 70, 229, 0.4);
+            /* Indigo */
+            animation-delay: 0s;
+        }
+
+        .blob-2 {
+            bottom: -20%;
+            right: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: rgba(147, 51, 234, 0.3);
+            /* Purple */
+            animation-delay: -5s;
+        }
+
+        .blob-3 {
+            top: 40%;
+            left: 30%;
+            width: 40vw;
+            height: 40vw;
+            background: rgba(59, 130, 246, 0.3);
+            /* Blue */
+            animation-delay: -10s;
+        }
+
+        .blob-4 {
+            top: 10%;
+            right: 20%;
+            width: 40vw;
+            height: 40vw;
+            background: rgba(236, 72, 153, 0.2);
+            /* Pink */
+            animation-delay: -15s;
+        }
+
+        @keyframes floatBlob {
+            0% {
+                transform: translate(0, 0) scale(1) rotate(0deg);
+            }
+
+            33% {
+                transform: translate(5%, 5%) scale(1.1) rotate(5deg);
+            }
+
+            66% {
+                transform: translate(-5%, 10%) scale(0.9) rotate(-5deg);
+            }
+
+            100% {
+                transform: translate(0, -5%) scale(1) rotate(0deg);
+            }
+        }
+
+        /* Animated Grid Overlay for Texture */
+        .grid-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-image:
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+
+        /* Premium typography */
+        .gradient-text-premium {
+            background: linear-gradient(135deg,
+                    #667eea 0%,
+                    #764ba2 20%,
+                    #8b5cf6 40%,
+                    #ec4899 60%,
+                    #f97316 80%,
+                    #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 4px 8px rgba(99, 102, 241, 0.4));
+        }
+
+        .hover-lift-premium {
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform-style: preserve-3d;
+        }
+
+        .hover-lift-premium:hover {
+            transform: translateY(-8px) rotateX(1deg) scale(1.02);
+            box-shadow: var(--glass-shadow-strong);
+        }
+
+        .platform-badge-premium {
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform-style: preserve-3d;
+        }
+
+        .platform-badge-premium:hover {
+            transform: translateY(-2px) scale(1.03) rotateY(-1deg);
+            box-shadow: var(--glass-shadow-medium);
+        }
+
+        .savings-highlight-premium {
+            background: linear-gradient(135deg,
+                    rgba(16, 185, 129, 0.9) 0%,
+                    rgba(5, 150, 105, 0.8) 50%,
+                    rgba(4, 120, 87, 0.7) 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            box-shadow: var(--glass-glow);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .savings-highlight-premium::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg,
+                    transparent 30%,
+                    rgba(255, 255, 255, 0.1) 50%,
+                    transparent 70%);
+            border-radius: inherit;
+            pointer-events: none;
+        }
+
+        /* Enterprise text colors */
+        .text-primary {
+            color: var(--glass-text-primary);
+        }
+
+        .text-secondary {
+            color: #cbd5e1;
+            /* Tailwind gray-300 */
+        }
+
+        .text-muted {
+            color: var(--glass-text-muted);
+        }
+
+        .text-accent {
+            color: var(--glass-accent-primary);
+        }
+
+        .text-muted {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .glass-nav-item {
+            padding: 8px 16px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            position: relative;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 500;
+        }
+
+        .glass-nav-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: white;
+        }
+
+        .glass-nav-item.active {
+            color: white;
+            font-weight: 700;
+        }
+
+        .glass-button-hero {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 1.125rem;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-button-hero:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(99, 102, 241, 0.6);
+            box-shadow: 0 0 25px rgba(99, 102, 241, 0.4);
+            transform: translateY(-4px) scale(1.02);
+            color: white;
+        }
+
+        .glass-button-hero-primary {
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.4);
+            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.2);
+        }
+
+        .glass-button-hero-primary:hover {
+            background: rgba(99, 102, 241, 0.25);
+            border-color: rgba(99, 102, 241, 0.8);
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.5);
+        }
+
+        /* Clean Hero CTA Button Glow Effects */
+        @keyframes heroBtnPulse {
+            0%, 100% {
+                box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4), 0 0 20px rgba(168, 85, 247, 0.2);
+            }
+            50% {
+                box-shadow: 0 15px 40px rgba(99, 102, 241, 0.65), 0 0 35px rgba(236, 72, 153, 0.4);
+            }
+        }
+
+        .cta-primary-btn {
+            position: relative;
+            background: linear-gradient(135deg, #2563eb 0%, #4f46e5 50%, #9333ea 100%);
+            animation: heroBtnPulse 3s infinite ease-in-out;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .cta-primary-btn:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 18px 45px rgba(99, 102, 241, 0.6), 0 0 30px rgba(168, 85, 247, 0.5) !important;
+        }
+
+        .cta-primary-btn:active {
+            transform: translateY(0) scale(0.97);
+        }
+    </style>
+</head>
+
+<body class="text-primary antialiased selection:bg-indigo-500/30">
+    <!-- Ultra Premium Aurora Background -->
+    <div class="aurora-bg">
+        <div class="aurora-blob blob-1"></div>
+        <div class="aurora-blob blob-2"></div>
+        <div class="aurora-blob blob-3"></div>
+        <div class="aurora-blob blob-4"></div>
+        <div class="grid-overlay"></div>
+    </div>
+    <!-- Sticky Navbar -->
+    <nav class="sticky top-0 z-50 glass-morphism border-b border-indigo-500/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="{{ url_for('main.index') }}" class="flex items-center space-x-3 group">
+                    <div class="w-10 h-10 bg-gradient-to-tr from-blue-600 via-indigo-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/35 border border-white/20 group-hover:scale-105 transition-transform">
+                        <i data-lucide="shopping-cart" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <span class="text-2xl font-extrabold text-white tracking-tight">Smart Cart</span>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-1">
+                    <a href="{{ url_for('main.index') }}" class="glass-nav-item active text-sm px-4 py-2">
+                        Home
+                        <span class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-indigo-500 rounded-full shadow-[0_0_12px_rgba(99,102,241,1)]"></span>
+                    </a>
+                    <a href="#compare" class="glass-nav-item text-sm px-4 py-2">Compare</a>
+                    <a href="{{ url_for('main.price_history') }}" class="glass-nav-item text-sm px-4 py-2">Price History</a>
+                    <a href="#how-it-works" class="glass-nav-item text-sm px-4 py-2">How It Works</a>
+                </div>
+
+                <!-- Right Action Items -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <!-- Location Selector Pill -->
+                    <div class="glass-morphism rounded-full px-4 py-2 border border-white/15 text-xs font-semibold text-gray-200 flex items-center gap-2 cursor-pointer hover:border-indigo-500/50 transition-all shadow-inner">
+                        <i data-lucide="map-pin" class="w-4 h-4 text-indigo-400"></i>
+                        <span>Mumbai, India</span>
+                        <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-gray-400"></i>
+                    </div>
+
+                    {% if session.get('user') %}
+                    <button onclick="logout()"
+                        class="px-6 py-2.5 rounded-xl bg-rose-500/20 text-rose-300 border border-rose-500/40 text-xs font-bold uppercase tracking-widest hover:bg-rose-500/30 transition-all">
+                        Logout
+                    </button>
+                    {% else %}
+                    <a href="{{ url_for('main.login') }}"
+                        class="px-7 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-bold text-sm tracking-wide shadow-lg shadow-indigo-500/30 transition-all">
+                        Login
+                    </a>
+                    {% endif %}
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-gray-300 hover:text-white">
+                        <i data-lucide="menu" size="24"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden glass-dark-premium">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="{{ url_for('main.index') }}" class="block px-3 py-2 text-gray-300 hover:text-white font-medium">Home</a>
+                <a href="#compare" class="block px-3 py-2 text-gray-300 hover:text-white font-medium">Compare</a>
+                <a href="{{ url_for('main.price_history') }}" class="block px-3 py-2 text-gray-300 hover:text-white font-medium">Price History</a>
+                <a href="#how-it-works" class="block px-3 py-2 text-gray-300 hover:text-white font-medium">How It Works</a>
+                {% if session.get('user') %}
+                <button onclick="logout()"
+                    class="text-white block w-full text-left px-3 py-2 rounded-lg font-medium transition-all bg-rose-500/20 border border-rose-500/40">
+                    Logout
+                </button>
+                {% else %}
+                <a href="{{ url_for('main.login') }}"
+                    class="text-white block px-3 py-2 rounded-lg font-medium transition-all bg-indigo-600">
+                    Login
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative py-12 lg:py-20 px-4 sm:px-6 lg:px-8 overflow-hidden min-h-[88vh] flex flex-col justify-center">
+        <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center z-10">
+            
+            <!-- Left Hero Content -->
+            <div class="lg:col-span-6 text-left">
+                <!-- AI Badge Pill -->
+                <div class="inline-flex items-center gap-2 p-1 pr-4 rounded-full bg-indigo-950/70 border border-indigo-500/35 shadow-[0_0_20px_rgba(99,102,241,0.25)] mb-6">
+                    <span class="px-3 py-1 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-xs font-extrabold flex items-center gap-1">
+                        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> AI Powered
+                    </span>
+                    <span class="text-xs text-gray-300 font-medium">Compare 1000+ products across top platforms</span>
+                </div>
+
+                <!-- Headline -->
+                <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white leading-[1.08] tracking-tight mb-6">
+                    Same Products.<br>
+                    <span class="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-500 bg-clip-text text-transparent">Better Prices.</span>
+                </h1>
+
+                <!-- Subtitle -->
+                <p class="text-base sm:text-lg text-gray-300 max-w-xl leading-relaxed mb-8">
+                    Compare prices across Blinkit, Zepto, Instamart, BigBasket, Amazon, Flipkart and more. Save time, save money, shop smarter.
+                </p>
+
+                <!-- 3 Feature Highlight Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-10">
+                    <div class="glass-card-premium p-3.5 rounded-2xl border border-white/10 flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-indigo-500/20 border border-indigo-500/40 flex items-center justify-center shrink-0">
+                            <i data-lucide="zap" class="w-5 h-5 text-indigo-400"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-xs font-bold text-white leading-tight">Real-time Prices</h4>
+                            <p class="text-[11px] text-gray-400">From top platforms</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-card-premium p-3.5 rounded-2xl border border-white/10 flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-purple-500/20 border border-purple-500/40 flex items-center justify-center shrink-0">
+                            <span class="text-purple-400 font-extrabold text-base">₹</span>
+                        </div>
+                        <div>
+                            <h4 class="text-xs font-bold text-white leading-tight">Best Deals</h4>
+                            <p class="text-[11px] text-gray-400">Save every day</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-card-premium p-3.5 rounded-2xl border border-white/10 flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-blue-500/20 border border-blue-500/40 flex items-center justify-center shrink-0">
+                            <i data-lucide="shield-check" class="w-5 h-5 text-blue-400"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-xs font-bold text-white leading-tight">Trusted & Accurate</h4>
+                            <p class="text-[11px] text-gray-400">AI-powered comparison</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CTA Buttons -->
+                <div class="flex flex-wrap items-center gap-4 select-none">
+                    <a href="{{ url_for('main.ecommerce') }}"
+                        class="cta-primary-btn px-8 py-4 rounded-xl text-white font-extrabold text-base uppercase tracking-wider flex items-center gap-3 group border border-white/20">
+                        <span>Start Comparing</span>
+                        <i data-lucide="arrow-right" class="w-5 h-5 text-white transform group-hover:translate-x-1.5 transition-transform duration-300"></i>
+                    </a>
+                    <a href="{{ url_for('main.explore') }}"
+                        class="px-7 py-4 rounded-xl bg-white/5 hover:bg-white/10 backdrop-blur-xl border border-white/15 hover:border-sky-400/50 text-white font-bold text-base uppercase tracking-wider flex items-center gap-2.5 shadow-md hover:shadow-[0_10px_25px_rgba(56,189,248,0.2)] transform hover:-translate-y-1 active:translate-y-0 active:scale-95 transition-all duration-300 group">
+                        <i data-lucide="eye" class="w-5 h-5 text-sky-400 group-hover:scale-125 transition-transform duration-300"></i>
+                        <span>Explore</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Hero 3D Smartphone & Live Price Stack -->
+            <div class="lg:col-span-6 relative flex items-center justify-center min-h-[520px]">
+                
+                <!-- Background Aura Glow System -->
+                <div class="absolute w-[420px] h-[420px] bg-gradient-to-tr from-purple-600/30 via-indigo-600/20 to-blue-500/20 rounded-full blur-[110px] pointer-events-none -z-10 animate-pulse"></div>
+                <div class="absolute w-72 h-72 bg-indigo-500/25 rounded-full blur-[70px] pointer-events-none -z-10"></div>
+
+                <!-- Handwritten Curve Annotation -->
+                <div class="absolute -top-12 sm:-top-16 left-1/2 -translate-x-1/2 lg:left-auto lg:right-12 z-30 flex items-center gap-3 pointer-events-none">
+                    <span class="font-serif italic text-xl sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-pink-300 to-amber-300 tracking-wide drop-shadow-[0_2px_12px_rgba(168,85,247,0.6)]">
+                        Compare before you buy!
+                    </span>
+                    <svg class="w-16 h-16 text-pink-400 filter drop-shadow-[0_0_12px_rgba(236,72,153,0.8)] animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 100 80">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M 15 15 C 45 5, 80 15, 75 55"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M 60 45 L 75 55 L 85 42"></path>
+                    </svg>
+                </div>
+
+                <!-- Phone Showcase Render (Seamless Cutout) -->
+                <div class="relative z-10 flex items-center justify-center">
+                    <img src="{{ url_for('static', filename='hero_iphone_showcase.png') }}" 
+                        alt="3D iPhone Product Comparison" 
+                        class="w-64 sm:w-72 lg:w-[340px] max-h-[460px] object-contain filter drop-shadow-[0_20px_40px_rgba(0,0,0,0.85)] transform -rotate-2 hover:rotate-0 transition-transform duration-700">
+                </div>
+
+                <!-- Floating Live Price Comparison Cards Stack -->
+                <div class="absolute right-0 sm:-right-2 lg:-right-6 top-1/2 -translate-y-1/2 z-30 flex flex-col gap-3.5">
+                    
+                    <!-- Blinkit Card (Best Price) -->
+                    <div class="glass-card-premium p-3.5 rounded-2xl border border-emerald-500/50 bg-gray-950/90 shadow-[0_10px_30px_rgba(16,185,129,0.2)] flex items-center justify-between gap-4 w-60 sm:w-64 transform hover:scale-105 transition-all duration-300">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-yellow-400 flex items-center justify-center p-1 font-black text-black text-xs tracking-tighter shrink-0 shadow-md shadow-yellow-500/20">
+                                blinkit
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-white">Blinkit</h4>
+                                <p class="text-[11px] text-gray-400">10 min</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm font-black text-white">₹69,900</p>
+                            <span class="px-2 py-0.5 rounded-md bg-emerald-400 text-gray-950 font-black text-[10px] uppercase tracking-wide">Best Price</span>
+                        </div>
+                    </div>
+
+                    <!-- Zepto Card -->
+                    <div class="glass-card-premium p-3.5 rounded-2xl border border-white/12 bg-gray-950/90 shadow-2xl flex items-center justify-between gap-4 w-60 sm:w-64 transform hover:scale-105 transition-all duration-300">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-purple-600 flex items-center justify-center font-black text-white text-base shrink-0 shadow-md shadow-purple-500/20">
+                                Z
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-white">Zepto</h4>
+                                <p class="text-[11px] text-gray-400">10 min</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm font-extrabold text-white">₹70,499</p>
+                        </div>
+                    </div>
+
+                    <!-- Instamart Card -->
+                    <div class="glass-card-premium p-3.5 rounded-2xl border border-white/12 bg-gray-950/90 shadow-2xl flex items-center justify-between gap-4 w-60 sm:w-64 transform hover:scale-105 transition-all duration-300">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-orange-500 flex items-center justify-center font-black text-white text-base shrink-0 shadow-md shadow-orange-500/20">
+                                9
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-white">Instamart</h4>
+                                <p class="text-[11px] text-gray-400">12 min</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm font-extrabold text-white">₹70,990</p>
+                        </div>
+                    </div>
+
+                    <!-- Amazon Card -->
+                    <div class="glass-card-premium p-3.5 rounded-2xl border border-white/12 bg-gray-950/90 shadow-2xl flex items-center justify-between gap-4 w-60 sm:w-64 transform hover:scale-105 transition-all duration-300">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-slate-900 border border-amber-500/30 flex items-center justify-center p-1.5 shrink-0 shadow-md">
+                                <svg class="w-6 h-6 text-amber-400 fill-current" viewBox="0 0 24 24">
+                                    <path d="M13.94 11.08c-2.07.19-3.48.65-4.23 1.38-.75.73-1.12 1.76-1.12 3.09 0 1.25.38 2.22 1.14 2.91.76.69 1.83 1.04 3.2 1.04 1.28 0 2.37-.36 3.27-1.08.9-.72 1.35-1.74 1.35-3.06v-5.26h-3.61v1zm1.26 5.86c-.53.53-1.22.8-2.07.8-.75 0-1.32-.2-1.71-.6-.39-.4-.59-.97-.59-1.71 0-.8.26-1.39.78-1.77.52-.38 1.35-.61 2.49-.69v1.2c0 .94.37 1.87 1.1 2.77zM20.25 19.86c-4.47 2.1-9.98 2.14-14.73-.27-1.01-.51-2.48-1.51-2.48-1.51s-.11-.08-.05-.14c.06-.06.18-.04.28.02 1.79 1.11 3.91 1.78 6.09 1.95 2.68.21 5.37-.41 7.78-1.75.25-.14.47.16.2.32zM21.2 18.25c.34-.41.98-1.11 1.22-1.51.1-.16.03-.29-.14-.24-.49.16-1.63.49-2.22.56-.25.03-.26-.14-.04-.27 1.38-.85 2.82-1.7 4.25-2.5.21-.12.38.03.26.23-.74 1.25-1.74 2.75-2.61 4.09-.15.23-.39.2-.72-.36z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-white">Amazon</h4>
+                                <p class="text-[11px] text-gray-400">1-2 days</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm font-extrabold text-white">₹71,990</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Floating Glassmorphic Savings Card (Bottom Left) -->
+                <div class="absolute -left-2 sm:left-2 bottom-2 z-30 glass-card-premium p-4 rounded-2xl border border-indigo-500/50 bg-indigo-950/90 shadow-[0_10px_35px_rgba(99,102,241,0.3)] backdrop-blur-xl hover:scale-105 transition-transform">
+                    <p class="text-[10px] font-bold text-indigo-300 uppercase tracking-widest">Save up to</p>
+                    <p class="text-3xl font-black text-white tracking-tight">₹5,000</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Trust Stats Counter Footer Bar -->
+        <div class="border-t border-white/10 pt-10 pb-6 mt-16 max-w-7xl mx-auto w-full px-4">
+            <p class="text-center text-xs font-extrabold uppercase tracking-widest text-gray-500 mb-8">Trusted by Smart Shoppers</p>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center max-w-4xl mx-auto">
+                <div class="flex flex-col items-center">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center mb-2">
+                        <i data-lucide="shopping-cart" class="w-5 h-5 text-indigo-400"></i>
+                    </div>
+                    <p class="text-2xl font-black text-white">1000+</p>
+                    <p class="text-xs text-gray-400">Products Compared</p>
+                </div>
+
+                <div class="flex flex-col items-center">
+                    <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center mb-2">
+                        <i data-lucide="layers" class="w-5 h-5 text-purple-400"></i>
+                    </div>
+                    <p class="text-2xl font-black text-white">8+</p>
+                    <p class="text-xs text-gray-400">Top Platforms</p>
+                </div>
+
+                <div class="flex flex-col items-center">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center mb-2">
+                        <i data-lucide="leaf" class="w-5 h-5 text-emerald-400"></i>
+                    </div>
+                    <p class="text-2xl font-black text-white">Smarter</p>
+                    <p class="text-xs text-gray-400">Everyday Shopping</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Platform Cards -->
+    <section id="compare" class="py-16 px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-white mb-4">Compare Across All Major Platforms</h2>
+                <p class="text-gray-300 text-lg">We bring you prices from the most trusted e-commerce platforms</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Amazon Card -->
+                <div class="glass-card-premium p-6 card-hover">
+                    <div
+                        class="w-16 h-16 bg-white/5 border border-white/10 rounded-lg flex items-center justify-center mb-4 overflow-hidden p-2">
+                        <img src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="%23232f3e"/><text x="50" y="62" font-family="sans-serif" font-weight="900" font-size="24" fill="%23ff9900" text-anchor="middle">Amazon</text></svg>'
+                            alt="Amazon Logo"
+                            class="w-full h-full object-contain" loading="lazy">
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Amazon</h3>
+                    <p class="text-gray-400 mb-4">Millions of products, fast delivery</p>
+                    <a href="{{ url_for('main.ecommerce') }}"
+                        class="w-full px-4 py-2 glass-button-premium text-white rounded-lg transition-colors font-medium text-center block">
+                        Compare
+                    </a>
+                </div>
+
+                <!-- Flipkart Card -->
+                <div class="glass-card-premium p-6 card-hover">
+                    <div
+                        class="w-16 h-16 bg-white/5 border border-white/10 rounded-lg flex items-center justify-center mb-4 overflow-hidden p-2">
+                        <img src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="%232874f0"/><text x="50" y="62" font-family="sans-serif" font-weight="900" font-size="22" fill="%23ffe500" text-anchor="middle">Flipkart</text></svg>'
+                            alt="Flipkart Logo"
+                            class="w-full h-full object-contain" loading="lazy">
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Flipkart</h3>
+                    <p class="text-gray-400 mb-4">Best deals on electronics & fashion</p>
+                    <a href="{{ url_for('main.ecommerce') }}"
+                        class="w-full px-4 py-2 glass-button-premium text-white rounded-lg transition-colors font-medium text-center block">
+                        Compare
+                    </a>
+                </div>
+
+                <!-- Blinkit Card -->
+                <div class="glass-card-premium p-6 card-hover">
+                    <div
+                        class="w-16 h-16 bg-white/5 border border-white/10 rounded-lg flex items-center justify-center mb-4 overflow-hidden p-2">
+                        <img src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="%23f59e0b"/><text x="50" y="62" font-family="sans-serif" font-weight="900" font-size="24" fill="%230f172a" text-anchor="middle">Blinkit</text></svg>'
+                            alt="Blinkit Logo"
+                            class="w-full h-full object-contain" loading="lazy">
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Blinkit</h3>
+                    <p class="text-gray-400 mb-4">10 Min grocery delivery</p>
+                    <a href="{{ url_for('main.shop') }}"
+                        class="w-full px-4 py-2 glass-button-premium text-white rounded-lg transition-colors font-medium text-center block">
+                        Compare
+                    </a>
+                </div>
+
+                <!-- Zepto Card -->
+                <div class="glass-card-premium p-6 card-hover">
+                    <div
+                        class="w-16 h-16 bg-white/5 border border-white/10 rounded-lg flex items-center justify-center mb-4 overflow-hidden p-2">
+                        <img src='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="%238b5cf6"/><text x="50" y="62" font-family="sans-serif" font-weight="900" font-size="28" fill="%23ffffff" text-anchor="middle">Zepto</text></svg>'
+                            alt="Zepto Logo"
+                            class="w-full h-full object-contain" loading="lazy">
+                    </div>
+                    <h3 class="text-xl font-semibold text-white mb-2">Zepto</h3>
+                    <p class="text-gray-400 mb-4">10 Min essentials delivery</p>
+                    <a href="{{ url_for('main.shop') }}"
+                        class="w-full px-4 py-2 glass-button-premium text-white rounded-lg transition-colors font-medium text-center block">
+                        Compare
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10-Min Delivery Section -->
+    <section id="delivery" class="py-16 px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-white mb-4">10-Minute Delivery Essentials</h2>
+                <p class="text-gray-300 text-lg">Daily essentials delivered in minutes at the best prices</p>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <!-- Milk -->
+                <div class="glass-card-premium p-4 card-hover flex flex-col items-center text-center">
+                    <div
+                        class="w-20 h-20 bg-white/5 border border-white/10 rounded-full flex items-center justify-center mb-4 overflow-hidden shadow-[0_0_15px_rgba(96,165,250,0.2)]">
+                        <img src="https://images.unsplash.com/photo-1550583724-b2692b85b150?q=80&w=200&auto=format&fit=crop"
+                            alt="Fresh Milk" class="w-full h-full object-cover">
+                    </div>
+                    <h4 class="font-semibold text-white mb-1">Fresh Milk</h4>
+                    <p class="text-sm text-gray-400 mb-2">1L Pack</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-lg font-bold text-white">₹54</span>
+                        <button
+                            class="text-sm px-3 py-1 glass-button-premium text-white rounded-lg transition-colors font-medium">
+                            Store
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Eggs -->
+                <div class="glass-card-premium p-4 card-hover flex flex-col items-center text-center">
+                    <div
+                        class="w-20 h-20 bg-white/5 border border-white/10 rounded-full flex items-center justify-center mb-4 overflow-hidden shadow-[0_0_15px_rgba(250,204,21,0.2)]">
+                        <img src="https://images.unsplash.com/photo-1506976785307-8732e854ad03?q=80&w=200&auto=format&fit=crop"
+                            alt="Farm Eggs" class="w-full h-full object-cover">
+                    </div>
+                    <h4 class="font-semibold text-white mb-1">Farm Eggs</h4>
+                    <p class="text-sm text-gray-400 mb-2">12 Pack</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-lg font-bold text-white">₹72</span>
+                        <button
+                            class="text-sm px-3 py-1 glass-button-premium text-white rounded-lg transition-colors font-medium">
+                            Store
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Atta -->
+                <div class="glass-card-premium p-4 card-hover flex flex-col items-center text-center">
+                    <div
+                        class="w-20 h-20 bg-white/5 border border-white/10 rounded-full flex items-center justify-center mb-4 overflow-hidden shadow-[0_0_15px_rgba(251,146,60,0.2)]">
+                        <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=200&auto=format&fit=crop"
+                            alt="Wheat Atta" class="w-full h-full object-cover">
+                    </div>
+                    <h4 class="font-semibold text-white mb-1">Wheat Atta</h4>
+                    <p class="text-sm text-gray-400 mb-2">5kg Pack</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-lg font-bold text-white">₹245</span>
+                        <button
+                            class="text-sm px-3 py-1 glass-button-premium text-white rounded-lg transition-colors font-medium">
+                            Store
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Oil -->
+                <div class="glass-card-premium p-4 card-hover flex flex-col items-center text-center">
+                    <div
+                        class="w-20 h-20 bg-white/5 border border-white/10 rounded-full flex items-center justify-center mb-4 overflow-hidden shadow-[0_0_15px_rgba(74,222,128,0.2)]">
+                        <img src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?q=80&w=200&auto=format&fit=crop"
+                            alt="Cooking Oil" class="w-full h-full object-cover">
+                    </div>
+                    <h4 class="font-semibold text-white mb-1">Cooking Oil</h4>
+                    <p class="text-sm text-gray-400 mb-2">1L Bottle</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-lg font-bold text-white">₹135</span>
+                        <button
+                            class="text-sm px-3 py-1 glass-button-premium text-white rounded-lg transition-colors font-medium">
+                            Store
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Comparison Grid -->
+    <section id="trending" class="py-16 px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-white mb-4">Trending Products Comparison</h2>
+                <p class="text-gray-300 text-lg">Real-time prices across all platforms</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Product 1 -->
+                <div class="glass-card-premium overflow-hidden card-hover">
+                    <div
+                        class="h-48 bg-white/5 flex items-center justify-center border-b border-white/10 overflow-hidden relative group">
+                        <img src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?q=80&w=500&auto=format&fit=crop"
+                            alt="iPhone 15 Pro"
+                            class="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-semibold text-white mb-1">iPhone 15 Pro</h4>
+                        <p class="text-sm text-gray-400 mb-2">128GB • Titanium</p>
+                        <div class="flex items-center justify-between mb-3">
+                            <span
+                                class="text-xs px-2 py-1 bg-white/10 text-gray-300 border border-white/20 rounded">Amazon</span>
+                            <span class="text-lg font-bold text-white">₹1,19,999</span>
+                        </div>
+                        <button
+                            class="w-full px-3 py-2 glass-button-premium text-white rounded-lg transition-colors text-sm font-medium">
+                            Compare
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="glass-card-premium overflow-hidden card-hover">
+                    <div
+                        class="h-48 bg-white/5 flex items-center justify-center border-b border-white/10 overflow-hidden relative group">
+                        <img src="https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?q=80&w=500&auto=format&fit=crop"
+                            alt="AirPods Pro 2"
+                            class="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-semibold text-white mb-1">AirPods Pro 2</h4>
+                        <p class="text-sm text-gray-400 mb-2">USB-C • Active Noise</p>
+                        <div class="flex items-center justify-between mb-3">
+                            <span
+                                class="text-xs px-2 py-1 bg-white/10 text-gray-300 border border-white/20 rounded">Flipkart</span>
+                            <span class="text-lg font-bold text-white">₹19,999</span>
+                        </div>
+                        <button
+                            class="w-full px-3 py-2 glass-button-premium text-white rounded-lg transition-colors text-sm font-medium">
+                            Compare
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="glass-card-premium overflow-hidden card-hover">
+                    <div
+                        class="h-48 bg-white/5 flex items-center justify-center border-b border-white/10 overflow-hidden relative group">
+                        <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=500&auto=format&fit=crop"
+                            alt="MacBook Air M3"
+                            class="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-semibold text-white mb-1">MacBook Air M3</h4>
+                        <p class="text-sm text-gray-400 mb-2">8GB • 256GB SSD</p>
+                        <div class="flex items-center justify-between mb-3">
+                            <span
+                                class="text-xs px-2 py-1 bg-white/10 text-gray-300 border border-white/20 rounded">Blinkit</span>
+                            <span class="text-lg font-bold text-white">₹1,14,999</span>
+                        </div>
+                        <button
+                            class="w-full px-3 py-2 glass-button-premium text-white rounded-lg transition-colors text-sm font-medium">
+                            Compare
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="glass-card-premium overflow-hidden card-hover">
+                    <div
+                        class="h-48 bg-white/5 flex items-center justify-center border-b border-white/10 overflow-hidden relative group">
+                        <img src="https://images.unsplash.com/photo-1434493789847-2f02dc6ca35d?q=80&w=500&auto=format&fit=crop"
+                            alt="Apple Watch 9"
+                            class="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-semibold text-white mb-1">Apple Watch 9</h4>
+                        <p class="text-sm text-gray-400 mb-2">45mm • GPS</p>
+                        <div class="flex items-center justify-between mb-3">
+                            <span
+                                class="text-xs px-2 py-1 bg-white/10 text-gray-300 border border-white/20 rounded">Zepto</span>
+                            <span class="text-lg font-bold text-white">₹44,999</span>
+                        </div>
+                        <button
+                            class="w-full px-3 py-2 glass-button-premium text-white rounded-lg transition-colors text-sm font-medium">
+                            Compare
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="py-16 px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="max-w-7xl mx-auto relative px-4">
+            <!-- Connecting Line Background (Desktop Only) -->
+            <div
+                class="hidden md:block absolute top-[45%] left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent -z-10">
+            </div>
+
+            <div class="text-center mb-16 relative z-10">
+                <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-6 tracking-tight">How It Works</h2>
+                <p class="text-gray-300 text-xl max-w-2xl mx-auto">Compare and save money in three effortless steps</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 relative z-10">
+                <!-- Step 1 -->
+                <div
+                    class="glass-card-premium p-10 text-center text-white card-hover relative group transition-all duration-700 overflow-hidden border border-white/5 hover:border-indigo-500/50 hover:bg-white/[0.03] transform hover:-translate-y-4 rounded-[2rem]">
+                    <!-- Background Number -->
+                    <div
+                        class="absolute -right-8 -bottom-12 text-[12rem] font-black text-white/[0.03] group-hover:text-indigo-500/10 transition-colors duration-700 pointer-events-none z-0 tracking-tighter mix-blend-overlay">
+                        1</div>
+
+                    <div
+                        class="absolute inset-0 bg-gradient-to-tr from-indigo-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-0">
+                    </div>
+
+                    <!-- Circular Icon Container -->
+                    <div class="relative w-24 h-24 mx-auto mb-8 z-10">
+                        <div
+                            class="absolute inset-0 bg-indigo-500/20 rounded-full blur-xl group-hover:blur-2xl transition-all duration-700 group-hover:bg-indigo-500/40">
+                        </div>
+                        <div
+                            class="w-full h-full bg-gradient-to-br from-indigo-400/20 to-purple-600/20 border border-indigo-400/30 rounded-full flex items-center justify-center group-hover:scale-110 group-hover:border-indigo-400/60 transition-all duration-500 shadow-[inset_0_0_20px_rgba(99,102,241,0.2)] backdrop-blur-md relative z-10">
+                            <i data-lucide="search" size="32"
+                                class="text-indigo-400 group-hover:text-white transition-colors duration-300"></i>
+                        </div>
+                    </div>
+
+                    <h3
+                        class="text-3xl font-bold mb-4 relative z-10 group-hover:text-indigo-300 transition-colors duration-300">
+                        Search Product</h3>
+                    <p class="text-gray-400 relative z-10 group-hover:text-gray-300 leading-relaxed text-lg">Paste a
+                        link, enter a name, or upload an image to find the exact item you want to buy.</p>
+                </div>
+
+                <!-- Step 2 -->
+                <div
+                    class="glass-card-premium p-10 text-center text-white card-hover relative group transition-all duration-700 overflow-hidden border border-white/5 hover:border-purple-500/50 hover:bg-white/[0.03] transform hover:-translate-y-4 rounded-[2rem] md:translate-y-8 md:hover:translate-y-4 shadow-lg shadow-black/50">
+                    <!-- Background Number -->
+                    <div
+                        class="absolute -right-8 -bottom-12 text-[12rem] font-black text-white/[0.03] group-hover:text-purple-500/10 transition-colors duration-700 pointer-events-none z-0 tracking-tighter mix-blend-overlay">
+                        2</div>
+
+                    <div
+                        class="absolute inset-0 bg-gradient-to-tr from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-0">
+                    </div>
+
+                    <div class="relative w-24 h-24 mx-auto mb-8 z-10">
+                        <div
+                            class="absolute inset-0 bg-purple-500/20 rounded-full blur-xl group-hover:blur-2xl transition-all duration-700 group-hover:bg-purple-500/40">
+                        </div>
+                        <div
+                            class="w-full h-full bg-gradient-to-br from-purple-400/20 to-pink-600/20 border border-purple-400/30 rounded-full flex items-center justify-center group-hover:scale-110 group-hover:border-purple-400/60 transition-all duration-500 shadow-[inset_0_0_20px_rgba(168,85,247,0.2)] backdrop-blur-md relative z-10">
+                            <i data-lucide="scan-line" size="32"
+                                class="text-purple-400 group-hover:text-white transition-colors duration-300"></i>
+                        </div>
+                    </div>
+
+                    <h3
+                        class="text-3xl font-bold mb-4 relative z-10 group-hover:text-purple-300 transition-colors duration-300">
+                        Compare Prices</h3>
+                    <p class="text-gray-400 relative z-10 group-hover:text-gray-300 leading-relaxed text-lg">Our AI
+                        engine instantly scans 20+ top platforms to fetch real-time, accurate prices.</p>
+                </div>
+
+                <!-- Step 3 -->
+                <div
+                    class="glass-card-premium p-10 text-center text-white card-hover relative group transition-all duration-700 overflow-hidden border border-white/5 hover:border-emerald-500/50 hover:bg-white/[0.03] transform hover:-translate-y-4 rounded-[2rem] md:translate-y-16 md:hover:translate-y-12 shadow-lg shadow-black/50">
+                    <!-- Background Number -->
+                    <div
+                        class="absolute -right-8 -bottom-12 text-[12rem] font-black text-white/[0.03] group-hover:text-emerald-500/10 transition-colors duration-700 pointer-events-none z-0 tracking-tighter mix-blend-overlay">
+                        3</div>
+
+                    <div
+                        class="absolute inset-0 bg-gradient-to-tr from-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-0">
+                    </div>
+
+                    <div class="relative w-24 h-24 mx-auto mb-8 z-10">
+                        <div
+                            class="absolute inset-0 bg-emerald-500/20 rounded-full blur-xl group-hover:blur-2xl transition-all duration-700 group-hover:bg-emerald-500/40">
+                        </div>
+                        <div
+                            class="w-full h-full bg-gradient-to-br from-emerald-400/20 to-teal-600/20 border border-emerald-400/30 rounded-full flex items-center justify-center group-hover:scale-110 group-hover:border-emerald-400/60 transition-all duration-500 shadow-[inset_0_0_20px_rgba(52,211,153,0.2)] backdrop-blur-md relative z-10">
+                            <i data-lucide="shopping-bag" size="32"
+                                class="text-emerald-400 group-hover:text-white transition-colors duration-300"></i>
+                        </div>
+                    </div>
+
+                    <h3
+                        class="text-3xl font-bold mb-4 relative z-10 group-hover:text-emerald-300 transition-colors duration-300">
+                        Save & Shop</h3>
+                    <p class="text-gray-400 relative z-10 group-hover:text-gray-300 leading-relaxed text-lg">Spot the
+                        lowest price, click the link, and save your hard-earned money instantly.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="max-w-4xl mx-auto">
+            <div class="glass-card-premium p-12 text-center border border-white/20">
+                <h2 class="text-3xl font-bold text-white mb-4">Stay Updated with Best Deals</h2>
+                <p class="text-gray-300 text-lg mb-8">Get notified about price drops and exclusive offers</p>
+
+                <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                    <input type="email" placeholder="Enter your email" required
+                        class="flex-1 px-4 py-3 rounded-lg border border-white/20 bg-black/20 text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-400 focus:outline-none backdrop-blur-md">
+                    <button type="submit"
+                        class="px-6 py-3 glass-button-premium text-white rounded-lg transition-colors font-semibold">
+                        Subscribe
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer
+        class="bg-black/40 backdrop-blur-xl border-t border-white/10 text-gray-400 py-12 px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Company -->
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div
+                            class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center shadow-lg shadow-indigo-500/30">
+                            <i data-lucide="shopping-cart" size="18" class="text-white"></i>
+                        </div>
+                        <span class="text-xl font-bold text-white">Smart Cart</span>
+                    </div>
+                    <p class="text-sm">AI-powered price comparison platform helping you save money on every purchase.
+                    </p>
+                </div>
+
+                <!-- Products -->
+                <div>
+                    <h4 class="text-white font-semibold mb-4">Products</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-white transition-colors">Price Comparison</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Quick Delivery</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Trending Deals</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Price Alerts</a></li>
+                    </ul>
+                </div>
+
+                <!-- Company -->
+                <div>
+                    <h4 class="text-white font-semibold mb-4">Company</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Careers</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Legal -->
+                <div>
+                    <h4 class="text-white font-semibold mb-4">Legal</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Cookie Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Disclaimer</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-white/10 mt-8 pt-8 text-center text-sm">
+                <p>&copy; 2024 Smart Cart. All rights reserved. Made with ❤️ for smart shoppers.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Close mobile menu if open
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+
+        // Add scroll effect to navbar
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-lg');
+            } else {
+                nav.classList.remove('shadow-lg');
+            }
+        });
+
+        // Newsletter form submission
+        document.querySelector('form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = e.target.querySelector('input[type="email"]').value;
+            // Here you would normally send the email to your backend
+            alert(`Thank you for subscribing with email: ${email}`);
+            e.target.reset();
+        });
+
+        // Logout function
+        async function logout() {
+            try {
+                const res = await fetch('/auth/logout', { method: 'POST' });
+                if (res.ok) {
+                    window.location.href = "{{ url_for('main.index') }}";
+                } else {
+                    console.error('Logout failed');
+                }
+            } catch (err) {
+                console.error('Logout error:', err);
+            }
+        }
+    </script>
+</body>
+
+</html>

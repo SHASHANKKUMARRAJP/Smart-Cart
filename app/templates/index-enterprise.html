@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Cart Enterprise - Advanced Shopping Intelligence Dashboard</title>
+    <meta name="description" content="Enterprise-grade shopping dashboard with AI-powered insights, real-time analytics, predictive pricing, and advanced comparison tools. Professional platform for intelligent shopping optimization." />
+    <meta name="keywords" content="enterprise shopping, AI dashboard, price intelligence, predictive analytics, real-time comparison, shopping optimization" />
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f0f1f;
+            color: #ffffff;
+        }
+        
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .header {
+            background: rgba(15, 23, 42, 0.1);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.5rem 2rem;
+        }
+        
+        .search-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .search-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
+        }
+        
+        .search-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        
+        .results-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            padding: 2rem;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .product-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.2);
+        }
+        
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .platform-name {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+        
+        .price-display {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+        
+        .price {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #667eea;
+        }
+        
+        .original-price {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: line-through;
+        }
+        
+        .savings-badge {
+            background: #10b981;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: auto;
+        }
+        
+        .product-info {
+            flex: 1;
+        }
+        
+        .product-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+        
+        .product-meta {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.5;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .ai-insights {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .insight-card {
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .insight-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .insight-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .insight-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .insight-text {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.4;
+        }
+        
+        .trending-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .trending-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+        
+        .trending-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            padding: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .trending-card:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .trend-number {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: #10b981;
+            margin-bottom: 0.25rem;
+        }
+        
+        .trend-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 0.25rem;
+        }
+        
+        .trend-change {
+            font-size: 0.75rem;
+            color: #10b981;
+            font-weight: 600;
+        }
+        
+        .footer {
+            background: rgba(15, 23, 42, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 1rem;
+            }
+            
+            .stats-overview {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="header">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <div style="background: linear-gradient(135deg, #667eea, #764ba2); width: 3rem; height: 3rem; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center;">
+                        <i data-lucide="brain" style="color: white; width: 1.5rem; height: 1.5rem;"></i>
+                    </div>
+                    <div>
+                        <h1 style="font-size: 1.5rem; font-weight: 700; color: white;">Smart Cart</h1>
+                        <p style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.8);">Enterprise Platform</p>
+                    </div>
+                </div>
+                <div style="margin-left: auto;">
+                    <button class="btn btn-secondary">Analytics</button>
+                    <button class="btn btn-secondary">Settings</button>
+                    <button class="btn btn-primary">Export</button>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Search Section -->
+        <section class="search-section">
+            <div style="display: flex; gap: 1rem;">
+                <input type="text" class="search-input" placeholder="Search products, categories, or keywords..." />
+                <button class="search-btn">
+                    <i data-lucide="search" style="color: white; margin-right: 0.5rem;"></i>
+                    Search
+                </button>
+            </div>
+        </section>
+        
+        <!-- Stats Overview -->
+        <section class="stats-overview">
+            <div class="stat-card">
+                <div class="stat-number">2,847</div>
+                <div class="stat-label">Products Tracked</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">50+</div>
+                <div class="stat-label">Platforms</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">89%</div>
+                <div class="stat-label">Accuracy Rate</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Monitoring</div>
+            </div>
+        </section>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Results Section -->
+            <section class="results-section">
+                <h2 style="font-size: 1.5rem; font-weight: 700; color: white; margin-bottom: 1rem;">Price Comparison Results</h2>
+                <div class="product-grid">
+                    <!-- Product Card 1 -->
+                    <div class="product-card">
+                        <div class="product-header">
+                            <div class="platform-name">Blinkit</div>
+                            <div class="price-display">
+                                <span class="price">₹89</span>
+                                <span class="original-price">₹129</span>
+                                <div class="savings-badge">-31%</div>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-title">Organic Milk 1L</div>
+                            <div class="product-meta">Fresh delivery • 10 mins • In stock</div>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn btn-primary">View Deal</button>
+                            <button class="btn btn-secondary">Track Price</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Product Card 2 -->
+                    <div class="product-card">
+                        <div class="product-header">
+                            <div class="platform-name">Zepto</div>
+                            <div class="price-display">
+                                <span class="price">₹87</span>
+                                <span class="original-price">₹125</span>
+                                <div class="savings-badge">-30%</div>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-title">Organic Milk 1L</div>
+                            <div class="product-meta">Ultra-fast delivery • 10 mins • In stock</div>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn btn-primary">View Deal</button>
+                            <button class="btn btn-secondary">Track Price</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Product Card 3 -->
+                    <div class="product-card">
+                        <div class="product-header">
+                            <div class="platform-name">Instamart</div>
+                            <div class="price-display">
+                                <span class="price">₹91</span>
+                                <span class="original-price">₹119</span>
+                                <div class="savings-badge">-24%</div>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-title">Organic Milk 1L</div>
+                            <div class="product-meta">Swiggy delivery • 15 mins • In stock</div>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="btn btn-primary">View Deal</button>
+                            <button class="btn btn-secondary">Track Price</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- AI Insights Section -->
+            <section class="ai-insights">
+                <h2 style="font-size: 1.5rem; font-weight: 700; color: white; margin-bottom: 1rem;">AI-Powered Insights</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+                    <div class="insight-card">
+                        <div class="insight-header">
+                            <div class="insight-icon">
+                                <i data-lucide="trending-up" style="color: white;"></i>
+                            </div>
+                            <div>
+                                <div class="insight-title">Price Trend Analysis</div>
+                                <div class="insight-text">Milk prices expected to drop 12% next week based on market analysis</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="insight-card">
+                        <div class="insight-header">
+                            <div class="insight-icon">
+                                <i data-lucide="target" style="color: white;"></i>
+                            </div>
+                            <div>
+                                <div class="insight-title">Best Buy Opportunities</div>
+                                <div class="insight-text">3 products identified for bulk purchase with potential 15% savings</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="insight-card">
+                        <div class="insight-header">
+                            <div class="insight-icon">
+                                <i data-lucide="clock" style="color: white;"></i>
+                            </div>
+                            <div>
+                                <div class="insight-title">Optimal Shopping Time</div>
+                                <div class="insight-text">Best prices typically available between 6-8 PM on weekdays</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Trending Products -->
+            <section class="trending-section">
+                <h2 style="font-size: 1.5rem; font-weight: 700; color: white; margin-bottom: 1rem;">Trending Products</h2>
+                <div class="trending-grid">
+                    <div class="trending-card">
+                        <div class="trend-number">+15%</div>
+                        <div class="trend-title">Fresh Vegetables</div>
+                        <div class="trend-change">↑ from last week</div>
+                    </div>
+                    <div class="trending-card">
+                        <div class="trend-number">+8%</div>
+                        <div class="trend-title">Organic Products</div>
+                        <div class="trend-change">↑ 5% increase</div>
+                    </div>
+                    <div class="trending-card">
+                        <div class="trend-number">+12%</div>
+                        <div class="trend-title">Dairy Products</div>
+                        <div class="trend-change">↑ 3% increase</div>
+                    </div>
+                    <div class="trending-card">
+                        <div class="trend-number">+6%</div>
+                        <div class="trend-title">Snacks & Beverages</div>
+                        <div class="trend-change">↑ 2% increase</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem;">
+                <div>
+                    <h4 style="font-size: 1rem; font-weight: 600; color: white; margin-bottom: 0.5rem;">Product</h4>
+                    <ul style="color: rgba(255, 255, 255, 0.7); font-size: 0.875rem; line-height: 1.5;">
+                        <li>Features</li>
+                        <li>Analytics</li>
+                        <li>API Access</li>
+                        <li>Enterprise Tools</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="font-size: 1rem; font-weight: 600; color: white; margin-bottom: 0.5rem;">Company</h4>
+                    <ul style="color: rgba(255, 255, 255, 0.7); font-size: 0.875rem; line-height: 1.5;">
+                        <li>About Us</li>
+                        <li>Contact</li>
+                        <li>Careers</li>
+                        <li>Partners</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="font-size: 1rem; font-weight: 600; color: white; margin-bottom: 0.5rem;">Support</h4>
+                    <ul style="color: rgba(255, 255, 255, 0.7); font-size: 0.875rem; line-height: 1.5;">
+                        <li>Documentation</li>
+                        <li>API Status</li>
+                        <li>Help Center</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="font-size: 1rem; font-weight: 600; color: white; margin-bottom: 0.5rem;">Legal</h4>
+                    <ul style="color: rgba(255, 255, 255, 0.7); font-size: 0.875rem; line-height: 1.5;">
+                        <li>Privacy Policy</li>
+                        <li>Terms of Service</li>
+                        <li>Cookie Policy</li>
+                    </ul>
+                </div>
+                <div style="grid-column: 1 / span 2;">
+                    <p style="color: rgba(255, 255, 255, 0.5); font-size: 0.875rem; text-align: center;">© 2025 Smart Cart Enterprise. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>

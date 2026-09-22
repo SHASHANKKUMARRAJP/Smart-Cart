@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
+    <title>Global Luxury Destinations & Accommodations | Plan My Trip</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --glass-glow: 0 0 25px rgba(56, 189, 248, 0.3);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0f172a;
+            color: #f1f5f9;
+            margin: 0;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .aurora-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            background: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 100%);
+        }
+
+        .grid-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+
+        .glass-morphism {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .glass-card-premium {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 100%);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+        }
+
+        .glass-card-premium:hover {
+            transform: translateY(-6px);
+            border-color: rgba(56, 189, 248, 0.4);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), var(--glass-glow);
+        }
+
+        .glass-nav-item {
+            padding: 8px 16px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            position: relative;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 500;
+        }
+
+        .glass-nav-item:hover,
+        .glass-nav-item.active {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: white;
+        }
+
+        .gradient-text-premium {
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .country-pill {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .country-pill:hover,
+        .country-pill.active {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.2) 0%, rgba(129, 140, 248, 0.2) 100%);
+            border-color: rgba(56, 189, 248, 0.5);
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .view-transition {
+            animation: fadeInScale 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.97) translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .modal-blur-bg {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+</head>
+
+<body class="text-gray-100 antialiased">
+    <div class="aurora-bg">
+        <div class="grid-overlay"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 w-full z-50 glass-morphism border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Branding -->
+                <a href="{{ url_for('main.plan_trip') }}" class="flex items-center space-x-3 group">
+                    <div
+                        class="w-10 h-10 bg-gradient-to-br from-gray-800 to-slate-900 rounded-xl flex items-center justify-center border border-white/10 shadow-xl group-hover:border-sky-500/50 transition-all">
+                        <i data-lucide="plane" class="w-6 h-6 text-sky-400"></i>
+                    </div>
+                    <span class="text-xl font-bold text-white tracking-tight uppercase">Plan My Trip</span>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-2">
+                    <a href="{{ url_for('main.index') }}" class="glass-nav-item">Home</a>
+                    <a href="{{ url_for('main.plan_trip') }}" class="glass-nav-item">Plan My Trip</a>
+                    <a href="{{ url_for('main.destination_ideas') }}" class="glass-nav-item">Destination Ideas</a>
+                    <a href="{{ url_for('main.budget_planner') }}" class="glass-nav-item">Budget Planner</a>
+                    <a href="{{ url_for('main.travel_itinerary') }}" class="glass-nav-item">Travel Itinerary</a>
+                    <a href="{{ url_for('main.hotels') }}" class="glass-nav-item active">
+                        Hotels & Stays
+                        <span
+                            class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-sky-500 rounded-full shadow-[0_0_8px_rgba(56,189,248,0.8)]"></span>
+                    </a>
+                </div>
+
+                <!-- Right Side Actions -->
+                <div class="hidden md:flex items-center space-x-4 flex-1 justify-end max-w-sm ml-8">
+                    <a href="{{ url_for('main.index') }}"
+                        class="glass-button-premium px-6 py-2.5 rounded-xl text-sm font-bold uppercase tracking-widest text-white border border-white/10 hover:bg-white/10 transition-all">
+                        Back Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow pt-16 pb-20 px-4 relative z-10">
+        <div class="max-w-7xl mx-auto">
+            <!-- Header Section -->
+            <header class="text-center mb-12">
+                <div
+                    class="inline-flex items-center bg-sky-500/10 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] mb-6 text-sky-400 border border-sky-500/20">
+                    <i data-lucide="globe-2" class="w-3.5 h-3.5 mr-2"></i> Global Explorer Matrix
+                </div>
+                <h1 class="text-5xl md:text-7xl font-black text-white mb-6 tracking-tighter uppercase leading-[0.9]">
+                    Luxury Accommodations<br>
+                    <span class="gradient-text-premium">& World Destinations</span>
+                </h1>
+                <p class="text-slate-400 text-lg max-w-2xl mx-auto font-medium">
+                    Navigate by Country → City → Curated 5-Star Luxury Stays. Handpicked sanctuaries with verified guest ratings.
+                </p>
+
+                <!-- Search Bar & Controls -->
+                <div class="max-w-2xl mx-auto mt-10 bg-white/5 p-2 rounded-2xl border border-white/10 flex items-center gap-2 shadow-2xl">
+                    <div class="flex-grow relative">
+                        <i data-lucide="search"
+                            class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400"></i>
+                        <input type="text" id="global-search" oninput="handleSearch(this.value)"
+                            placeholder="Search any Country or City (e.g., Japan, Paris, Bali, Kyoto)..."
+                            class="w-full bg-transparent pl-12 pr-4 py-3.5 text-white placeholder-slate-500 outline-none border-none text-sm font-semibold">
+                    </div>
+                    <button onclick="resetToCountries()"
+                        class="bg-sky-500 hover:bg-sky-400 text-slate-950 px-6 py-3.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all shadow-lg shadow-sky-500/20 whitespace-nowrap">
+                        Explore All
+                    </button>
+                </div>
+            </header>
+
+            <!-- Breadcrumb Navigation Bar -->
+            <div id="explorer-breadcrumb" class="mb-8 flex items-center gap-3 text-xs font-extrabold uppercase tracking-widest text-slate-400 bg-white/5 px-6 py-3 rounded-2xl border border-white/5 w-fit mx-auto sm:mx-0">
+                <button onclick="resetToCountries()" class="hover:text-sky-400 transition-colors flex items-center gap-1.5">
+                    <i data-lucide="globe" class="w-4 h-4"></i> Countries (10)
+                </button>
+                <span id="bc-sep1" class="text-slate-600 hidden">/</span>
+                <button id="bc-country" onclick="showCitiesForCurrentCountry()" class="hover:text-sky-400 transition-colors hidden text-sky-400"></button>
+                <span id="bc-sep2" class="text-slate-600 hidden">/</span>
+                <span id="bc-city" class="text-slate-200 hidden"></span>
+            </div>
+
+            <!-- Country Quick Selector Bar -->
+            <div id="country-quick-bar" class="flex items-center gap-3 overflow-x-auto pb-4 mb-10 scrollbar-none">
+                <!-- Injected via JavaScript -->
+            </div>
+
+            <!-- MAIN VIEW CONTAINER -->
+            <div id="view-container" class="min-h-[500px]">
+                <!-- Dynamic Content Rendered Here (Country View / City View / Hotel View) -->
+            </div>
+        </div>
+    </main>
+
+    <!-- HOTEL DETAIL MODAL -->
+    <div id="hotel-modal" class="fixed inset-0 z-50 hidden modal-blur-bg flex items-center justify-center p-4">
+        <div class="glass-card-premium max-w-3xl w-full max-h-[90vh] overflow-y-auto p-8 relative border-sky-500/30">
+            <button onclick="closeHotelModal()" class="absolute top-6 right-6 p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white transition-all">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <div id="modal-content">
+                <!-- Modal content injected dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-black/40 backdrop-blur-xl border-t border-white/10 text-gray-400 py-8 px-4 mt-auto">
+        <div class="max-w-7xl mx-auto text-center">
+            <p>&copy; 2024 Smart Cart. Global Luxury Destination Intelligence.</p>
+        </div>
+    </footer>
+
+    {% raw %}
+    <script>
+        // Automatic Image Watchdog & Fallback SVG Generator
+        function handleImgError(img) {
+            if (!img || img.dataset.failed === "true") return;
+            img.dataset.failed = "true";
+            img.onerror = null;
+            img.onload = null;
+
+            const title = (img.alt || "Luxury Destination").toUpperCase();
+            
+            const palettes = [
+                { bg1: '#0f172a', bg2: '#1e293b', accent: '#38bdf8' },
+                { bg1: '#1e1b4b', bg2: '#312e81', accent: '#818cf8' },
+                { bg1: '#064e3b', bg2: '#065f46', accent: '#34d399' },
+                { bg1: '#581c87', bg2: '#6b21a8', accent: '#c084fc' },
+                { bg1: '#831843', bg2: '#9d174d', accent: '#f472b6' }
+            ];
+            let hash = 0;
+            for (let i = 0; i < title.length; i++) hash = (hash << 5) - hash + title.charCodeAt(i);
+            const p = palettes[Math.abs(hash) % palettes.length];
+
+            const svg = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+                    <defs>
+                        <linearGradient id="g_${Math.abs(hash)}" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="${p.bg1}"/>
+                            <stop offset="50%" stop-color="${p.bg2}"/>
+                            <stop offset="100%" stop-color="${p.accent}"/>
+                        </linearGradient>
+                    </defs>
+                    <rect width="100%" height="100%" fill="url(#g_${Math.abs(hash)})"/>
+                    <circle cx="400" cy="240" r="75" fill="rgba(255,255,255,0.06)" stroke="${p.accent}" stroke-width="2"/>
+                    <polygon points="400,200 412,230 442,232 418,252 426,282 400,265 374,282 382,252 358,232 388,230" fill="${p.accent}"/>
+                    <text x="400" y="370" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="24" font-weight="900" fill="#ffffff" text-anchor="middle" letter-spacing="2">${title}</text>
+                    <text x="400" y="410" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="13" font-weight="800" fill="${p.accent}" text-anchor="middle" letter-spacing="4">5-STAR LUXURY SANCTUARY</text>
+                </svg>
+            `;
+            img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+        }
+
+        function attachImageWatchdogs() {
+            setTimeout(() => {
+                document.querySelectorAll('#view-container img').forEach(img => {
+                    if (!img.dataset.failed && (!img.complete || img.naturalWidth === 0)) {
+                        handleImgError(img);
+                    }
+                });
+            }, 1200);
+        }
+
+        // -------------------------------------------------------------
+        // Comprehensive Master Database for 10 Countries, 40 Cities, and 120 Distinct Luxury Hotels
+        // -------------------------------------------------------------
+        const GLOBAL_DESTINATIONS = {
+            "japan": {
+                name: "Japan",
+                flag: "🇯🇵",
+                tagline: "Serene Zen Sanctuary & High-Tech Futuristic Luxury",
+                cover: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1200&q=80",
+                cities: {
+                    "tokyo": {
+                        name: "Tokyo",
+                        tagline: "Skyscraper views, Michelin dining & neon elegance",
+                        image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "Aman Tokyo", rating: "4.95", price: "88,000", image: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=800&q=80", location: "Otemachi, Tokyo", amenities: ["Onsen Spa", "360 Skyline Pool", "Michelin Dining", "Butler Service"] },
+                            { name: "Mandarin Oriental Tokyo", rating: "4.91", price: "72,500", image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80", location: "Nihonbashi, Tokyo", amenities: ["Mt Fuji View", "Signature Spa", "French Gastronomy"] },
+                            { name: "Hoshinoya Tokyo", rating: "4.89", price: "64,000", image: "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=800&q=80", location: "Chiyoda, Tokyo", amenities: ["Traditional Ryokan", "Geothermal Bath", "Tea Ceremony"] }
+                        ]
+                    },
+                    "kyoto": {
+                        name: "Kyoto",
+                        tagline: "Historic Bamboo Groves, Tea Houses & Imperial Estates",
+                        image: "https://images.unsplash.com/photo-1492571350019-22de08371fd3?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "Four Seasons Resort Kyoto", rating: "4.96", price: "78,000", image: "https://images.unsplash.com/photo-1528164344705-475426879e0d?auto=format&fit=crop&w=800&q=80", location: "Higashiyama, Kyoto", amenities: ["800-yr-old Garden", "Tea House", "Zen Spa"] },
+                            { name: "Hoshinoya Kyoto", rating: "4.93", price: "82,000", image: "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=800&q=80", location: "Arashiyama, Kyoto", amenities: ["Riverboat Access", "Kaiseki Feast", "Maple Pavilion"] },
+                            { name: "Park Hyatt Kyoto", rating: "4.88", price: "69,000", image: "https://images.unsplash.com/photo-1551882547-ff43c69e5c35?auto=format&fit=crop&w=800&q=80", location: "Gion, Kyoto", amenities: ["Pagoda Views", "Private Onsen", "Craft Cocktail Lounge"] }
+                        ]
+                    },
+                    "osaka": {
+                        name: "Osaka",
+                        tagline: "Culinary Capital, Neon Canals & Castle Gardens",
+                        image: "https://images.unsplash.com/photo-1590559899731-a382839e5549?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "The St. Regis Osaka", rating: "4.87", price: "52,000", image: "https://images.unsplash.com/photo-1582719478250-c89cae4df85b?auto=format&fit=crop&w=800&q=80", location: "Midosuji, Osaka", amenities: ["St. Regis Butler", "Rooftop Terrace", "Wagyu Dining"] },
+                            { name: "Conrad Osaka", rating: "4.89", price: "58,500", image: "https://images.unsplash.com/photo-1561501878-aabd62234533?auto=format&fit=crop&w=800&q=80", location: "Nakanoshima, Osaka", amenities: ["Sky Lobby", "Indoor Heated Pool", "Teppanyaki Grill"] },
+                            { name: "InterContinental Osaka", rating: "4.84", price: "46,000", image: "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80", location: "Umeda, Osaka", amenities: ["Japanese Bathhouse", "Michelin French", "Executive Club"] }
+                        ]
+                    },
+                    "sapporo": {
+                        name: "Sapporo",
+                        tagline: "Snowy Alpine Vistas, Hot Springs & Fresh Seafood",
+                        image: "https://images.unsplash.com/photo-1578637387939-43c525550085?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "Sapporo Grand Hotel", rating: "4.82", price: "34,000", image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80", location: "Chuo Ward, Sapporo", amenities: ["Historic Heritage", "Seafood Buffet", "Garden Lounge"] },
+                            { name: "JR Tower Hotel Nikko Sapporo", rating: "4.85", price: "38,500", image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=80", location: "Sapporo Station Plaza", amenities: ["Hot Spring Spa", "Sky Restaurant 35F", "Panoramic Views"] },
+                            { name: "Keio Plaza Hotel Sapporo", rating: "4.79", price: "31,000", image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=800&q=80", location: "Botanical Garden Area", amenities: ["Indoor Pool", "Pastry Shop", "Executive Lounge"] }
+                        ]
+                    }
+                }
+            },
+            "france": {
+                name: "France",
+                flag: "🇫🇷",
+                tagline: "Haute Couture, Gourmet Gastronomy & Riviera Sunshine",
+                cover: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1200&q=80",
+                cities: {
+                    "paris": {
+                        name: "Paris",
+                        tagline: "Eiffel Views, Seine Palaces & Michelin Dining",
+                        image: "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "The Ritz Paris", rating: "4.97", price: "125,000", image: "https://images.unsplash.com/photo-1549294413-26f195200c16?auto=format&fit=crop&w=800&q=80", location: "Place Vendôme, Paris", amenities: ["Chanel Spa", "Hemingway Bar", "Private Garden", "Butler"] },
+                            { name: "Four Seasons Hotel George V", rating: "4.94", price: "115,000", image: "https://images.unsplash.com/photo-1595576508898-0ad5c879a061?auto=format&fit=crop&w=800&q=80", location: "Champs-Élysées, Paris", amenities: ["3 Michelin Stars", "Marble Courtyard", "Penthouse Suite"] },
+                            { name: "Le Meurice Palace", rating: "4.90", price: "98,000", image: "https://images.unsplash.com/photo-1568084680786-a84f91d16190?auto=format&fit=crop&w=800&q=80", location: "Tuileries Garden, Paris", amenities: ["Alain Ducasse Dining", "Philippe Starck Decor", "Spa Valmont"] }
+                        ]
+                    },
+                    "nice": {
+                        name: "Nice",
+                        tagline: "Promenade des Anglais & Turquoise Mediterranean Waters",
+                        image: "https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "Hotel Le Negresco", rating: "4.89", price: "62,000", image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80", location: "Promenade des Anglais", amenities: ["Private Beach", "Historic Art Museum", "Michelin Dining"] },
+                            { name: "Anantara Plaza Nice Hotel", rating: "4.87", price: "54,000", image: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=800&q=80", location: "Golden Square, Nice", amenities: ["Rooftop Bar", "Sea View Terrace", "Anantara Spa"] },
+                            { name: "Hyatt Regency Palais de la Méditerranée", rating: "4.83", price: "48,000", image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80", location: "Seafacing Promenade", amenities: ["Casino Access", "Heated Outdoor Pool", "Mediterranean Grill"] }
+                        ]
+                    },
+                    "lyon": {
+                        name: "Lyon",
+                        tagline: "Gastronomic Capital & Ancient Roman Architecture",
+                        image: "https://images.unsplash.com/photo-1608659597669-b45511779f93?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "Villa Florentine", rating: "4.88", price: "44,000", image: "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=800&q=80", location: "Fourvière Hill, Lyon", amenities: ["Panorama Pool", "Michelin Star Terrace", "Florentine Villa"] },
+                            { name: "InterContinental Lyon - Hôtel Dieu", rating: "4.91", price: "51,000", image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80", location: "Presqu'île District", amenities: ["18th Century Dome", "Rhône River Views", "Grand Bar"] },
+                            { name: "Boscolo Lyon Hotel & Spa", rating: "4.82", price: "39,000", image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80", location: "Central Lyon", amenities: ["Roman Baths Spa", "Italian Dining", "Velvet Suites"] }
+                        ]
+                    },
+                    "bordeaux": {
+                        name: "Bordeaux",
+                        tagline: "World-Class Vineyards & Classical Châteaux Architecture",
+                        image: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "Les Sources de Caudalie", rating: "4.94", price: "68,000", image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80", location: "Martillac Vineyards", amenities: ["Vinothérapie Spa", "2 Michelin Stars", "Private Lake Cruise"] },
+                            { name: "InterContinental Bordeaux Le Grand Hotel", rating: "4.90", price: "59,000", image: "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=800&q=80", location: "Place de la Comédie", amenities: ["Gordon Ramsay Dining", "Guerlain Spa", "Rooftop Wine Lounge"] },
+                            { name: "Le Palais Gallien Hotel & Spa", rating: "4.86", price: "45,000", image: "https://images.unsplash.com/photo-1544984243-ec57ea16fe25?auto=format&fit=crop&w=800&q=80", location: "Historic Center", amenities: ["Boutique Courtyard", "Cocktail Bar", "Heated Pool"] }
+                        ]
+                    }
+                }
+            },
+            "italy": {
+                name: "Italy",
+                flag: "🇮🇹",
+                tagline: "Renaissance Treasures, Coastal Romance & La Dolce Vita",
+                cover: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=1200&q=80",
+                cities: {
+                    "rome": {
+                        name: "Rome",
+                        tagline: "Eternal City Palaces, Colosseum Vistas & Trattoria Luxury",
+                        image: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "Hotel de Russie", rating: "4.95", price: "94,000", image: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=80", location: "Piazza del Popolo", amenities: ["Terraced Secret Garden", "Stravinskij Bar", "Hydrotherapy Spa"] },
+                            { name: "Hotel Eden Rome", rating: "4.92", price: "88,000", image: "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=800&q=80", location: "Via Ludovisi, Rome", amenities: ["Rooftop St. Peter's View", "Dorchester Collection", "Spa"] },
+                            { name: "The St. Regis Rome", rating: "4.90", price: "79,000", image: "https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=800&q=80", location: "Piazza della Repubblica", amenities: ["Belle Époque Ballroom", "Butler Service", "Lumen Lounge"] }
+                        ]
+                    },
+                    "milan": {
+                        name: "Milan",
+                        tagline: "Fashion Capital, Gothic Duomo & Sleek Modern Luxury",
+                        image: "https://images.unsplash.com/photo-1513581166391-887a96ddeafd?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "Bulgari Hotel Milano", rating: "4.93", price: "92,000", image: "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?auto=format&fit=crop&w=800&q=80", location: "Brera District, Milan", amenities: ["4000sqm Private Garden", "Gold Leaf Spa Pool", "Bulgari Dining"] },
+                            { name: "Armani Hotel Milano", rating: "4.90", price: "81,000", image: "https://images.unsplash.com/photo-1445019980597-93fa8acb246c?auto=format&fit=crop&w=800&q=80", location: "Via Montenapoleone", amenities: ["Minimalist Haute Decor", "Rooftop Bamboo Bar", "Armani Spa"] },
+                            { name: "Mandarin Oriental Milan", rating: "4.89", price: "74,000", image: "https://images.unsplash.com/photo-1535827841776-24afc1e255ac?auto=format&fit=crop&w=800&q=80", location: "Fashion Quad", amenities: ["18th Century Palazzo", "2 Michelin Seta", "Indoor Pool"] }
+                        ]
+                    },
+                    "venice": {
+                        name: "Venice",
+                        tagline: "Grand Canal Palaces, Gondola Landing & Lagoon Vistas",
+                        image: "https://images.unsplash.com/photo-1514890547357-a9ee288728e0?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "Aman Venice", rating: "4.98", price: "135,000", image: "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?auto=format&fit=crop&w=800&q=80", location: "Palazzo Papadopoli", amenities: ["16th-Century Frescoes", "Private Dock", "Grand Canal Terrace"] },
+                            { name: "Belmond Hotel Cipriani", rating: "4.94", price: "110,000", image: "https://images.unsplash.com/photo-1501183007986-d0d080b147f9?auto=format&fit=crop&w=800&q=80", location: "Giudecca Island", amenities: ["Olympic Heated Pool", "Bellini Birthplace", "Michelin Oro"] },
+                            { name: "The Gritti Palace", rating: "4.91", price: "96,000", image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80", location: "Grand Canal, Venice", amenities: ["Riva Lounge", "Doge Luxury Suite", "Cooking School"] }
+                        ]
+                    },
+                    "florence": {
+                        name: "Florence",
+                        tagline: "Duomo Views, Medici Gardens & Tuscan Artistry",
+                        image: "https://images.unsplash.com/photo-1543429776-2782fc8e1acd?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "Four Seasons Hotel Firenze", rating: "4.96", price: "89,000", image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80", location: "Gherardesca Park", amenities: ["Private 11-Acre Botanical Garden", "Michelin Il Palagio", "Outdoor Pool"] },
+                            { name: "Villa Cora", rating: "4.89", price: "64,000", image: "https://images.unsplash.com/photo-1574362848149-11496d93a7c7?auto=format&fit=crop&w=800&q=80", location: "Boboli Gardens Hill", amenities: ["19th Century Aristocratic Residence", "Rooftop Rose Garden", "Heated Pool"] },
+                            { name: "Hotel Savoy Florence", rating: "4.86", price: "58,000", image: "https://images.unsplash.com/photo-1512915922686-57c11dde9b6b?auto=format&fit=crop&w=800&q=80", location: "Piazza della Repubblica", amenities: ["Rocco Forte Collection", "Duomo Views", "Irene Bistro"] }
+                        ]
+                    }
+                }
+            },
+            "india": {
+                name: "India",
+                flag: "🇮🇳",
+                tagline: "Royal Maharajah Palaces, Coastal Mansions & High-Tech Havens",
+                cover: "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=1200&q=80",
+                cities: {
+                    "mumbai": {
+                        name: "Mumbai",
+                        tagline: "Gateway of India, Arabian Sea Breezes & Financial Prestige",
+                        image: "https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "The Taj Mahal Palace Mumbai", rating: "4.97", price: "36,000", image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=800&q=80", location: "Colaba Waterfront", amenities: ["Historic Landmark 1903", "Arabian Sea Views", "Jiva Spa", "9 Fine Dining Outlets"] },
+                            { name: "The Oberoi Mumbai", rating: "4.94", price: "32,000", image: "https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?auto=format&fit=crop&w=800&q=80", location: "Marine Drive Promenade", amenities: ["Queen's Necklace View", "24/7 Butler Service", "Michelin Ziya"] },
+                            { name: "The St. Regis Mumbai", rating: "4.89", price: "24,000", image: "https://images.unsplash.com/photo-1592595896551-12b371d546d5?auto=format&fit=crop&w=800&q=80", location: "Lower Parel Sky City", amenities: ["Highest Rooftop Bar", "Iridium Spa", "Personal Butler"] }
+                        ]
+                    },
+                    "delhi": {
+                        name: "Delhi",
+                        tagline: "Mughal Imperial Gardens, Diplomatic Enclaves & Heritage Palaces",
+                        image: "https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "The Leela Palace New Delhi", rating: "4.95", price: "34,000", image: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=800&q=80", location: "Chanakyapuri Diplomatic Enclave", amenities: ["Rooftop Heated Infinity Pool", "Royal Indian Cuisine", "ESPA Spa"] },
+                            { name: "The Oberoi New Delhi", rating: "4.93", price: "31,000", image: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=800&q=80", location: "Golf Course Road", amenities: ["Clean Air Purification", "Humayun's Tomb View", "Cigar Lounge"] },
+                            { name: "The Imperial New Delhi", rating: "4.88", price: "26,500", image: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=800&q=80", location: "Janpath, Connaught Place", amenities: ["Victorian Heritage Museum", "Spice Route Dining", "Palm Lawns"] }
+                        ]
+                    },
+                    "bengaluru": {
+                        name: "Bengaluru",
+                        tagline: "Silicon Valley Gardens, Palatial Architecture & Tech Elegance",
+                        image: "https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "The Leela Palace Bengaluru", rating: "4.94", price: "28,000", image: "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=800&q=80", location: "HAL Airport Road", amenities: ["9 Acres Lagoons & Gardens", "Vijayanagara Architecture", "Jamavar Dining"] },
+                            { name: "Four Seasons Hotel Bengaluru", rating: "4.90", price: "22,500", image: "https://images.unsplash.com/photo-1600573472550-8090b5e0745e?auto=format&fit=crop&w=800&q=80", location: "Embassy ONE", amenities: ["Resort-style Pool", "Copitas Rooftop Bar", "Wellness Spa"] },
+                            { name: "The Ritz-Carlton Bengaluru", rating: "4.87", price: "21,000", image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=800&q=80", location: "Residency Road", amenities: ["BANG Rooftop Lounge", "Ritz-Carlton Spa", "Helipad Access"] }
+                        ]
+                    },
+                    "jaipur": {
+                        name: "Jaipur",
+                        tagline: "Pink City Fortresses, Peacock Courtyards & Maharajah Heritage",
+                        image: "https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "Rambagh Palace Jaipur", rating: "4.99", price: "65,000", image: "https://images.unsplash.com/photo-1527030280862-64139fba04ca?auto=format&fit=crop&w=800&q=80", location: "Bhawani Singh Road", amenities: ["Former Residence of Maharaja", "Peacock Lawns", "Suvarna Mahal Dining"] },
+                            { name: "The Oberoi Rajvilas", rating: "4.96", price: "58,000", image: "https://images.unsplash.com/photo-1506059612708-99d6c258160e?auto=format&fit=crop&w=800&q=80", location: "Goner Road, Jaipur", amenities: ["32-Acre Fort Grounds", "Private Pool Villas", "Ayurvedic Spa"] },
+                            { name: "Suján Rajmahal Palace", rating: "4.91", price: "48,000", image: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80", location: "Sardar Patel Marg", amenities: ["Art Deco Royal Suites", "Polo Lounge", "Royal Gardens"] }
+                        ]
+                    }
+                }
+            },
+            "usa": {
+                name: "USA",
+                flag: "🇺🇸",
+                tagline: "Manhattan Skylines, Beverly Hills Glamour & Coastal Lounges",
+                cover: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&w=1200&q=80",
+                cities: {
+                    "new york": {
+                        name: "New York",
+                        tagline: "Central Park Views, Broadway Glamour & Fifth Ave Penthouse Suites",
+                        image: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "Aman New York", rating: "4.96", price: "140,000", image: "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=800&q=80", location: "Crown Building, 57th St", amenities: ["Year-Round Terrace", "3-Floor Spa", "Jazz Club", "Fireplaces"] },
+                            { name: "The Plaza Hotel NYC", rating: "4.92", price: "95,000", image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80", location: "Fifth Avenue at Central Park", amenities: ["Palm Court Afternoon Tea", "Guerlain Spa", "Butler"] },
+                            { name: "Baccarat Hotel New York", rating: "4.90", price: "88,000", image: "https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=800&q=80", location: "Midtown Manhattan", amenities: ["Crystal Chandeliers", "Grand Salon", "Spa de La Mer"] }
+                        ]
+                    },
+                    "los angeles": {
+                        name: "Los Angeles",
+                        tagline: "Beverly Hills Palms, Hollywood Hills Luxury & Pacific Sunsets",
+                        image: "https://images.unsplash.com/photo-1580655653885-65763b2597d0?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "The Beverly Hills Hotel", rating: "4.94", price: "86,000", image: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=800&q=80", location: "Sunset Boulevard", amenities: ["The Pink Palace", "Polo Lounge", "Cabana Pool"] },
+                            { name: "Hotel Bel-Air", rating: "4.91", price: "82,000", image: "https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&w=800&q=80", location: "Bel-Air Estates", amenities: ["Swan Lake Gardens", "Wolfgang Puck", "Private Bungalows"] },
+                            { name: "Waldorf Astoria Beverly Hills", rating: "4.89", price: "74,000", image: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80", location: "Wilshire Boulevard", amenities: ["Rooftop Pool Deck", "Jean-Georges Dining", "La Prairie Spa"] }
+                        ]
+                    },
+                    "miami": {
+                        name: "Miami",
+                        tagline: "South Beach Art Deco, Ocean Drive Palaces & Turquoise Waters",
+                        image: "https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "Faena Hotel Miami Beach", rating: "4.93", price: "78,000", image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800&q=80", location: "Collins Avenue", amenities: ["Damien Hirst Mammoth", "Faena Theater", "Tierra Santa Spa"] },
+                            { name: "The Setai South Beach", rating: "4.91", price: "72,000", image: "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=800&q=80", location: "South Beach", amenities: ["3 Parallel Pools", "Oceanfront Dining", "Asian Zen Decor"] },
+                            { name: "1 Hotel South Beach", rating: "4.88", price: "61,000", image: "https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&w=800&q=80", location: "Rooftop Ocean Pool", amenities: ["Eco-Luxury Design", "Rooftop Lounge", "600ft Beach"] }
+                        ]
+                    },
+                    "las vegas": {
+                        name: "Las Vegas",
+                        tagline: "The Strip Fountains, Michelin Stars & High-Roller Sky Villas",
+                        image: "https://images.unsplash.com/photo-1605833559746-6d16002a8b3c?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "Bellagio Hotel & Casino", rating: "4.89", price: "42,000", image: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=800&q=80", location: "Las Vegas Strip", amenities: ["Fountain Views", "Picasso Dining", "Conservatory Gardens"] },
+                            { name: "Wynn Las Vegas & Encore", rating: "4.92", price: "49,000", image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80", location: "North Strip", amenities: ["18-Hole Championship Golf", "Tower Suites", "Michelin Chinese"] },
+                            { name: "The Venetian Resort Tower", rating: "4.86", price: "38,000", image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80", location: "Central Strip", amenities: ["All-Suite Resort", "Canyon Ranch Spa", "Gondola Canal"] }
+                        ]
+                    }
+                }
+            },
+            "indonesia": {
+                name: "Indonesia",
+                flag: "🇮🇩",
+                tagline: "Tropical Cliffside Villas, Sacred Volcanoes & Emerald Rice Fields",
+                cover: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1200&q=80",
+                cities: {
+                    "bali/denpasar": {
+                        name: "Bali / Denpasar",
+                        tagline: "Clifftop Ocean Pools, Ayung River Shrines & Jungle Sanctuaries",
+                        image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "Bulgari Resort Bali", rating: "4.97", price: "88,000", image: "https://images.unsplash.com/photo-1511884642898-4c92249e20b6?auto=format&fit=crop&w=800&q=80", location: "Uluwatu Cliffs", amenities: ["Private Ocean Funicular", "Infinity Pool Edge", "Sangkar Dining"] },
+                            { name: "Mandapa, a Ritz-Carlton Reserve", rating: "4.96", price: "82,000", image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80", location: "Ubud River Valley", amenities: ["Private Butler Pukuh", "Kubu Bamboo Cocoons", "River Spa"] },
+                            { name: "Four Seasons Resort Bali Sayan", rating: "4.93", price: "74,000", image: "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=800&q=80", location: "Ayung River Valley", amenities: ["Lotus Pond Entry Bridge", "Chakra Ceremonies", "Infinity Pool"] }
+                        ]
+                    },
+                    "jakarta": {
+                        name: "Jakarta",
+                        tagline: "Modern Archipelago Skyline, Heritage Palaces & Luxury Spas",
+                        image: "https://images.unsplash.com/photo-1555899434-94d1368aa7af?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "The St. Regis Jakarta", rating: "4.91", price: "36,000", image: "https://images.unsplash.com/photo-1477959858617-67f30ac477d7?auto=format&fit=crop&w=800&q=80", location: "Kuningan CBD", amenities: ["St. Regis Butler", "Chandelier Lounge", "Signature Spa"] },
+                            { name: "The Ritz-Carlton Jakarta Pacific Place", rating: "4.89", price: "31,000", image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80", location: "SCBD Jakarta", amenities: ["Club Level Suite", "Outdoor Pool Deck", "Executive Lounge"] },
+                            { name: "Four Seasons Hotel Jakarta", rating: "4.87", price: "28,500", image: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80", location: "Gatot Subroto", amenities: ["Bill Bensley Design", "Palm Court Bar", "Pool Terrace"] }
+                        ]
+                    },
+                    "bandung": {
+                        name: "Bandung",
+                        tagline: "Cool Mountain Hills, Art Deco Estates & Tea Plantations",
+                        image: "https://images.unsplash.com/photo-1584810359583-96fc3448beaa?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "InterContinental Bandung Dago Pakar", rating: "4.86", price: "22,000", image: "https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&w=800&q=80", location: "Dago Pakar Hills", amenities: ["Infinity Hillside Pool", "Golf Course", "Damai Dining"] },
+                            { name: "The Papandayan Hotel", rating: "4.82", price: "18,500", image: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80", location: "Central Bandung", amenities: ["Tropical Garden Pool", "Cantigi Fine Dining", "Spa"] },
+                            { name: "The Trans Luxury Hotel", rating: "4.88", price: "24,000", image: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=800&q=80", location: "Gatob Subroto", amenities: ["Sandy Beach Pool", "The 18th Restaurant", "Spa"] }
+                        ]
+                    },
+                    "yogyakarta": {
+                        name: "Yogyakarta",
+                        tagline: "Borobudur Temple Overlook, Javanese Palaces & Batik Heritage",
+                        image: "https://images.unsplash.com/photo-1596402184320-417e7178b2cd?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "Amanjiwo Borobudur Sanctuary", rating: "4.98", price: "95,000", image: "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=800&q=80", location: "Borobudur View Hills", amenities: ["Direct View of Borobudur", "Limestone Stupa Design", "Private Pool Suites"] },
+                            { name: "Hyatt Regency Yogyakarta", rating: "4.84", price: "19,000", image: "https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=800&q=80", location: "24-Acre Golf Park", amenities: ["Merapi Volcano View", "Lagoon Pool", "9-Hole Golf"] },
+                            { name: "The Phoenix Hotel Yogyakarta", rating: "4.81", price: "16,500", image: "https://images.unsplash.com/photo-1504150558240-0b4fd8946624?auto=format&fit=crop&w=800&q=80", location: "Malioboro Heritage", amenities: ["1918 Colonial Estate", "Courtyard Pool", "Javanese Spa"] }
+                        ]
+                    }
+                }
+            },
+            "greece": {
+                name: "Greece",
+                flag: "🇬🇷",
+                tagline: "Whitewashed Cliff Dwellings, Aegean Sunsets & Ancient Temples",
+                cover: "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=1200&q=80",
+                cities: {
+                    "santorini": {
+                        name: "Santorini",
+                        tagline: "Caldera Edge Infinity Pools, Blue Domes & Volcanic Sunsets",
+                        image: "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "Canaves Oia Epitome", rating: "4.98", price: "105,000", image: "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=800&q=80", location: "Ammoudi Bay, Oia", amenities: ["Private Cave Plunge Pool", "Sunset Overlook", "Elements Dining"] },
+                            { name: "Grace Hotel Santorini, Auberge", rating: "4.95", price: "98,000", image: "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=800&q=80", location: "Imerovigli Caldera", amenities: ["Iconic Infinity Pool", "Varoulko Greek Dining", "Champagne Lounge"] },
+                            { name: "Mystique Luxury Collection Hotel", rating: "4.91", price: "86,000", image: "https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=800&q=80", location: "Cliffside Oia", amenities: ["150-yr-old Wine Cellar", "Secret Cave Spa", "Aegean View"] }
+                        ]
+                    },
+                    "athens": {
+                        name: "Athens",
+                        tagline: "Parthenon Monuments, Riviera Cove Resorts & Classical Elegance",
+                        image: "https://images.unsplash.com/photo-1603565816030-6b389eeb23cb?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "Hotel Grande Bretagne Athens", rating: "4.94", price: "68,000", image: "https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?auto=format&fit=crop&w=800&q=80", location: "Syntagma Square", amenities: ["Rooftop Acropolis View", "GB Roof Garden", "Thermal Suite Spa"] },
+                            { name: "Four Seasons Astir Palace Hotel", rating: "4.96", price: "84,000", image: "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?auto=format&fit=crop&w=800&q=80", location: "Vouliagmeni Riviera", amenities: ["Private Peninsula", "3 Private Beaches", "Matsuhisa Dining"] },
+                            { name: "King George Luxury Hotel", rating: "4.88", price: "58,000", image: "https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?auto=format&fit=crop&w=800&q=80", location: "Constitution Square", amenities: ["Tudor Hall Dining", "Penthouse Pool", "Butler Service"] }
+                        ]
+                    },
+                    "mykonos": {
+                        name: "Mykonos",
+                        tagline: "Cycladic Beach Clubs, Windmills & Aegean Nightlife",
+                        image: "https://images.unsplash.com/photo-1601581875309-fafbf2d3ed3a?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "Cavo Tagoo Mykonos", rating: "4.93", price: "92,000", image: "https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&w=800&q=80", location: "Near Mykonos Town", amenities: ["Cave Pool Villas", "Floating Sunbeds", "Zuma Restaurant"] },
+                            { name: "Santa Marina Resort & Villas", rating: "4.91", price: "85,000", image: "https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=800&q=80", location: "Ornos Bay", amenities: ["Only Private Beach in Mykonos", "Gingko Spa", "Buddha-Bar Beach"] },
+                            { name: "Myconian Kyma Relais & Châteaux", rating: "4.87", price: "62,000", image: "https://images.unsplash.com/photo-1503220317375-aaad61436b1b?auto=format&fit=crop&w=800&q=80", location: "Mykonos Town Hill", amenities: ["Infinity Ocean Pool", "Noa Greek Bistro", "Thalasso Spa"] }
+                        ]
+                    },
+                    "rhodes": {
+                        name: "Rhodes",
+                        tagline: "Medieval Citadel Towers, Emerald Bays & Sunny Resorts",
+                        image: "https://images.unsplash.com/photo-1566375638404-f5899996df7a?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "Lindos Blu Luxury Hotel & Suites", rating: "4.92", price: "54,000", image: "https://images.unsplash.com/photo-1488085061387-422e29b40080?auto=format&fit=crop&w=800&q=80", location: "Lindos Bay Hillside", amenities: ["Adults-Only Sanctuary", "Infinity Pool Terraces", "Five Senses Fine Dining"] },
+                            { name: "Atrium Palace Thalasso Spa Resort", rating: "4.85", price: "38,000", image: "https://images.unsplash.com/photo-1500835556837-99ac94a94552?auto=format&fit=crop&w=800&q=80", location: "Kalathos Bay", amenities: ["2000sqm Thalasso Spa", "6 Outdoor Pools", "Greek Taverna"] },
+                            { name: "Mitsis Grand Hotel Beach Hotel", rating: "4.81", price: "32,000", image: "https://images.unsplash.com/photo-1530789253388-582c481c54b0?auto=format&fit=crop&w=800&q=80", location: "Rhodes City Beach", amenities: ["Seafront Promenade", "Outdoor Saltwater Pools", "Asian Dining"] }
+                        ]
+                    }
+                }
+            },
+            "switzerland": {
+                name: "Switzerland",
+                flag: "🇨🇭",
+                tagline: "Alpine Peak Palaces, Mirror Lakes & World-Class Wellness",
+                cover: "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?auto=format&fit=crop&w=1200&q=80",
+                cities: {
+                    "zurich": {
+                        name: "Zurich",
+                        tagline: "Bahnhofstrasse Shopping, Lake Steamboats & Luxury Châteaux",
+                        image: "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "The Dolder Grand", rating: "4.96", price: "98,000", image: "https://images.unsplash.com/photo-1582719478250-c89cae4df85b?auto=format&fit=crop&w=800&q=80", location: "Adlisberg Hill, Zurich", amenities: ["4000sqm Spa", "2 Michelin Star Restaurant", "Alps & Lake Views"] },
+                            { name: "Baur au Lac Zurich", rating: "4.93", price: "89,000", image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80", location: "Private Lake Zurich Park", amenities: ["175-yr Family Heritage", "Pavillon Restaurant", "Private Canal"] },
+                            { name: "Widder Hotel Zurich", rating: "4.88", price: "72,000", image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80", location: "Augustinergasse Old Town", amenities: ["9 Historic Townhouses", "Widder Jazz Bar", "Penthouse Suite"] }
+                        ]
+                    },
+                    "geneva": {
+                        name: "Geneva",
+                        tagline: "Jet d'Eau Waterfront, UN Diplomatic Palaces & Watchmaking Luxury",
+                        image: "https://images.unsplash.com/photo-1573108724029-4c46571d6490?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "Four Seasons Hotel des Bergues", rating: "4.94", price: "92,000", image: "https://images.unsplash.com/photo-1561501878-aabd62234533?auto=format&fit=crop&w=800&q=80", location: "Quai des Bergues, Geneva", amenities: ["1834 Landmark Hotel", "Il Lago Michelin Dining", "Rooftop Spa"] },
+                            { name: "The Woodward Geneva", rating: "4.92", price: "105,000", image: "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=800&q=80", location: "Quai Wilson Waterfront", amenities: ["All-Suite Residence", "L'Atelier Robuchon", "Maison Guerlain Spa"] },
+                            { name: "Beau-Rivage Genève", rating: "4.89", price: "78,000", image: "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80", location: "Lake Geneva Promenade", amenities: ["Historic Royal Palace", "Le Chat-Botté Michelin", "Vintage Wine Cellar"] }
+                        ]
+                    },
+                    "lucerne": {
+                        name: "Lucerne",
+                        tagline: "Mt. Pilatus Peaks, Chapel Bridge & Clifftop Spa Havens",
+                        image: "https://images.unsplash.com/photo-1527668752968-14dc70a27c95?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "Bürgenstock Hotel & Alpine Spa", rating: "4.97", price: "110,000", image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=80", location: "500m Above Lake Lucerne", amenities: ["Infinity Alpine Spa Pool", "Hammetschwand Elevator", "Private Funicular"] },
+                            { name: "Hotel Villa Honegg", rating: "4.95", price: "115,000", image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=800&q=80", location: "Bürgenberg Mountain", amenities: ["Famous Heated Edge Pool", "Private Cinema", "Alpine Terrace Dining"] },
+                            { name: "Mandarin Oriental Palace Lucerne", rating: "4.91", price: "84,000", image: "https://images.unsplash.com/photo-1551882547-ff43c69e5c35?auto=format&fit=crop&w=800&q=80", location: "Lake Promenade", amenities: ["Belle Époque Landmark", "Colonnade Dining", "SPA English Garden"] }
+                        ]
+                    },
+                    "interlaken": {
+                        name: "Interlaken",
+                        tagline: "Jungfrau Glacier Gateways, Emerald Lakes & Grand Resorts",
+                        image: "https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "Victoria-Jungfrau Grand Hotel & Spa", rating: "4.94", price: "82,000", image: "https://images.unsplash.com/photo-1596394511223-b3c67851be80?auto=format&fit=crop&w=800&q=80", location: "Höheweg Promenade", amenities: ["5500sqm Spa Nescens", "Jungfrau Mountain View", "Ristorante Sapori"] },
+                            { name: "Romantik Hotel Beau Site", rating: "4.86", price: "48,000", image: "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=crop&w=800&q=80", location: "Interlaken Historic Square", amenities: ["Swiss Fondue Garden", "Sauna & Steam Bath", "Alps Panorama"] },
+                            { name: "Lindner Grand Hotel Beau Rivage", rating: "4.83", price: "42,000", image: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=800&q=80", location: "Aare River Bank", amenities: ["Indoor Pool Spa", "L'Ambiance Terrace", "Boutique Suites"] }
+                        ]
+                    }
+                }
+            },
+            "thailand": {
+                name: "Thailand",
+                flag: "🇹🇭",
+                tagline: "Golden Temples, Andaman Sea Sanctuaries & Royal Thai Spas",
+                cover: "https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=1200&q=80",
+                cities: {
+                    "bangkok": {
+                        name: "Bangkok",
+                        tagline: "Chao Phraya River Palaces, Rooftop Bars & Golden Shrines",
+                        image: "https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "Mandarin Oriental Bangkok", rating: "4.97", price: "64,000", image: "https://images.unsplash.com/photo-1582719478250-c89cae4df85b?auto=format&fit=crop&w=800&q=80", location: "Chao Phraya Riverbank", amenities: ["148-yr Legend", "Private Teak Boats", "Le Normandie 2 Stars"] },
+                            { name: "Capella Bangkok", rating: "4.95", price: "68,000", image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80", location: "Charoenkrung District", amenities: ["Riverfront Plunge Villas", "Côte by Mauro Colagreco", "Auriga Spa"] },
+                            { name: "The Siam Hotel", rating: "4.92", price: "59,000", image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80", location: "Royal Dusit District", amenities: ["Art Deco Pool Villas", "Opium Spa", "Muay Thai Boxing Ring"] }
+                        ]
+                    },
+                    "phuket": {
+                        name: "Phuket",
+                        tagline: "Andaman Sea Cliffs, Private Beach Pavilions & Sunset Cruises",
+                        image: "https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "Amanpuri Phuket", rating: "4.98", price: "98,000", image: "https://images.unsplash.com/photo-1561501878-aabd62234533?auto=format&fit=crop&w=800&q=80", location: "Pansea Beach Peninsula", amenities: ["Flagship Aman Resort", "Private Coconut Grove", "Holistic Medical Spa"] },
+                            { name: "Rosewood Phuket", rating: "4.93", price: "76,000", image: "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=800&q=80", location: "Emerald Bay", amenities: ["600m Secluded Beach", "Asaya Spa Sanctuary", "Ta Khai Dining"] },
+                            { name: "Trisara Phuket Resort", rating: "4.90", price: "69,000", image: "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80", location: "Northwest Coast", amenities: ["All Pool Villas", "PRU Michelin 1 Star", "Private Yachting"] }
+                        ]
+                    },
+                    "chiang mai": {
+                        name: "Chiang Mai",
+                        tagline: "Misty Mountain Temples, Teak Sanctuaries & Lanna Heritage",
+                        image: "https://images.unsplash.com/photo-1598971861713-54ad16a7e72e?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "Four Seasons Resort Chiang Mai", rating: "4.96", price: "72,000", image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=80", location: "Mae Rim Valley", amenities: ["Working Rice Paddies", "Lanna Pavilion Suites", "Wara Cheewa Spa"] },
+                            { name: "137 Pillars House Chiang Mai", rating: "4.91", price: "48,000", image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=800&q=80", location: "Wat Gate District", amenities: ["1889 Teak Homestead", "Living Green Wall Pool", "Nitra Spa"] },
+                            { name: "Anantara Chiang Mai Resort", rating: "4.88", price: "42,000", image: "https://images.unsplash.com/photo-1551882547-ff43c69e5c35?auto=format&fit=crop&w=800&q=80", location: "Ping Riverbank", amenities: ["Colonial House Dining", "Ping River Cruises", "Thai Massage Spa"] }
+                        ]
+                    },
+                    "pattaya": {
+                        name: "Pattaya",
+                        tagline: "Cliffside Ocean Suites, Private Islands & Luxury Marinas",
+                        image: "https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "InterContinental Pattaya Resort", rating: "4.89", price: "36,000", image: "https://images.unsplash.com/photo-1596394511223-b3c67851be80?auto=format&fit=crop&w=800&q=80", location: "Phratamnak Hill", amenities: ["Private White Beach", "Infiniti Dining Deck", "Amburaya Spa"] },
+                            { name: "Royal Wing Suites & Spa", rating: "4.92", price: "46,000", image: "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=crop&w=800&q=80", location: "Cliffside Reserve", amenities: ["All Suites & Private Beach", "Personal Butler", "Caprice Fine Dining"] },
+                            { name: "Hilton Pattaya", rating: "4.86", price: "29,000", image: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=800&q=80", location: "Central Beach Complex", amenities: ["34th-Floor Horizon Bar", "Edge Infinity Pool", "Eforea Spa"] }
+                        ]
+                    }
+                }
+            },
+            "spain": {
+                name: "Spain",
+                flag: "🇪🇸",
+                tagline: "Flamenco Energy, Architectural Wonders & Mediterranean Sunshine",
+                cover: "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?auto=format&fit=crop&w=1200&q=80",
+                cities: {
+                    "madrid": {
+                        name: "Madrid",
+                        tagline: "Prado Art District, Bourbon Palaces & Rooftop Tapas Bars",
+                        image: "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "Mandarin Oriental Ritz Madrid", rating: "4.96", price: "88,000", image: "https://images.unsplash.com/photo-1582719478250-c89cae4df85b?auto=format&fit=crop&w=800&q=80", location: "Golden Triangle of Art", amenities: ["Belle Époque Palace", "Deessa 2 Michelin Stars", "Underground Spa"] },
+                            { name: "Four Seasons Hotel Madrid", rating: "4.93", price: "84,000", image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80", location: "Centro Canalejas", amenities: ["4-Story Wellness Spa", "Dani García Rooftop", "Indoor Sunlit Pool"] },
+                            { name: "Rosewood Villa Magna", rating: "4.90", price: "72,000", image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80", location: "Paseo de la Castellana", amenities: ["Sense Spa", "Amós Restaurant", "Private Botanical Gardens"] }
+                        ]
+                    },
+                    "barcelona": {
+                        name: "Barcelona",
+                        tagline: "Gaudí Architecture, Mediterranean Harbor & Gothic Quarter Palaces",
+                        image: "https://images.unsplash.com/photo-1583422409516-2895a771deda?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "Hotel Arts Barcelona", rating: "4.92", price: "74,000", image: "https://images.unsplash.com/photo-1561501878-aabd62234533?auto=format&fit=crop&w=800&q=80", location: "Port Olímpic Beachfront", amenities: ["Frank Gehry Sculpture", "Enoteca 2 Michelin", "43 The Spa"] },
+                            { name: "Mandarin Oriental Barcelona", rating: "4.94", price: "82,000", image: "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=800&q=80", location: "Passeig de Gràcia", amenities: ["Rooftop Terrat Pool", "Moments 2 Stars", "Bank Vault Spa"] },
+                            { name: "W Barcelona (Sail Hotel)", rating: "4.89", price: "58,000", image: "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80", location: "Barceloneta Boardwalk", amenities: ["Iconic Sail Tower", "WET Deck Pool", "ECLIPSE 26th Bar"] }
+                        ]
+                    },
+                    "seville": {
+                        name: "Seville",
+                        tagline: "Alcázar Palaces, Orange Tree Courtyards & Authentic Flamenco",
+                        image: "https://images.unsplash.com/photo-1559564484-e48b3e040ff4?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "Hotel Alfonso XIII, Luxury Collection", rating: "4.95", price: "64,000", image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=80", location: "Historic Center", amenities: ["Moorish Ceramic Courtyard", "Royal Swimming Pool", "San Fernando Dining"] },
+                            { name: "Mercer Hotel Sevilla", rating: "4.91", price: "48,000", image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=800&q=80", location: "El Arenal Quarter", amenities: ["19th Century Palace", "Rooftop Pool Terrace", "Boutique Butler"] },
+                            { name: "Gran Meliá Colon", rating: "4.86", price: "39,000", image: "https://images.unsplash.com/photo-1551882547-ff43c69e5c35?auto=format&fit=crop&w=800&q=80", location: "Old Town Seville", amenities: ["RedGlove Service", "Banyan Tree Spa", "Rooftop Jacuzzi"] }
+                        ]
+                    },
+                    "malaga": {
+                        name: "Malaga",
+                        tagline: "Costa del Sol Luxury, Picasso Quarter & Mediterranean Sunsets",
+                        image: "https://images.unsplash.com/photo-1563297129-e6867d4677a7?auto=format&fit=crop&w=800&q=80",
+                        hotels: [
+                            { name: "Finca Cortesin Luxury Resort", rating: "4.97", price: "89,000", image: "https://images.unsplash.com/photo-1596394511223-b3c67851be80?auto=format&fit=crop&w=800&q=80", location: "Casares Bay", amenities: ["Championship Golf", "6000sqm Beach Club", "Thai Spa"] },
+                            { name: "Gran Hotel Miramar Malaga", rating: "4.90", price: "52,000", image: "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=crop&w=800&q=80", location: "Malagueta Beach", amenities: ["1926 Royal Palace", "Botanic Gardens Pool", "Anssisi Spa"] },
+                            { name: "Anantara Villa Padierna Palace", rating: "4.93", price: "66,000", image: "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=800&q=80", location: "Benahavís Hills", amenities: ["1200 Original Artworks", "3 Golf Courses", "Roman Baths Spa"] }
+                        ]
+                    }
+                }
+            }
+        };
+
+        // Current Application State
+        let currentCountryKey = null;
+        let currentCityKey = null;
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCountryQuickBar();
+            renderCountriesView();
+        });
+
+        // -------------------------------------------------------------
+        // Quick Selector Bar Renderer
+        // -------------------------------------------------------------
+        function renderCountryQuickBar() {
+            const bar = document.getElementById('country-quick-bar');
+            bar.innerHTML = Object.keys(GLOBAL_DESTINATIONS).map(key => {
+                const c = GLOBAL_DESTINATIONS[key];
+                return `
+                    <button onclick="selectCountry('${key}')" id="pill-${key}"
+                        class="country-pill px-5 py-2.5 rounded-full flex items-center gap-2.5 text-xs font-bold text-slate-300 hover:text-white whitespace-nowrap shadow-sm">
+                        <span class="text-base">${c.flag}</span>
+                        <span>${c.name}</span>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function updateQuickBarActiveState(activeKey) {
+            document.querySelectorAll('.country-pill').forEach(el => el.classList.remove('active'));
+            if (activeKey) {
+                const pill = document.getElementById(`pill-${activeKey}`);
+                if (pill) pill.classList.add('active');
+            }
+        }
+
+        // -------------------------------------------------------------
+        // VIEW 1: All Countries Grid
+        // -------------------------------------------------------------
+        function renderCountriesView(filterQuery = '') {
+            currentCountryKey = null;
+            currentCityKey = null;
+            updateBreadcrumb();
+            updateQuickBarActiveState(null);
+
+            const container = document.getElementById('view-container');
+            const keys = Object.keys(GLOBAL_DESTINATIONS).filter(key => {
+                const c = GLOBAL_DESTINATIONS[key];
+                if (!filterQuery) return true;
+                const q = filterQuery.toLowerCase();
+                const matchCountry = c.name.toLowerCase().includes(q);
+                const matchCity = Object.values(c.cities).some(city => city.name.toLowerCase().includes(q));
+                return matchCountry || matchCity;
+            });
+
+            if (keys.length === 0) {
+                container.innerHTML = `
+                    <div class="glass-card-premium p-12 text-center my-12">
+                        <i data-lucide="map-pin-off" class="w-12 h-12 text-slate-500 mx-auto mb-4"></i>
+                        <h3 class="text-2xl font-bold text-white mb-2">No Destinations Found</h3>
+                        <p class="text-slate-400 text-sm max-w-md mx-auto">We couldn't find any country or city matching "${filterQuery}". Try searching for Japan, Paris, Bali, or Rome.</p>
+                        <button onclick="resetToCountries()" class="mt-6 bg-sky-500/20 text-sky-400 border border-sky-500/30 px-6 py-2.5 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-sky-500 hover:text-slate-950 transition-all">Clear Search</button>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="view-transition">
+                    <div class="flex items-center justify-between mb-8">
+                        <div>
+                            <h2 class="text-2xl md:text-3xl font-black text-white uppercase tracking-tight">Global Destinations</h2>
+                            <p class="text-slate-400 text-xs font-semibold uppercase tracking-widest">Select a country to explore luxury cities & stays</p>
+                        </div>
+                        <span class="text-xs font-extrabold text-sky-400 bg-sky-500/10 px-4 py-1.5 rounded-full border border-sky-500/20 uppercase tracking-widest">
+                            ${keys.length} Countries Available
+                        </span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        ${keys.map(key => {
+                            const c = GLOBAL_DESTINATIONS[key];
+                            const cityCount = Object.keys(c.cities).length;
+                            return `
+                                <div onclick="selectCountry('${key}')" class="glass-card-premium group cursor-pointer relative">
+                                    <div class="h-64 overflow-hidden relative">
+                                        <img src="${c.cover}" alt="${c.name}" referrerpolicy="no-referrer" onerror="handleImgError(this)" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+                                        
+                                        <div class="absolute top-4 left-4 bg-slate-950/80 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-white/10 flex items-center gap-2">
+                                            <span class="text-xl">${c.flag}</span>
+                                            <span class="text-xs font-black text-white uppercase tracking-widest">${c.name}</span>
+                                        </div>
+
+                                        <div class="absolute top-4 right-4 bg-sky-500/20 text-sky-300 backdrop-blur-md px-3 py-1 rounded-lg border border-sky-500/30 text-[10px] font-black uppercase tracking-widest">
+                                            ${cityCount} Cities
+                                        </div>
+
+                                        <div class="absolute bottom-6 left-6 right-6">
+                                            <h3 class="text-3xl font-black text-white uppercase tracking-tight mb-1 group-hover:text-sky-400 transition-colors flex items-center justify-between">
+                                                <span>${c.name}</span>
+                                                <i data-lucide="arrow-right" class="w-5 h-5 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-sky-400"></i>
+                                            </h3>
+                                            <p class="text-slate-300 text-xs font-medium line-clamp-1">${c.tagline}</p>
+                                        </div>
+                                    </div>
+                                    <div class="p-4 bg-slate-900/60 border-t border-white/5 flex items-center justify-between text-xs text-slate-400">
+                                        <span class="font-bold flex items-center gap-1"><i data-lucide="building-2" class="w-3.5 h-3.5 text-sky-400"></i> ${Object.values(c.cities).map(ct => ct.name).join(', ')}</span>
+                                        <span class="text-sky-400 font-extrabold uppercase text-[10px] tracking-widest group-hover:underline">Explore →</span>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+            attachImageWatchdogs();
+        }
+
+        // -------------------------------------------------------------
+        // VIEW 2: Cities View for Selected Country
+        // -------------------------------------------------------------
+        function selectCountry(countryKey) {
+            currentCountryKey = countryKey;
+            currentCityKey = null;
+            updateQuickBarActiveState(countryKey);
+            updateBreadcrumb();
+
+            const c = GLOBAL_DESTINATIONS[countryKey];
+            const container = document.getElementById('view-container');
+            const cityKeys = Object.keys(c.cities);
+
+            container.innerHTML = `
+                <div class="view-transition">
+                    <!-- Country Banner Header -->
+                    <div class="relative rounded-3xl overflow-hidden mb-10 border border-white/10 p-8 md:p-12 glass-card-premium">
+                        <div class="absolute inset-0 z-0">
+                            <img src="${c.cover}" alt="${c.name}" referrerpolicy="no-referrer" onerror="handleImgError(this)" class="w-full h-full object-cover opacity-25 filter blur-sm">
+                            <div class="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/80 to-transparent"></div>
+                        </div>
+
+                        <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                            <div>
+                                <button onclick="resetToCountries()" class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-sky-400 mb-4 hover:underline">
+                                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to All Countries
+                                </button>
+                                <div class="flex items-center gap-4 mb-3">
+                                    <span class="text-5xl">${c.flag}</span>
+                                    <h2 class="text-4xl md:text-5xl font-black text-white uppercase tracking-tight">${c.name}</h2>
+                                </div>
+                                <p class="text-slate-300 text-sm md:text-base max-w-xl font-medium">${c.tagline}</p>
+                            </div>
+
+                            <div class="bg-slate-900/80 backdrop-blur-xl p-6 rounded-2xl border border-white/10 text-center md:text-right">
+                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Available Cities</span>
+                                <span class="text-3xl font-black text-sky-400 tracking-tighter">${cityKeys.length} Destinations</span>
+                                <p class="text-xs text-slate-500 mt-1 font-medium">Curated 5-Star Luxury Hotels</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- City Cards Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        ${cityKeys.map(cityKey => {
+                            const city = c.cities[cityKey];
+                            const hotelCount = city.hotels.length;
+                            return `
+                                <div onclick="selectCity('${countryKey}', '${cityKey}')" class="glass-card-premium group cursor-pointer">
+                                    <div class="h-60 overflow-hidden relative">
+                                        <img src="${city.image}" alt="${city.name}" referrerpolicy="no-referrer" onerror="handleImgError(this)" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+                                        
+                                        <div class="absolute top-4 right-4 bg-emerald-500/20 text-emerald-300 backdrop-blur-md px-3 py-1 rounded-lg border border-emerald-500/30 text-[10px] font-black uppercase tracking-widest">
+                                            ${hotelCount} Luxury Stays
+                                        </div>
+
+                                        <div class="absolute bottom-4 left-4 right-4">
+                                            <h3 class="text-2xl font-black text-white uppercase tracking-tight group-hover:text-sky-400 transition-colors">${city.name}</h3>
+                                            <p class="text-slate-300 text-xs font-medium line-clamp-1 mt-1">${city.tagline}</p>
+                                        </div>
+                                    </div>
+                                    <div class="p-5 flex items-center justify-between">
+                                        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+                                            <i data-lucide="map-pin" class="w-3.5 h-3.5 text-sky-400"></i> ${city.name}, ${c.name}
+                                        </span>
+                                        <button class="bg-sky-500/10 text-sky-400 group-hover:bg-sky-500 group-hover:text-slate-950 p-2 rounded-xl transition-all border border-sky-500/20">
+                                            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+            attachImageWatchdogs();
+        }
+
+        // -------------------------------------------------------------
+        // VIEW 3: Hotels / Luxury Stays View for Selected City
+        // -------------------------------------------------------------
+        function selectCity(countryKey, cityKey) {
+            currentCountryKey = countryKey;
+            currentCityKey = cityKey;
+            updateQuickBarActiveState(countryKey);
+            updateBreadcrumb();
+
+            const c = GLOBAL_DESTINATIONS[countryKey];
+            const city = c.cities[cityKey];
+            const container = document.getElementById('view-container');
+
+            container.innerHTML = `
+                <div class="view-transition">
+                    <!-- City Header Banner -->
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 bg-white/5 p-6 rounded-2xl border border-white/10">
+                        <div>
+                            <button onclick="showCitiesForCurrentCountry()" class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-sky-400 mb-2 hover:underline">
+                                <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Cities in ${c.name}
+                            </button>
+                            <h2 class="text-3xl md:text-4xl font-black text-white uppercase tracking-tight flex items-center gap-3">
+                                <span>${city.name}</span>
+                                <span class="text-slate-500 text-lg font-normal">(${c.flag} ${c.name})</span>
+                            </h2>
+                            <p class="text-slate-400 text-xs font-semibold uppercase tracking-widest mt-1">${city.tagline}</p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs font-bold text-slate-300 bg-white/5 px-4 py-2 rounded-xl border border-white/10">
+                                ${city.hotels.length} Verified 5-Star Properties
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Hotels Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        ${city.hotels.map((h, idx) => `
+                            <div class="glass-card-premium group relative">
+                                <div class="h-60 overflow-hidden relative">
+                                    <img src="${h.image}" alt="${h.name}" referrerpolicy="no-referrer" onerror="handleImgError(this)" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                    
+                                    <div class="absolute top-4 right-4 bg-black/70 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10 flex items-center gap-1.5 shadow-lg">
+                                        <i data-lucide="star" class="w-3.5 h-3.5 text-amber-400 fill-amber-400"></i>
+                                        <span class="text-xs font-black text-white">${h.rating}</span>
+                                    </div>
+
+                                    <div class="absolute top-4 left-4 bg-sky-500/20 text-sky-300 backdrop-blur-md px-3 py-1 rounded-lg border border-sky-500/30 text-[10px] font-black uppercase tracking-widest">
+                                        Luxury 5-Star
+                                    </div>
+                                </div>
+
+                                <div class="p-6">
+                                    <h3 class="text-2xl font-black text-white uppercase tracking-tight mb-2 group-hover:text-sky-400 transition-colors">${h.name}</h3>
+                                    <p class="text-slate-400 text-xs font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
+                                        <i data-lucide="map-pin" class="w-3.5 h-3.5 text-sky-400"></i> ${h.location}
+                                    </p>
+
+                                    <!-- Amenities Pills -->
+                                    <div class="flex flex-wrap gap-1.5 mb-6">
+                                        ${h.amenities.map(am => `
+                                            <span class="text-[10px] font-bold uppercase tracking-wider bg-white/5 text-slate-300 px-2.5 py-1 rounded-md border border-white/5">
+                                                ${am}
+                                            </span>
+                                        `).join('')}
+                                    </div>
+
+                                    <div class="flex items-center justify-between pt-5 border-t border-white/5">
+                                        <div>
+                                            <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Starting Nightly</p>
+                                            <p class="text-2xl font-black text-emerald-400 tracking-tighter">₹${h.price}<span class="text-xs text-slate-500 font-normal ml-1">/night</span></p>
+                                        </div>
+
+                                        <button onclick="openHotelModal('${countryKey}', '${cityKey}', ${idx})"
+                                            class="bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-slate-950 font-black text-xs uppercase tracking-widest px-5 py-3 rounded-xl shadow-lg shadow-sky-500/20 transition-all flex items-center gap-2">
+                                            View Stay <i data-lucide="eye" class="w-4 h-4"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+            attachImageWatchdogs();
+        }
+
+        // -------------------------------------------------------------
+        // Search Handler
+        // -------------------------------------------------------------
+        function handleSearch(query) {
+            const q = query.trim().toLowerCase();
+            if (!q) {
+                if (currentCityKey && currentCountryKey) {
+                    selectCity(currentCountryKey, currentCityKey);
+                } else if (currentCountryKey) {
+                    selectCountry(currentCountryKey);
+                } else {
+                    renderCountriesView();
+                }
+                return;
+            }
+
+            renderCountriesView(q);
+        }
+
+        function resetToCountries() {
+            document.getElementById('global-search').value = '';
+            renderCountriesView();
+        }
+
+        function showCitiesForCurrentCountry() {
+            if (currentCountryKey) {
+                selectCountry(currentCountryKey);
+            } else {
+                renderCountriesView();
+            }
+        }
+
+        // -------------------------------------------------------------
+        // Breadcrumb State Sync
+        // -------------------------------------------------------------
+        function updateBreadcrumb() {
+            const cEl = document.getElementById('bc-country');
+            const cityEl = document.getElementById('bc-city');
+            const sep1 = document.getElementById('bc-sep1');
+            const sep2 = document.getElementById('bc-sep2');
+
+            if (currentCountryKey) {
+                const c = GLOBAL_DESTINATIONS[currentCountryKey];
+                cEl.innerText = `${c.flag} ${c.name}`;
+                cEl.classList.remove('hidden');
+                sep1.classList.remove('hidden');
+            } else {
+                cEl.classList.add('hidden');
+                sep1.classList.add('hidden');
+            }
+
+            if (currentCityKey && currentCountryKey) {
+                const city = GLOBAL_DESTINATIONS[currentCountryKey].cities[currentCityKey];
+                cityEl.innerText = city.name;
+                cityEl.classList.remove('hidden');
+                sep2.classList.remove('hidden');
+            } else {
+                cityEl.classList.add('hidden');
+                sep2.classList.add('hidden');
+            }
+        }
+
+        // -------------------------------------------------------------
+        // Hotel View Stay Modal
+        // -------------------------------------------------------------
+        function openHotelModal(countryKey, cityKey, index) {
+            const h = GLOBAL_DESTINATIONS[countryKey].cities[cityKey].hotels[index];
+            const modal = document.getElementById('hotel-modal');
+            const content = document.getElementById('modal-content');
+
+            content.innerHTML = `
+                <div class="space-y-6">
+                    <div class="h-72 rounded-2xl overflow-hidden relative">
+                        <img src="${h.image}" alt="${h.name}" referrerpolicy="no-referrer" onerror="handleImgError(this)" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
+                        
+                        <div class="absolute bottom-6 left-6 right-6 flex items-end justify-between">
+                            <div>
+                                <span class="bg-sky-500/20 text-sky-300 border border-sky-500/30 px-3 py-1 rounded-full text-xs font-black uppercase tracking-widest mb-2 inline-block">
+                                    Verified 5-Star Luxury Sanctuary
+                                </span>
+                                <h3 class="text-3xl md:text-4xl font-black text-white uppercase tracking-tight">${h.name}</h3>
+                                <p class="text-slate-300 text-xs font-bold uppercase tracking-widest mt-1 flex items-center gap-1.5">
+                                    <i data-lucide="map-pin" class="w-4 h-4 text-sky-400"></i> ${h.location}
+                                </p>
+                            </div>
+                            <div class="bg-slate-950/80 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/10 text-right">
+                                <span class="text-amber-400 font-black text-xl flex items-center gap-1 justify-end">
+                                    <i data-lucide="star" class="w-5 h-5 fill-amber-400"></i> ${h.rating}
+                                </span>
+                                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest block">Guest Rating</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-white/5 p-4 rounded-xl border border-white/10">
+                            <span class="text-slate-400 text-xs font-bold uppercase block mb-1">Starting Price</span>
+                            <span class="text-2xl font-black text-emerald-400">₹${h.price} <span class="text-xs text-slate-400 font-normal">/ night</span></span>
+                        </div>
+                        <div class="bg-white/5 p-4 rounded-xl border border-white/10">
+                            <span class="text-slate-400 text-xs font-bold uppercase block mb-1">Stay Category</span>
+                            <span class="text-white font-bold text-sm">Ultra Luxury 5-Star Hotel</span>
+                        </div>
+                        <div class="bg-white/5 p-4 rounded-xl border border-white/10">
+                            <span class="text-slate-400 text-xs font-bold uppercase block mb-1">Reservation Policy</span>
+                            <span class="text-sky-400 font-bold text-sm">Free Cancellation Available</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="text-xs font-black uppercase tracking-widest text-slate-400 mb-3">Key Property Highlights & Amenities</h4>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                            ${h.amenities.map(am => `
+                                <div class="bg-white/5 border border-white/10 px-3.5 py-2.5 rounded-xl flex items-center gap-2 text-xs font-bold text-slate-200">
+                                    <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+                                    <span>${am}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div class="pt-4 flex gap-4">
+                        <button onclick="closeHotelModal()" class="w-1/3 py-3.5 rounded-xl border border-white/10 text-slate-300 font-bold text-xs uppercase tracking-widest hover:bg-white/5 transition-all">
+                            Close
+                        </button>
+                        <a href="{{ url_for('main.travel_itinerary') }}" class="w-2/3 py-3.5 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-slate-950 font-black text-xs uppercase tracking-widest text-center shadow-xl shadow-sky-500/25 transition-all flex items-center justify-center gap-2">
+                            Book Stay in Itinerary <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+            `;
+            modal.classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeHotelModal() {
+            document.getElementById('hotel-modal').classList.add('hidden');
+        }
+    </script>
+    {% endraw %}
+</body>
+
+</html>

@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Itinerary | Plan My Trip</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            --glass-glow: 0 0 20px rgba(56, 189, 248, 0.4);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0f172a;
+            color: #f1f5f9;
+            margin: 0;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .aurora-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            background: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 100%);
+        }
+
+        .grid-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+
+        .glass-morphism {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .glass-card-premium {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+        }
+
+        .glass-nav-item {
+            padding: 8px 16px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            position: relative;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 500;
+        }
+
+        .glass-nav-item:hover,
+        .glass-nav-item.active {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: white;
+        }
+
+        .gradient-text-premium {
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 14px 18px;
+            border-radius: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        input:focus {
+            border-color: rgba(56, 189, 248, 0.4);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.1);
+        }
+
+        .timeline-container {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #38bdf8, #818cf8, transparent);
+            border-radius: 1px;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 10px;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #38bdf8;
+            border: 2px solid #0f172a;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+        }
+
+        .itinerary-day {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .itinerary-day:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .glass-button-premium {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .glass-button-premium:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+
+<body class="text-gray-100 antialiased">
+    <div class="aurora-bg">
+        <div class="grid-overlay"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 w-full z-50 glass-morphism border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Branding -->
+                <a href="{{ url_for('main.plan_trip') }}" class="flex items-center space-x-3 group">
+                    <div
+                        class="w-10 h-10 bg-gradient-to-br from-gray-800 to-slate-900 rounded-xl flex items-center justify-center border border-white/10 shadow-xl group-hover:border-sky-500/50 transition-all">
+                        <i data-lucide="plane" class="w-6 h-6 text-sky-400"></i>
+                    </div>
+                    <span class="text-xl font-bold text-white tracking-tight uppercase">Plan My Trip</span>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-2">
+                    <a href="{{ url_for('main.index') }}" class="glass-nav-item">Home</a>
+                    <a href="{{ url_for('main.plan_trip') }}" class="glass-nav-item">Plan My Trip</a>
+                    <a href="{{ url_for('main.destination_ideas') }}" class="glass-nav-item">Destination Ideas</a>
+                    <a href="{{ url_for('main.budget_planner') }}" class="glass-nav-item">Budget Planner</a>
+                    <a href="{{ url_for('main.travel_itinerary') }}" class="glass-nav-item active">
+                        Travel Itinerary
+                        <span
+                            class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-sky-500 rounded-full shadow-[0_0_8px_rgba(56,189,248,0.8)]"></span>
+                    </a>
+                    <a href="{{ url_for('main.packing_list') }}" class="glass-nav-item">Packing List</a>
+                    <a href="{{ url_for('main.hotels') }}" class="glass-nav-item">Hotels</a>
+                </div>
+
+                <!-- Right Side Actions -->
+                <div class="hidden md:flex items-center space-x-4 flex-1 justify-end max-w-sm ml-8">
+                    <a href="{{ url_for('main.index') }}"
+                        class="glass-button-premium px-6 py-2.5 rounded-xl text-sm font-bold uppercase tracking-widest text-white">
+                        Back Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow pt-24 pb-20 px-4 relative z-10">
+        <div class="max-w-5xl mx-auto">
+            <header class="text-center mb-16">
+                <div
+                    class="inline-flex items-center bg-sky-500/10 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] mb-6 text-sky-400 border border-sky-500/20">
+                    <i data-lucide="map" class="w-3.5 h-3.5 mr-2"></i> Logic Mapping
+                </div>
+                <h1 class="text-5xl md:text-7xl font-black text-white mb-6 tracking-tighter uppercase leading-[0.9]">
+                    Travel<br>
+                    <span class="gradient-text-premium">Itinerary Builder</span>
+                </h1>
+                <p class="text-slate-400 text-lg max-w-2xl mx-auto font-medium">
+                    Automate your journey. Generate a comprehensive day-by-day plan tailored to your destination.
+                </p>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                <!-- Input Section -->
+                <div class="lg:col-span-4">
+                    <div class="glass-card-premium p-8 h-fit sticky top-24">
+                        <form id="itinerary-form" onsubmit="generateItinerary(); return false;" class="space-y-6">
+                            <div class="space-y-3">
+                                <label
+                                    class="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Destination</label>
+                                <div class="relative group">
+                                    <i data-lucide="map-pin"
+                                        class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-sky-400"></i>
+                                    <input type="text" id="destination" value="Paris" placeholder="e.g. Paris" class="pl-12">
+                                </div>
+                            </div>
+
+                            <div class="space-y-3">
+                                <label class="text-xs font-black text-slate-500 uppercase tracking-widest ml-1">Number
+                                    of Days</label>
+                                <div class="relative group">
+                                    <i data-lucide="clock"
+                                        class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-sky-400"></i>
+                                    <input type="number" id="days" value="3" placeholder="e.g. 3" class="pl-12" min="1" max="30">
+                                </div>
+                            </div>
+
+                            <button type="button" id="build-btn" onclick="generateItinerary()"
+                                class="w-full bg-gradient-to-r from-sky-500 to-indigo-600 p-5 rounded-2xl font-black uppercase text-xs tracking-[0.2em] shadow-lg shadow-sky-500/20 hover:shadow-sky-500/40 transform hover:-translate-y-1 transition-all flex items-center justify-center gap-3">
+                                Build Plan <i data-lucide="wand-2" class="w-5 h-5"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Itinerary Output -->
+                <div class="lg:col-span-8">
+                    <div id="itinerary-empty"
+                        class="glass-card-premium p-12 h-full flex flex-col items-center justify-center text-center">
+                        <div
+                            class="w-24 h-24 rounded-full bg-slate-800/50 flex items-center justify-center mb-8 border border-white/5">
+                            <i data-lucide="list-checks" class="w-10 h-10 text-slate-600"></i>
+                        </div>
+                        <h4 class="text-2xl font-bold text-slate-500 uppercase tracking-tighter mb-4">No Itinerary Yet
+                        </h4>
+                        <p class="text-slate-600 max-w-sm">Define your destination and duration to generate a
+                            professional travel sequence.</p>
+                    </div>
+
+                    <div id="itinerary-list" class="timeline-container hidden">
+                        <!-- Days will be injected here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-black/40 backdrop-blur-xl border-t border-white/10 text-gray-400 py-8 px-4">
+        <div class="max-w-7xl mx-auto text-center">
+            <p>&copy; 2024 Smart Cart. All rights reserved.</p>
+        </div>
+    </footer>
+
+    {% raw %}
+    <script>
+        if (typeof lucide !== 'undefined') {
+            try { lucide.createIcons(); } catch (e) {}
+        }
+
+        // Comprehensive Curated Destination Intelligence Database (Up to 14 unique days per region)
+        const DESTINATION_DATABASE = {
+            "france": [
+                { theme: "Iconic Eiffel Tower & Seine Sunset Cruise", activities: [
+                    { time: "09:00 AM", task: "Eiffel Tower Summit Access & Champ de Mars stroll", icon: "camera" },
+                    { time: "01:00 PM", task: "Bistro lunch on Rue Cler with traditional Quiche & Espresso", icon: "utensils" },
+                    { time: "03:30 PM", task: "Champs-Élysées promenade & Arc de Triomphe viewing deck", icon: "landmark" },
+                    { time: "07:30 PM", task: "Sunset Bateaux Parisiens Seine River Cruise", icon: "ship" }
+                ]},
+                { theme: "Louvre Masterpieces & Le Marais Quarter", activities: [
+                    { time: "09:00 AM", task: "Louvre Museum guided tour: Mona Lisa & Winged Victory", icon: "palette" },
+                    { time: "01:00 PM", task: "Artisanal bakery lunch near Palais-Royal sculpture garden", icon: "utensils" },
+                    { time: "03:00 PM", task: "Musée d'Orsay Impressionist galleries (Monet & Van Gogh)", icon: "image" },
+                    { time: "07:30 PM", task: "Dinner in Le Marais medieval quarter & Place des Vosges", icon: "coffee" }
+                ]},
+                { theme: "Bohemian Montmartre & Palais Garnier Opera", activities: [
+                    { time: "09:30 AM", task: "Sacré-Cœur Basilica & panoramic hilltop view of Paris", icon: "landmark" },
+                    { time: "12:30 PM", task: "Place du Tertre open-air portrait artists & French onion soup", icon: "sun" },
+                    { time: "03:00 PM", task: "Palais Garnier Opera House & Galeries Lafayette glass dome", icon: "building" },
+                    { time: "08:00 PM", task: "Cabaret evening at Moulin Rouge or Latin Quarter jazz bar", icon: "sparkles" }
+                ]},
+                { theme: "Versailles Royal Estate & Hall of Mirrors", activities: [
+                    { time: "08:30 AM", task: "Day trip to Palace of Versailles & Hall of Mirrors", icon: "crown" },
+                    { time: "01:00 PM", task: "Grand Canal lakeside lunch & rowing boat experience", icon: "utensils" },
+                    { time: "03:00 PM", task: "Marie Antoinette's Estate & Musical Fountains walk", icon: "trees" },
+                    { time: "07:30 PM", task: "French wine & cheese tasting dinner back in Saint-Germain", icon: "wine" }
+                ]},
+                { theme: "Gothic Notre-Dame & Latin Quarter Secrets", activities: [
+                    { time: "09:00 AM", task: "Notre-Dame Cathedral Plaza & Sainte-Chapelle stained glass", icon: "landmark" },
+                    { time: "01:00 PM", task: "Traditional Crêperie lunch in Latin Quarter narrow alleys", icon: "utensils" },
+                    { time: "03:30 PM", task: "Panthéon monument & Luxembourg Gardens fountain lounge", icon: "sun" },
+                    { time: "08:00 PM", task: "Illuminated evening photography tour along Pont Neuf", icon: "camera" }
+                ]},
+                { theme: "French Riviera: Promenade des Anglais & Old Nice", activities: [
+                    { time: "09:00 AM", task: "Flight/TGV to Nice & Old Town (Vieux Nice) flower market", icon: "sun" },
+                    { time: "01:00 PM", task: "Niçoise Salad & Socca lunch along Cours Saleya", icon: "utensils" },
+                    { time: "03:30 PM", task: "Castle Hill waterfall overlook & Mediterranean sea views", icon: "mountain" },
+                    { time: "07:30 PM", task: "Sunset lounge dinner on Promenade des Anglais waterfront", icon: "waves" }
+                ]},
+                { theme: "French Riviera: Cannes La Croisette & Antibes", activities: [
+                    { time: "09:30 AM", task: "Cannes Red Carpet steps & Boulevard de la Croisette", icon: "sparkles" },
+                    { time: "01:00 PM", task: "Fresh Mediterranean seafood lunch at Cannes Old Port", icon: "utensils" },
+                    { time: "03:30 PM", task: "Antibes Picasso Museum & Cap d'Antibes coastal trail walk", icon: "palette" },
+                    { time: "08:00 PM", task: "Yacht harbor evening stroll & French gelato in Antibes", icon: "ship" }
+                ]},
+                { theme: "Provence Lavender Fields & Avignon Papal Palace", activities: [
+                    { time: "09:00 AM", task: "Palais des Papes guided tour in historic Avignon", icon: "crown" },
+                    { time: "01:00 PM", task: "Provençal herb lamb & ratatouille lunch in Aix-en-Provence", icon: "utensils" },
+                    { time: "03:30 PM", task: "Senanque Abbey blooming lavender fields excursion", icon: "trees" },
+                    { time: "07:30 PM", task: "Pont du Gard Roman Aqueduct sunset viewing picnic", icon: "landmark" }
+                ]},
+                { theme: "Normandy Coast & Mont Saint-Michel Abbey", activities: [
+                    { time: "08:30 AM", task: "Mont Saint-Michel island fortress walk & gothic abbey tour", icon: "landmark" },
+                    { time: "01:00 PM", task: "Traditional Normandy Apple Cider & Galette lunch", icon: "utensils" },
+                    { time: "03:30 PM", task: "Honfleur historic harbor walk & Impressionist wooden church", icon: "ship" },
+                    { time: "07:30 PM", task: "Seaside dinner in Deauville boardwalk resort", icon: "sun" }
+                ]},
+                { theme: "Loire Valley Royal Châteaux Excursion", activities: [
+                    { time: "09:00 AM", task: "Château de Chambord double-helix staircase tour", icon: "crown" },
+                    { time: "01:00 PM", task: "Lakeside picnic lunch at Château de Chenonceau gardens", icon: "utensils" },
+                    { time: "03:30 PM", task: "Château d'Amboise royal chapel & Da Vinci final residence", icon: "building" },
+                    { time: "07:30 PM", task: "Loire Valley wine tasting dinner with local Vouvray", icon: "wine" }
+                ]},
+                { theme: "Champagne Reims Cathedral & Historic Cellars", activities: [
+                    { time: "09:30 AM", task: "Reims Cathedral coronation site of French kings", icon: "landmark" },
+                    { time: "01:00 PM", task: "Gourmet Champagne pairing lunch in Épernay", icon: "utensils" },
+                    { time: "03:30 PM", task: "Moët & Chandon underground chalk cellar walkthrough", icon: "wine" },
+                    { time: "07:30 PM", task: "Avenue de Champagne evening stroll & bubbly tasting", icon: "sparkles" }
+                ]},
+                { theme: "Strasbourg Petite France & Alsace Wine Route", activities: [
+                    { time: "09:00 AM", task: "Strasbourg Cathedral astronomical clock & Petite France canals", icon: "map-pin" },
+                    { time: "01:00 PM", task: "Alsatian Tarte Flambée & Riesling wine lunch", icon: "utensils" },
+                    { time: "03:30 PM", task: "Colmar half-timbered fairytale village & Little Venice boat", icon: "sun" },
+                    { time: "07:30 PM", task: "Alsace Wine Route cellar dinner experience", icon: "wine" }
+                ]},
+                { theme: "French Alps: Chamonix & Mont Blanc Cable Car", activities: [
+                    { time: "08:30 AM", task: "Aiguille du Midi cable car ascent to 3,842m Mont Blanc view", icon: "mountain" },
+                    { time: "01:00 PM", task: "Savoyard Cheese Fondue lunch in Chamonix Alpine village", icon: "utensils" },
+                    { time: "03:30 PM", task: "Mer de Glace glacier train & Ice Cave exploration", icon: "snowflake" },
+                    { time: "07:30 PM", task: "Alpine fireside lounge & local craft beer", icon: "sparkles" }
+                ]},
+                { theme: "Lyon Gastronomy & Ancient Roman Ruins", activities: [
+                    { time: "09:00 AM", task: "Fourvière Basilica & Ancient Roman Amphitheatre ruins", icon: "landmark" },
+                    { time: "01:00 PM", task: "Authentic Bouchon Lyonnais 3-course gastronomic lunch", icon: "utensils" },
+                    { time: "03:30 PM", task: "Traboules secret passageways walk in Vieux Lyon", icon: "compass" },
+                    { time: "08:00 PM", task: "Saône River waterfront evening stroll & dinner", icon: "moon" }
+                ]}
+            ],
+            "japan": [
+                { theme: "Futuristic Tokyo Neon, Shibuya Sky & Shinjuku", activities: [
+                    { time: "09:00 AM", task: "360-degree views from Shibuya Sky observation deck", icon: "building" },
+                    { time: "01:00 PM", task: "Tonkatsu & Tonkotsu Ramen lunch in Shibuya Underground", icon: "utensils" },
+                    { time: "03:30 PM", task: "Shibuya Crossing scramble walk & Hachiko Statue photo", icon: "footprints" },
+                    { time: "07:30 PM", task: "Shinjuku Kabukicho neon lights & Omoide Yokocho Izakayas", icon: "sparkles" }
+                ]},
+                { theme: "Asakusa Traditions & Imperial Shrines", activities: [
+                    { time: "08:30 AM", task: "Senso-ji Temple & Nakamise shopping street in Asakusa", icon: "landmark" },
+                    { time: "12:30 PM", task: "Matcha tea ceremony & fresh Tempura set lunch", icon: "coffee" },
+                    { time: "03:00 PM", task: "Meiji Jingu Shrine forest walk & Harajuku Takeshita Street", icon: "trees" },
+                    { time: "07:00 PM", task: "Tsukiji Outer Market fresh Omakase sushi dinner", icon: "utensils" }
+                ]},
+                { theme: "Akihabara Tech Culture & Ginza Boulevards", activities: [
+                    { time: "09:30 AM", task: "Akihabara Electric Town manga & tech store discovery", icon: "gamepad-2" },
+                    { time: "01:00 PM", task: "Wagyu Katsu Curry lunch in Akihabara backstreet", icon: "utensils" },
+                    { time: "03:30 PM", task: "Ginza luxury shopping district & Kabukiza Theatre exterior", icon: "building" },
+                    { time: "07:30 PM", task: "Roppongi Hills Mori Tower Tokyo Tower night skyline", icon: "camera" }
+                ]},
+                { theme: "Kyoto Shrines & Torii Gate Sanctuary", activities: [
+                    { time: "08:00 AM", task: "Shinkansen Bullet train to Kyoto & Fushimi Inari Torii gates", icon: "train" },
+                    { time: "12:30 PM", task: "Traditional Kyoto Kaiseki multi-course lunch", icon: "utensils" },
+                    { time: "03:00 PM", task: "Kiyomizu-dera wooden stage temple & Ninenzaka slopes", icon: "sun" },
+                    { time: "07:00 PM", task: "Historic Gion lantern district walk in search of Geiko", icon: "moon" }
+                ]},
+                { theme: "Kyoto Golden Pavilion & Arashiyama Bamboo Grove", activities: [
+                    { time: "08:30 AM", task: "Kinkaku-ji (Golden Pavilion) reflection pond tour", icon: "sparkles" },
+                    { time: "11:30 AM", task: "Arashiyama Bamboo Forest morning walk & Togetsukyo Bridge", icon: "trees" },
+                    { time: "01:30 PM", task: "Handcrafted Soba noodles lunch overlooking Katsura River", icon: "utensils" },
+                    { time: "07:30 PM", task: "Japanese Onsen hot spring relaxation & Ryokan feast", icon: "bath" }
+                ]},
+                { theme: "Mount Fuji & Hakone Volcanic Lake Cruise", activities: [
+                    { time: "08:00 AM", task: "Day excursion to Mt. Fuji 5th Station & Lake Kawaguchiko", icon: "mountain" },
+                    { time: "01:00 PM", task: "Houtou noodle lunch with Fujisan reflection view", icon: "utensils" },
+                    { time: "03:30 PM", task: "Hakone Pirate Ship cruise & Owakudani volcanic ropeway", icon: "ship" },
+                    { time: "08:00 PM", task: "Return to Tokyo & Shinjuku Golden Gai alley cocktail", icon: "wine" }
+                ]},
+                { theme: "Osaka Street Food & Castle Gardens", activities: [
+                    { time: "09:30 AM", task: "Osaka Castle Keep & Cherry Blossom Park walk", icon: "landmark" },
+                    { time: "01:00 PM", task: "Kuromon Market: Takoyaki & Wagyu beef skewers", icon: "utensils" },
+                    { time: "04:00 PM", task: "Umeda Sky Building Floating Garden Observatory", icon: "building" },
+                    { time: "08:00 PM", task: "Dotonbori canal neon stroll & Glico Running Man photo", icon: "camera" }
+                ]},
+                { theme: "Nara Park Sacred Deer & Todai-ji Great Buddha", activities: [
+                    { time: "09:00 AM", task: "Nara Park free-roaming sacred deer feeding", icon: "trees" },
+                    { time: "11:30 AM", task: "Todai-ji Temple & Daibutsu (Great Bronze Buddha)", icon: "landmark" },
+                    { time: "01:30 PM", task: "Traditional Nara Chagayu (tea porridge) lunch", icon: "utensils" },
+                    { time: "04:00 PM", task: "Kasuga Taisha Shrine stone lantern forest trail", icon: "sun" }
+                ]},
+                { theme: "Hiroshima Peace Memorial & Miyajima Island", activities: [
+                    { time: "08:30 AM", task: "Shinkansen to Hiroshima Peace Memorial Park & Museum", icon: "heart" },
+                    { time: "01:00 PM", task: "Hiroshima-style Okonomiyaki savory pancake lunch", icon: "utensils" },
+                    { time: "03:30 PM", task: "Ferry to Miyajima Island & Itsukushima Floating Torii Gate", icon: "ship" },
+                    { time: "07:30 PM", task: "Miyajima seaside sunset walk & grilled oysters dinner", icon: "sun" }
+                ]},
+                { theme: "Kanazawa Kenroku-en & Samurai Quarters", activities: [
+                    { time: "09:00 AM", task: "Kenroku-en Garden - top rated landscape garden in Japan", icon: "trees" },
+                    { time: "01:00 PM", task: "Fresh Sea of Japan seafood sushi at Omicho Market", icon: "utensils" },
+                    { time: "03:30 PM", task: "Higashi Chaya Geisha District & Gold Leaf workshop", icon: "sparkles" },
+                    { time: "07:30 PM", task: "Nagamachi Samurai District lantern dinner walk", icon: "moon" }
+                ]},
+                { theme: "Takayama Historic Village & Shirakawa-go", activities: [
+                    { time: "09:00 AM", task: "Takayama Sanmachi Suji Old Town wooden merchant streets", icon: "building" },
+                    { time: "01:00 PM", task: "Hida Wagyu beef skewers & local sake tasting", icon: "utensils" },
+                    { time: "03:30 PM", task: "Shirakawa-go UNESCO Gassho-zukuri thatched cottages", icon: "home" },
+                    { time: "07:30 PM", task: "Hida mountain alpine lodge dinner & hot bath", icon: "bath" }
+                ]},
+                { theme: "Hokkaido Sapporo Odori & Otaru Canal", activities: [
+                    { time: "09:00 AM", task: "Sapporo TV Tower & Odori Park floral walk", icon: "building" },
+                    { time: "01:00 PM", task: "Sapporo Miso Ramen & Hokkaido Butter Corn lunch", icon: "utensils" },
+                    { time: "03:30 PM", task: "Otaru Historic Canal walk & Music Box Museum", icon: "ship" },
+                    { time: "08:00 PM", task: "Sapporo Beer Museum tour & Genghis Khan BBQ dinner", icon: "wine" }
+                ]},
+                { theme: "Kamakura Great Buddha & Enoshima Coast", activities: [
+                    { time: "09:00 AM", task: "Kotoku-in Great Outdoor Bronze Buddha of Kamakura", icon: "landmark" },
+                    { time: "01:00 PM", task: "Shirasu (Whitebait) seafood rice bowl lunch", icon: "utensils" },
+                    { time: "03:30 PM", task: "Enoshima Island Shrine & Sea Candle Lighthouse", icon: "sun" },
+                    { time: "07:30 PM", task: "Shonan coastal sunset view of Mt. Fuji silhouette", icon: "camera" }
+                ]},
+                { theme: "Nikko World Heritage Toshogu & Kegon Falls", activities: [
+                    { time: "08:30 AM", task: "Nikko Toshogu Shrine gold-carved wooden gates", icon: "crown" },
+                    { time: "01:00 PM", task: "Nikko Yuba (Tofu skin) delicacy lunch set", icon: "utensils" },
+                    { time: "03:30 PM", task: "Kegon Waterfall elevator view & Lake Chuzenji loop", icon: "mountain" },
+                    { time: "07:30 PM", task: "Return bullet train to Tokyo & farewell izakaya toast", icon: "sparkles" }
+                ]}
+            ],
+            "india": [
+                { theme: "Historic Delhi & Mughal Monuments", activities: [
+                    { time: "09:00 AM", task: "Red Fort & Qutub Minar UNESCO World Heritage tour", icon: "landmark" },
+                    { time: "01:00 PM", task: "Authentic Mughlai Biryani & Kebabs at Chandni Chowk", icon: "utensils" },
+                    { time: "03:30 PM", task: "Humayun's Tomb Mughal gardens & Lotus Temple walk", icon: "trees" },
+                    { time: "07:30 PM", task: "India Gate illuminated evening walk & street snacks", icon: "sparkles" }
+                ]},
+                { theme: "Agra Taj Mahal & Royal Fortresses", activities: [
+                    { time: "06:00 AM", task: "Sunrise view of the breathtaking Taj Mahal", icon: "sun" },
+                    { time: "11:00 AM", task: "Agra Fort royal red sandstone palaces tour", icon: "landmark" },
+                    { time: "01:30 PM", task: "Local Agra Petha sweets tasting & Mughlai feast", icon: "utensils" },
+                    { time: "07:00 PM", task: "Sunset perspective of Taj Mahal from Mehtab Bagh", icon: "camera" }
+                ]},
+                { theme: "Jaipur Pink City & Royal Palaces", activities: [
+                    { time: "08:30 AM", task: "Amber Fort hilltop palace & Sheesh Mahal (Mirror Hall)", icon: "crown" },
+                    { time: "01:00 PM", task: "Royal Rajasthani Thali lunch at City Palace cafe", icon: "utensils" },
+                    { time: "03:30 PM", task: "Hawa Mahal (Palace of Winds) & Jantar Mantar observatory", icon: "camera" },
+                    { time: "07:30 PM", task: "Bapu Bazaar handicrafts shopping & Chokhi Dhani folk dance", icon: "shopping-bag" }
+                ]},
+                { theme: "Udaipur City of Lakes & Royal Heritage", activities: [
+                    { time: "09:00 AM", task: "Udaipur City Palace overlooking Lake Pichola", icon: "building" },
+                    { time: "01:00 PM", task: "Lakeside rooftop lunch with Dal Baati Churma", icon: "utensils" },
+                    { time: "03:30 PM", task: "Sunset Boat Cruise to Jagmandir Island Palace", icon: "ship" },
+                    { time: "07:30 PM", task: "Bagore Ki Haveli Rajasthani puppet & cultural dance show", icon: "sparkles" }
+                ]},
+                { theme: "Varanasi Ganges Ghats & Sacred Ganga Aarti", activities: [
+                    { time: "05:30 AM", task: "Sunrise boat ride along sacred Ganges River Ghats", icon: "sun" },
+                    { time: "10:00 AM", task: "Kashi Vishwanath Temple & Sarnath Buddhist Deer Park", icon: "landmark" },
+                    { time: "01:30 PM", task: "Traditional Banarasi Thali & Lassi at Godowlia", icon: "utensils" },
+                    { time: "06:30 PM", task: "Dashashwamedh Ghat spectacular Evening Ganga Aarti", icon: "flame" }
+                ]},
+                { theme: "Goa Tropical Beaches & Latin Quarter", activities: [
+                    { time: "09:30 AM", task: "Baga & Calangute beach water sports & parasailing", icon: "waves" },
+                    { time: "01:30 PM", task: "Goan Fish Curry & Bebinca lunch at beach shack", icon: "utensils" },
+                    { time: "04:30 PM", task: "Fontainhas Latin Quarter colorful heritage walk in Panaji", icon: "map-pin" },
+                    { time: "08:00 PM", task: "Mandovi River sunset cruise with live Goan music", icon: "music" }
+                ]},
+                { theme: "Goa Waterfalls & Organic Spice Plantation", activities: [
+                    { time: "08:30 AM", task: "Jeep safari to Dudhsagar Waterfalls in Bhagwan Mahavir Park", icon: "mountain" },
+                    { time: "01:00 PM", task: "Organic Spice Plantation guided walk & traditional buffet", icon: "leaf" },
+                    { time: "04:00 PM", task: "Old Goa UNESCO Basilica of Bom Jesus cathedral", icon: "landmark" },
+                    { time: "08:00 PM", task: "Anjuna Night Market & beachside acoustic lounge", icon: "sparkles" }
+                ]},
+                { theme: "Mumbai Coastal Promenade & Heritage", activities: [
+                    { time: "09:00 AM", task: "Gateway of India & ferry boat to Elephanta Caves", icon: "ship" },
+                    { time: "01:30 PM", task: "Mumbai Vada Pav & Pav Bhaji lunch at Juhu Beach", icon: "utensils" },
+                    { time: "04:30 PM", task: "Marine Drive 'Queen\\'s Necklace' sunset promenade", icon: "sun" },
+                    { time: "08:00 PM", task: "Rooftop dining overlooking Bandra-Worli Sea Link skyline", icon: "building" }
+                ]},
+                { theme: "Kerala Backwaters Alleppey Houseboat Cruise", activities: [
+                    { time: "09:30 AM", task: "Board luxury Kettuvallam Houseboat in Alleppey", icon: "ship" },
+                    { time: "01:00 PM", task: "Traditional Karimeen fish curry served on banana leaf", icon: "utensils" },
+                    { time: "04:00 PM", task: "Vembanad Lake village canal kayaking & coconut groves", icon: "trees" },
+                    { time: "07:30 PM", task: "Backwater starlight dinner & Ayurvedic herbal wellness", icon: "sparkles" }
+                ]},
+                { theme: "Munnar Tea Plantations & Misty Peaks", activities: [
+                    { time: "09:00 AM", task: "Munnar Emerald Tea Estate walk & Tata Tea Museum", icon: "leaf" },
+                    { time: "01:00 PM", task: "South Indian Kerala Thali lunch at mountain cafe", icon: "utensils" },
+                    { time: "03:30 PM", task: "Eravikulam National Park Nilgiri Tahr wildlife safari", icon: "mountain" },
+                    { time: "07:30 PM", task: "Echo Point lakeside walk & campfire evening", icon: "moon" }
+                ]},
+                { theme: "Amritsar Golden Temple & Wagah Ceremony", activities: [
+                    { time: "08:30 AM", task: "Golden Temple (Sri Harmandir Sahib) spiritual visit", icon: "sun" },
+                    { time: "01:00 PM", task: "Amritsari Kulcha & Lassi at historic Haveli", icon: "utensils" },
+                    { time: "04:30 PM", task: "Wagah Border Patriotic Beating Retreat Ceremony", icon: "flag" },
+                    { time: "08:30 PM", task: "Illuminated Golden Temple night reflection viewing", icon: "sparkles" }
+                ]},
+                { theme: "Rishikesh Yoga & Ganges River Rapids", activities: [
+                    { time: "07:00 AM", task: "Himalayan Sunrise Yoga session & Meditation by Ganges", icon: "sun" },
+                    { time: "11:00 AM", task: "Laxman Jhula & Ram Jhula suspension bridge walk", icon: "map-pin" },
+                    { time: "01:30 PM", task: "Organic Sattvic Ayurvedic lunch at Beatles Ashram cafe", icon: "utensils" },
+                    { time: "06:30 PM", task: "Triveni Ghat spiritual evening Aarti ceremony", icon: "flame" }
+                ]},
+                { theme: "Jodhpur Blue City & Mehrangarh Fort", activities: [
+                    { time: "09:00 AM", task: "Mehrangarh Fort clifftop fortress & museum tour", icon: "landmark" },
+                    { time: "01:00 PM", task: "Jaswant Thada white marble cenotaph & royal lunch", icon: "building" },
+                    { time: "03:30 PM", task: "Blue City blue-painted alleyways photography walk", icon: "camera" },
+                    { time: "07:30 PM", task: "Clock Tower Spice Market shopping & rooftop dining", icon: "shopping-bag" }
+                ]},
+                { theme: "Jaisalmer Golden Fort & Thar Desert Safari", activities: [
+                    { time: "09:00 AM", task: "Jaisalmer Golden Sandstone Fort & Patwon Ki Haveli", icon: "crown" },
+                    { time: "01:00 PM", task: "Desert spice lunch in old city courtyard", icon: "utensils" },
+                    { time: "04:00 PM", task: "Sam Sand Dunes camel safari into Thar Desert", icon: "sun" },
+                    { time: "08:00 PM", task: "Desert campfire, Rajasthani Kalbeliya dance & star watching", icon: "sparkles" }
+                ]}
+            ],
+            "italy": [
+                { theme: "Ancient Roman Empire & Colosseum", activities: [
+                    { time: "08:30 AM", task: "Colosseum, Palatine Hill & Roman Forum guided tour", icon: "landmark" },
+                    { time: "01:00 PM", task: "Authentic Roman Pasta Cacio e Pepe at Trastevere trattoria", icon: "utensils" },
+                    { time: "03:30 PM", task: "Pantheon temple & Piazza Navona fountains walk", icon: "building" },
+                    { time: "07:30 PM", task: "Trevi Fountain coin toss & Gelato tasting", icon: "sparkles" }
+                ]},
+                { theme: "Vatican City & Renaissance Wonders", activities: [
+                    { time: "08:30 AM", task: "Vatican Museums, Sistine Chapel & St. Peter's Basilica", icon: "crown" },
+                    { time: "01:00 PM", task: "Artisanal Italian pizza by the slice in Prati quarter", icon: "utensils" },
+                    { time: "03:30 PM", task: "Castel Sant'Angelo fortress & Tiber river bridge view", icon: "camera" },
+                    { time: "07:30 PM", task: "Spanish Steps sunset walk & Via Condotti boutique stroll", icon: "sun" }
+                ]},
+                { theme: "Florence Renaissance & Duomo Heights", activities: [
+                    { time: "08:00 AM", task: "High-speed train to Florence & Duomo Cathedral climb", icon: "train" },
+                    { time: "01:00 PM", task: "Florentine Steak (Bistecca) lunch at Mercato Centrale", icon: "utensils" },
+                    { time: "03:30 PM", task: "Uffizi Gallery: Botticelli masterpieces & Ponte Vecchio", icon: "palette" },
+                    { time: "07:30 PM", task: "Piazzale Michelangelo sunset over Florence skyline", icon: "sun" }
+                ]},
+                { theme: "Venice Canals & Gondola Cruise", activities: [
+                    { time: "09:00 AM", task: "Grand Canal Gondola ride & St. Mark's Basilica", icon: "ship" },
+                    { time: "01:00 PM", task: "Seafood Risotto & Cicchetti tapas dining near Rialto", icon: "utensils" },
+                    { time: "03:30 PM", task: "Doge's Palace & Bridge of Sighs tour", icon: "landmark" },
+                    { time: "07:30 PM", task: "Venetian waterfront sunset aperitivo in Cannaregio", icon: "glass-water" }
+                ]},
+                { theme: "Venice Lagoon: Murano & Burano Islands", activities: [
+                    { time: "09:00 AM", task: "Vaporetto boat ride to Murano Glassblowing factories", icon: "ship" },
+                    { time: "01:00 PM", task: "Fresh lagoon fish lunch on Burano island", icon: "utensils" },
+                    { time: "03:30 PM", task: "Burano bright pastel houses & lace-making heritage", icon: "camera" },
+                    { time: "07:30 PM", task: "Return to St. Mark's Square for live orchestra coffee", icon: "music" }
+                ]},
+                { theme: "Amalfi Coast & Positano Cliffs", activities: [
+                    { time: "09:00 AM", task: "Scenic coastal drive through cliffside Positano & Amalfi", icon: "sun" },
+                    { time: "01:00 PM", task: "Fresh seafood lunch & Limoncello tasting in Ravello", icon: "utensils" },
+                    { time: "04:00 PM", task: "Mediterranean boat cruise along Amalfi sea caves", icon: "ship" },
+                    { time: "08:00 PM", task: "Cliffside terrace dinner overlooking Sorrento bay", icon: "sparkles" }
+                ]},
+                { theme: "Tuscan Vineyard & San Gimignano Towers", activities: [
+                    { time: "09:30 AM", task: "Chianti Classico vineyard tour & wine cellars walk", icon: "wine" },
+                    { time: "01:00 PM", task: "Farm-to-table Tuscan lunch with extra virgin olive oil tasting", icon: "utensils" },
+                    { time: "04:00 PM", task: "San Gimignano medieval stone towers & gelato world champion", icon: "landmark" },
+                    { time: "08:00 PM", task: "Siena Piazza del Campo evening dinner", icon: "sun" }
+                ]},
+                { theme: "Cinque Terre Coastal Trail & Vernazza Harbor", activities: [
+                    { time: "08:30 AM", task: "Scenic coastal train to Monterosso al Mare beach", icon: "train" },
+                    { time: "11:30 AM", task: "Hike Sentiero Azzurro trail to Vernazza cliffside harbor", icon: "mountain" },
+                    { time: "01:30 PM", task: "Fresh Pesto Trofie pasta lunch overlooking Manarola", icon: "utensils" },
+                    { time: "07:00 PM", task: "Riomaggiore sunset rock lounge & Ligurian wine", icon: "waves" }
+                ]},
+                { theme: "Milan Fashion & Duomo Cathedral Roof", activities: [
+                    { time: "09:00 AM", task: "Rooftop terrace walk on Milan Gothic Duomo Cathedral", icon: "building" },
+                    { time: "01:00 PM", task: "Risotto alla Milanese lunch at Galleria Vittorio Emanuele II", icon: "utensils" },
+                    { time: "03:30 PM", task: "Da Vinci's 'The Last Supper' mural viewing at Santa Maria", icon: "palette" },
+                    { time: "08:00 PM", task: "Navigli canal district aperitivo & fashion boutique walk", icon: "sparkles" }
+                ]},
+                { theme: "Lake Como Waterfront & Villa Gardens", activities: [
+                    { time: "09:00 AM", task: "Scenic train to Varenna village on Lake Como", icon: "train" },
+                    { time: "11:30 AM", task: "Ferry across Lake Como to Bellagio pearl village", icon: "ship" },
+                    { time: "01:30 PM", task: "Lakeside terrace lunch with Lake Como fish & Polenta", icon: "utensils" },
+                    { time: "04:00 PM", task: "Villa Carlotta botanical gardens & marble sculptures walk", icon: "trees" }
+                ]},
+                { theme: "Ancient Pompeii Ruins & Mount Vesuvius", activities: [
+                    { time: "08:30 AM", task: "Guided archaeological tour of preserved Pompeii ruins", icon: "landmark" },
+                    { time: "01:00 PM", task: "Neapolitan wood-fired Margherita Pizza in Naples", icon: "utensils" },
+                    { time: "03:30 PM", task: "Mt. Vesuvius volcano crater rim summit walk", icon: "mountain" },
+                    { time: "07:30 PM", task: "Naples seafront promenade walk & espresso at Café Gambrinus", icon: "coffee" }
+                ]},
+                { theme: "Capri Island & Blue Grotto Sea Caves", activities: [
+                    { time: "08:30 AM", task: "Hydrofoil boat from Sorrento to Capri Island port", icon: "ship" },
+                    { time: "10:30 AM", task: "Blue Grotto (Grotta Azzurra) glowing sea cave boat", icon: "waves" },
+                    { time: "01:30 PM", task: "Caprese Salad & Spaghetti alle Vongole lunch in Anacapri", icon: "utensils" },
+                    { time: "04:00 PM", task: "Monte Solaro chairlift ride for 360-degree Capri panorama", icon: "sun" }
+                ]},
+                { theme: "Verona Romance & Lake Garda Castle", activities: [
+                    { time: "09:00 AM", task: "Verona Roman Arena Amphitheatre & Juliet's Balcony", icon: "heart" },
+                    { time: "01:00 PM", task: "Veronese Amarone risotto lunch in Piazza delle Erbe", icon: "utensils" },
+                    { time: "03:30 PM", task: "Lake Garda ferry to Sirmione Scaligero Castle peninsula", icon: "ship" },
+                    { time: "07:30 PM", task: "Sunset lakefront stroll & Bardolino wine tasting", icon: "wine" }
+                ]},
+                { theme: "Bologna Food Capital & Historic Towers", activities: [
+                    { time: "09:00 AM", task: "Climb Asinelli Tower for panoramic Bologna red roofs", icon: "building" },
+                    { time: "01:00 PM", task: "Handmade Tagliatelle al Ragù & Parmigiano tasting", icon: "utensils" },
+                    { time: "03:30 PM", task: "Piazza Maggiore & Basilica of San Petronio tour", icon: "landmark" },
+                    { time: "08:00 PM", task: "Bologna Quadrilatero historic food alley dinner", icon: "moon" }
+                ]}
+            ],
+            "usa": [
+                { theme: "New York City Iconic Landmarks", activities: [
+                    { time: "08:30 AM", task: "Statue of Liberty & Ellis Island ferry departure", icon: "ship" },
+                    { time: "01:00 PM", task: "New York Deli Pastrami sandwich at Wall Street", icon: "utensils" },
+                    { time: "03:30 PM", task: "Empire State Building 86th floor main deck view", icon: "building" },
+                    { time: "08:00 PM", task: "Times Square neon stroll & Broadway musical show", icon: "sparkles" }
+                ]},
+                { theme: "New York Central Park & Cultural Mile", activities: [
+                    { time: "09:00 AM", task: "Central Park Strawberry Fields & Bethesda Terrace walk", icon: "trees" },
+                    { time: "01:00 PM", task: "Metropolitan Museum of Art (The Met) guided tour", icon: "palette" },
+                    { time: "04:00 PM", task: "High Line elevated park walk & Chelsea Market snacks", icon: "footprints" },
+                    { time: "07:30 PM", task: "Sunset pedestrian walk across Brooklyn Bridge", icon: "camera" }
+                ]},
+                { theme: "Washington D.C. Monuments & Smithsonian", activities: [
+                    { time: "09:00 AM", task: "National Mall: Lincoln Memorial & Washington Monument", icon: "landmark" },
+                    { time: "01:00 PM", task: "Capitol Hill cafe lunch near US Capitol dome", icon: "utensils" },
+                    { time: "03:00 PM", task: "Smithsonian Air and Space Museum exhibition", icon: "rocket" },
+                    { time: "07:30 PM", task: "Georgetown historic waterfront evening dinner", icon: "moon" }
+                ]},
+                { theme: "Grand Canyon National Park Wonders", activities: [
+                    { time: "08:30 AM", task: "Grand Canyon South Rim: Mather Point panoramic view", icon: "mountain" },
+                    { time: "12:30 PM", task: "Bright Angel Lodge canyon view lunch", icon: "utensils" },
+                    { time: "03:00 PM", task: "Desert View Watchtower & Little Colorado River overlook", icon: "sun" },
+                    { time: "07:00 PM", task: "Hopi Point sunset over Grand Canyon chasms", icon: "camera" }
+                ]},
+                { theme: "Las Vegas Strip & Red Rock Canyon", activities: [
+                    { time: "09:00 AM", task: "Red Rock Canyon scenic loop drive & desert trail", icon: "car" },
+                    { time: "01:00 PM", task: "Las Vegas celebrity chef restaurant lunch", icon: "utensils" },
+                    { time: "04:00 PM", task: "High Roller Observation Wheel 360-degree spin", icon: "sparkles" },
+                    { time: "08:00 PM", task: "Bellagio Fountains show & Fremont Street Experience", icon: "music" }
+                ]},
+                { theme: "Los Angeles Hollywood & Santa Monica", activities: [
+                    { time: "09:00 AM", task: "Hollywood Walk of Fame & TCL Chinese Theatre", icon: "star" },
+                    { time: "01:00 PM", task: "In-N-Out Burger & Farmers Market lunch", icon: "utensils" },
+                    { time: "03:30 PM", task: "Griffith Observatory Hollywood Sign view & planetarium", icon: "camera" },
+                    { time: "07:30 PM", task: "Santa Monica Pier sunset Ferris Wheel & boardwalk", icon: "sun" }
+                ]},
+                { theme: "San Francisco Golden Gate & Cable Cars", activities: [
+                    { time: "09:00 AM", task: "Golden Gate Bridge pedestrian walk & Welcome Center", icon: "map-pin" },
+                    { time: "01:00 PM", task: "Clam Chowder in sourdough bowl at Fisherman's Wharf", icon: "utensils" },
+                    { time: "03:30 PM", task: "Alcatraz Island Penitentiary audio tour", icon: "building" },
+                    { time: "07:30 PM", task: "Historic Cable Car ride & Chinatown dinner", icon: "train" }
+                ]},
+                { theme: "Yosemite National Park Valley Waterfalls", activities: [
+                    { time: "08:30 AM", task: "Yosemite Valley view: El Capitan & Half Dome monoliths", icon: "mountain" },
+                    { time: "12:30 PM", task: "Yosemite Valley Lodge picnic lunch", icon: "utensils" },
+                    { time: "03:00 PM", task: "Yosemite Falls mist trail walk", icon: "trees" },
+                    { time: "07:00 PM", task: "Glacier Point sunset view over Sierra Nevada peaks", icon: "sun" }
+                ]},
+                { theme: "Yellowstone National Park Geysers & Wildlife", activities: [
+                    { time: "08:30 AM", task: "Old Faithful Geyser eruption & Upper Geyser Basin boardwalk", icon: "flame" },
+                    { time: "01:00 PM", task: "Yellowstone Lake Lodge lunch", icon: "utensils" },
+                    { time: "03:30 PM", task: "Grand Prismatic Spring rainbow thermal pool walk", icon: "eye" },
+                    { time: "07:00 PM", task: "Lamar Valley bison wildlife safari sunset drive", icon: "camera" }
+                ]},
+                { theme: "Miami South Beach Art Deco & Wynwood", activities: [
+                    { time: "09:30 AM", task: "South Beach Ocean Drive Art Deco Historic District tour", icon: "building" },
+                    { time: "01:00 PM", task: "Cuban Sandwich & Cafe Con Leche in Little Havana", icon: "utensils" },
+                    { time: "03:30 PM", task: "Wynwood Walls street art murals & gallery walk", icon: "palette" },
+                    { time: "08:00 PM", task: "Biscayne Bay sunset cocktail cruise", icon: "ship" }
+                ]},
+                { theme: "Chicago Architecture & Lakefront", activities: [
+                    { time: "09:00 AM", task: "Chicago River Architecture boat tour", icon: "ship" },
+                    { time: "01:00 PM", task: "Authentic Chicago Deep Dish Pizza lunch at Giordano's", icon: "utensils" },
+                    { time: "03:30 PM", task: "Millennium Park 'The Bean' cloud gate sculpture", icon: "sparkles" },
+                    { time: "07:30 PM", task: "Willis Tower Skydeck glass ledge night view", icon: "building" }
+                ]},
+                { theme: "Hawaii Oahu: Honolulu & Waikiki Beach", activities: [
+                    { time: "08:30 AM", task: "Diamond Head State Monument crater hike", icon: "mountain" },
+                    { time: "01:00 PM", task: "Fresh Hawaiian Poke bowl lunch at Waikiki Beach", icon: "utensils" },
+                    { time: "03:30 PM", task: "Pearl Harbor National Memorial & USS Arizona", icon: "flag" },
+                    { time: "07:00 PM", task: "Sunset Luau show with Polynesian Fire Dancers", icon: "flame" }
+                ]},
+                { theme: "New Orleans French Quarter & Jazz", activities: [
+                    { time: "09:00 AM", task: "Jackson Square & St. Louis Cathedral French Quarter walk", icon: "landmark" },
+                    { time: "01:00 PM", task: "Hot Beignets & Cafe au Lait at Cafe du Monde", icon: "coffee" },
+                    { time: "03:30 PM", task: "Garden District streetcar tour & historic mansions", icon: "train" },
+                    { time: "08:00 PM", task: "Frenchmen Street authentic live Jazz club crawl", icon: "music" }
+                ]},
+                { theme: "Utah Zion Canyon & Bryce Hoodoos", activities: [
+                    { time: "08:30 AM", task: "Zion National Park shuttle & Riverside Narrows trail", icon: "mountain" },
+                    { time: "01:00 PM", task: "Zion Lodge canyon picnic lunch", icon: "utensils" },
+                    { time: "03:30 PM", task: "Drive to Bryce Canyon National Park amphitheater", icon: "car" },
+                    { time: "07:00 PM", task: "Sunset Point Hoodoo rock formations photography", icon: "camera" }
+                ]}
+            ],
+            "switzerland": [
+                { theme: "Zurich Old Town & Lake Promenade", activities: [
+                    { time: "09:00 AM", task: "Bahnhofstrasse & historic Grossmünster cathedral walk", icon: "landmark" },
+                    { time: "01:00 PM", task: "Swiss Zürcher Geschnetzeltes hash brown rosti lunch", icon: "utensils" },
+                    { time: "03:30 PM", task: "Lake Zurich scenic steamboat cruise", icon: "ship" },
+                    { time: "07:30 PM", task: "Lindenhof Hill sunset view over Zurich rooftops", icon: "sun" }
+                ]},
+                { theme: "Lucerne Chapel Bridge & Mt. Pilatus", activities: [
+                    { time: "09:00 AM", task: "Lucerne Chapel Bridge (Kapellbrücke) & Water Tower", icon: "landmark" },
+                    { time: "11:30 AM", task: "World's steepest cogwheel railway to Mt. Pilatus summit", icon: "train" },
+                    { time: "01:30 PM", task: "Alpine panorama lunch atop Mt. Pilatus peak", icon: "utensils" },
+                    { time: "07:30 PM", task: "Lucerne Old Town lakeside dinner", icon: "moon" }
+                ]},
+                { theme: "Interlaken & Jungfraujoch Top of Europe", activities: [
+                    { time: "08:00 AM", task: "Eiger Express cable car & Jungfrau railway to 3,454m", icon: "mountain" },
+                    { time: "11:30 AM", task: "Sphinx Observatory & Aletsch Glacier ice palace walk", icon: "snowflake" },
+                    { time: "01:30 PM", task: "Top of Europe alpine restaurant lunch", icon: "utensils" },
+                    { time: "07:30 PM", task: "Return to Interlaken & Swiss Chocolate tasting", icon: "coffee" }
+                ]},
+                { theme: "Lauterbrunnen 72 Waterfalls & Mürren Village", activities: [
+                    { time: "09:00 AM", task: "Lauterbrunnen U-shaped glacial valley & Staubbach Falls", icon: "trees" },
+                    { time: "01:00 PM", task: "Cable car up to car-free alpine village of Mürren", icon: "mountain" },
+                    { time: "03:30 PM", task: "Trümmelbach subterranean cave waterfalls walk", icon: "waves" },
+                    { time: "07:30 PM", task: "Swiss Cheese Fondue feast in Mürren chalets", icon: "utensils" }
+                ]},
+                { theme: "Zermatt Matterhorn & Gornergrat Train", activities: [
+                    { time: "08:30 AM", task: "Gornergrat open-air cogwheel railway to 3,089m view", icon: "train" },
+                    { time: "11:30 AM", task: "Riffelsee mountain lake Matterhorn reflection walk", icon: "camera" },
+                    { time: "01:30 PM", task: "Valais dried beef & Raclette cheese mountain lunch", icon: "utensils" },
+                    { time: "07:30 PM", task: "Zermatt car-free Alpine village evening stroll", icon: "moon" }
+                ]},
+                { theme: "Geneva Jet d'Eau & UN Headquarters", activities: [
+                    { time: "09:30 AM", task: "Jet d'Eau 140m fountain & Flower Clock in Geneva", icon: "droplets" },
+                    { time: "01:00 PM", task: "Lake Geneva perch fillet lunch at Old Town terrace", icon: "utensils" },
+                    { time: "03:30 PM", task: "Palais des Nations UN Headquarters guided tour", icon: "globe" },
+                    { time: "07:30 PM", task: "St. Pierre Cathedral tower climb at sunset", icon: "sun" }
+                ]},
+                { theme: "Montreux Chillon Castle & Lavaux Vineyards", activities: [
+                    { time: "09:00 AM", task: "Chillon Castle island fortress on Lake Geneva shore", icon: "crown" },
+                    { time: "01:00 PM", task: "Lakeside promenade lunch under Montreux palm trees", icon: "utensils" },
+                    { time: "03:30 PM", task: "UNESCO Lavaux terraced wine vineyards train walk", icon: "wine" },
+                    { time: "07:30 PM", task: "Montreux Jazz festival lakeside lounge evening", icon: "music" }
+                ]},
+                { theme: "Glacier Express Panoramic Train Journey", activities: [
+                    { time: "08:30 AM", task: "Board world famous Glacier Express panoramic train", icon: "train" },
+                    { time: "01:00 PM", task: "3-course luxury dining on train through Rhine Gorge", icon: "utensils" },
+                    { time: "04:00 PM", task: "Cross Oberalp Pass at 2,033m elevation", icon: "mountain" },
+                    { time: "07:30 PM", task: "Arrival in St. Moritz luxury alpine resort", icon: "sparkles" }
+                ]},
+                { theme: "St. Moritz Lake Promenade & Engadin Valley", activities: [
+                    { time: "09:30 AM", task: "Lake St. Moritz Alpine circular trail walk", icon: "trees" },
+                    { time: "01:00 PM", task: "Engadin Walnut Tart pastry lunch at Hanselmann", icon: "utensils" },
+                    { time: "03:30 PM", task: "Muottas Muragl funicular ride for sunset view over lakes", icon: "sun" },
+                    { time: "07:30 PM", task: "Thermal spa mineral bath & luxury lodge dinner", icon: "bath" }
+                ]},
+                { theme: "Bern Capital Zytglogge Clock & Bear Park", activities: [
+                    { time: "09:00 AM", task: "Zytglogge medieval astronomical clock tower show", icon: "clock" },
+                    { time: "01:00 PM", task: "Bernese platter lunch under historic arcade shops", icon: "utensils" },
+                    { time: "03:30 PM", task: "BärenPark bear enclosure walk & Aare River loop", icon: "trees" },
+                    { time: "07:30 PM", task: "Rose Garden hill sunset panorama over Bern roofs", icon: "sun" }
+                ]},
+                { theme: "Grindelwald First Cliff Walk & Bachalpsee", activities: [
+                    { time: "09:00 AM", task: "Grindelwald First cable car & Tissot Cliff Walk suspension", icon: "mountain" },
+                    { time: "11:30 AM", task: "Hike to Bachalpsee crystal mirror alpine lake", icon: "camera" },
+                    { time: "01:30 PM", task: "Berghaus First mountain restaurant lunch", icon: "utensils" },
+                    { time: "04:30 PM", task: "First Glider aerial zip wire ride down to valley", icon: "sparkles" }
+                ]},
+                { theme: "Basel Art Capital & Rhine River Ferry", activities: [
+                    { time: "09:30 AM", task: "Basel Gothic Minster cathedral & Pfalz terrace view", icon: "landmark" },
+                    { time: "01:00 PM", task: "Traditional Basel Läckerli biscuit cafe lunch", icon: "utensils" },
+                    { time: "03:30 PM", task: "Unpowered cable ferry ride across Rhine River", icon: "ship" },
+                    { time: "07:30 PM", task: "Fondation Beyeler modern art museum evening walk", icon: "palette" }
+                ]},
+                { theme: "Appenzell Heritage Village & Mt. Säntis", activities: [
+                    { time: "09:00 AM", task: "Appenzell village hand-painted wooden chalets stroll", icon: "home" },
+                    { time: "01:00 PM", task: "Appenzeller spicy cheese fondue lunch", icon: "utensils" },
+                    { time: "03:30 PM", task: "Säntis cable car summit ascent (View of 6 countries)", icon: "mountain" },
+                    { time: "07:30 PM", task: "Traditional Swiss Yodeling & folk music evening", icon: "music" }
+                ]},
+                { theme: "Lugano Subtropical Swiss Riviera", activities: [
+                    { time: "09:30 AM", task: "Parco Ciani subtropical palm tree park on Lake Lugano", icon: "trees" },
+                    { time: "01:00 PM", task: "Ticino Risotto & Merlot wine lunch in Piazza Reforma", icon: "utensils" },
+                    { time: "03:30 PM", task: "Monte San Salvatore funicular ride for 'Sugarloaf' view", icon: "sun" },
+                    { time: "07:30 PM", task: "Farewell Swiss lakeside candlelight dinner", icon: "sparkles" }
+                ]}
+            ]
+        };
+
+        // Comprehensive Alias Mapping for Cities & Regions
+        const DESTINATION_ALIASES = {
+            "paris": "france", "nice": "france", "cannes": "france", "lyon": "france", "marseille": "france", "versailles": "france", "bordeaux": "france", "french": "france",
+            "tokyo": "japan", "kyoto": "japan", "osaka": "japan", "nara": "japan", "hiroshima": "japan", "hokkaido": "japan", "sapporo": "japan", "fuji": "japan", "japanese": "japan",
+            "delhi": "india", "mumbai": "india", "agra": "india", "jaipur": "india", "goa": "india", "kerala": "india", "udaipur": "india", "varanasi": "india", "indian": "india",
+            "rome": "italy", "venice": "italy", "florence": "italy", "milan": "italy", "naples": "italy", "amalfi": "italy", "sorrento": "italy", "italian": "italy",
+            "new york": "usa", "los angeles": "usa", "san francisco": "usa", "chicago": "usa", "miami": "usa", "las vegas": "usa", "hawaii": "usa", "american": "usa",
+            "zurich": "switzerland", "lucerne": "switzerland", "interlaken": "switzerland", "geneva": "switzerland", "zermatt": "switzerland", "swiss": "switzerland"
+        };
+
+        // Fallback procedural matrix for unique days if > 14 days or custom destination
+        const PROCEDURAL_DISTRICTS = [
+            "Old Historic Merchant Quarter", "Waterfront Marina & Harbor Promenade", "Arts & Museum District",
+            "Hilltop Panorama & Gardens", "Botanical & Ecological Sanctuary", "Royal Citadel & Palace Zone",
+            "Bustling Culinary Street Market", "University & Literary Library Quarter", "Modern Skyline & Financial Plaza",
+            "Artisan Craft & Fashion Avenue", "Sacred Temple & Monastery Hill", "Scenic Valley & River Locks",
+            "Volcanic / Alpine Overlook", "Bohemian Cafe & Theater Street", "Sunset Coastal Cliffs"
+        ];
+
+        const PROCEDURAL_MORNINGS = [
+            { task: "Morning scenic orientation walk & photography around {{district}} in {{dest}}", icon: "map-pin" },
+            { task: "Guided heritage & historical landmark tour in {{district}}", icon: "landmark" },
+            { task: "Sunrise panoramic viewpoint visit overlooking the whole of {{dest}}", icon: "sun" },
+            { task: "Botanical gardens morning walk & artisanal coffee in {{district}}", icon: "trees" },
+            { task: "Ancient temple / cathedral grounds exploration in {{dest}}", icon: "building" },
+            { task: "Hilltop crest cable car ride & morning fresh mountain air in {{dest}}", icon: "mountain" },
+            { task: "Historic old town cobblestone street strolling & local bakery visit", icon: "coffee" },
+            { task: "Morning riverfront / lakefront boardwalk excursion in {{dest}}", icon: "waves" },
+            { task: "Royal palace courtyard walk & architecture photography in {{district}}", icon: "crown" },
+            { task: "Artisan crafts & local heritage workshop morning discovery in {{dest}}", icon: "palette" },
+            { task: "University quarter gardens & historic library architectural walk", icon: "book" },
+            { task: "Coastal cliffside trail walk & sea breeze morning view in {{dest}}", icon: "sun" },
+            { task: "Historic citadel fortress ramparts walk overlooking {{dest}}", icon: "shield" },
+            { task: "Traditional morning flower & fresh produce market walk in {{dest}}", icon: "shopping-bag" },
+            { task: "Subtropical nature sanctuary trail & wildlife watching in {{dest}}", icon: "leaf" }
+        ];
+
+        const PROCEDURAL_LUNCHES = [
+            { task: "Authentic regional lunch featuring local {{dest}} delicacies in {{district}}", icon: "utensils" },
+            { task: "Artisanal street food hall & culinary specialty tasting in {{dest}}", icon: "utensils" },
+            { task: "Waterfront bistro lunch with panoramic views in {{district}}", icon: "coffee" },
+            { task: "Chef's recommended 3-course traditional lunch in {{district}}", icon: "utensils" },
+            { task: "Historic square open-air cafe lunch with espresso & dessert", icon: "utensils" },
+            { task: "Lakeside / Riverside terrace dining with fresh local fish", icon: "utensils" },
+            { task: "Gourmet food market tasting tour in central {{dest}}", icon: "shopping-bag" },
+            { task: "Roof-garden restaurant lunch overlooking {{dest}} skyline", icon: "utensils" },
+            { task: "Rustic countryside farm-to-table lunch & organic juice in {{dest}}", icon: "leaf" },
+            { task: "Traditional tavern lunch with local craft beverage tasting", icon: "utensils" },
+            { task: "Coastal seafood shack lunch with fresh catch of the day", icon: "utensils" },
+            { task: "Artisanal bakery lunch with fresh handmade breads & soup", icon: "utensils" },
+            { task: "Historic wine cellar restaurant lunch pairing in {{dest}}", icon: "wine" },
+            { task: "Hilltop panoramic terrace lunch overlooking the valley", icon: "utensils" },
+            { task: "Local specialty delicacy lunch in authentic eatery in {{district}}", icon: "utensils" }
+        ];
+
+        const PROCEDURAL_AFTERNOONS = [
+            { task: "Excursion to {{district}} fine arts museum & sculpture galleries", icon: "palette" },
+            { task: "Scenic canal/river boat cruise along {{dest}} famous waterways", icon: "ship" },
+            { task: "Highest observation deck tower visit & panoramic photo deck in {{dest}}", icon: "camera" },
+            { task: "Boutique shopping & local handicraft souvenir hunting in {{district}}", icon: "shopping-bag" },
+            { task: "Interactive science & cultural heritage exhibition in {{dest}}", icon: "globe" },
+            { task: "Historic theater & opera house interior guided tour in {{dest}}", icon: "building" },
+            { task: "Secret courtyard cafes & hidden gardens discovery in {{district}}", icon: "compass" },
+            { task: "Scenic tram / vintage train excursion around historic {{dest}}", icon: "train" },
+            { task: "National park scenic trail walk to hidden waterfall lookout", icon: "trees" },
+            { task: "Modern architecture & urban design plaza exploration in {{dest}}", icon: "building" },
+            { task: "Craft workshop experience: pottery, glassblowing or perfume crafting", icon: "sparkles" },
+            { task: "Lighthouse & coastal marine conservatory excursion in {{dest}}", icon: "anchor" },
+            { task: "Historical underground tunnels or catacombs guided tour", icon: "map-pin" },
+            { task: "Sunset hillside park lounge & outdoor photo session in {{dest}}", icon: "camera" },
+            { task: "Tea / Coffee masterclass & pastry sampling in {{district}}", icon: "coffee" }
+        ];
+
+        const PROCEDURAL_EVENINGS = [
+            { task: "Illuminated evening walking tour & night lights view of {{dest}}", icon: "sparkles" },
+            { task: "Sunset lounge dinner & live local music performance in {{district}}", icon: "music" },
+            { task: "Candlelight dinner at top-rated signature restaurant in {{dest}}", icon: "wine" },
+            { task: "Starlit promenade stroll along {{district}} waterfront", icon: "moon" },
+            { task: "Traditional folklore dance & cultural evening performance in {{dest}}", icon: "sparkles" },
+            { task: "Rooftop cocktail lounge with 360-degree night view of {{dest}}", icon: "glass-water" },
+            { task: "Historic quarter night market stroll & sweet treats in {{dest}}", icon: "shopping-bag" },
+            { task: "Harbor / River evening lights boat cruise with dinner in {{dest}}", icon: "ship" },
+            { task: "Old town cozy jazz club evening & craft drinks in {{district}}", icon: "music" },
+            { task: "Panoramic hill sunset watching & relaxed evening toast", icon: "sun" },
+            { task: "Night photography tour of illuminated bridges & fountains in {{dest}}", icon: "camera" },
+            { task: "Beachside bonfire / seaside lounge evening relaxation", icon: "flame" },
+            { task: "Historic tavern dinner with local storytelling & music in {{dest}}", icon: "utensils" },
+            { task: "Acoustic lounge music session & artisan dessert feast", icon: "coffee" },
+            { task: "Farewell gala dinner celebration overlooking {{dest}} night lights", icon: "sparkles" }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const queryDest = urlParams.get('destination');
+            const queryDays = urlParams.get('days');
+
+            if (queryDest) {
+                document.getElementById('destination').value = queryDest;
+            }
+            if (queryDays) {
+                document.getElementById('days').value = queryDays;
+            }
+
+            generateItinerary();
+        });
+
+        function generateItinerary() {
+            try {
+                const destEl = document.getElementById('destination');
+                const daysEl = document.getElementById('days');
+                
+                let destInput = destEl && destEl.value ? destEl.value.trim() : '';
+                let daysInput = daysEl && daysEl.value ? parseInt(daysEl.value) : NaN;
+
+                if (!destInput) {
+                    destInput = 'Paris';
+                    if (destEl) destEl.value = 'Paris';
+                }
+
+                if (isNaN(daysInput) || daysInput <= 0) {
+                    daysInput = 3;
+                    if (daysEl) daysEl.value = '3';
+                }
+
+                if (daysInput > 30) {
+                    daysInput = 30;
+                    if (daysEl) daysEl.value = '30';
+                }
+
+                const container = document.getElementById('itinerary-list');
+                const placeholder = document.getElementById('itinerary-empty');
+
+                if (placeholder) {
+                    placeholder.classList.add('hidden');
+                    placeholder.style.display = 'none';
+                }
+                if (container) {
+                    container.classList.remove('hidden');
+                    container.style.display = 'block';
+                    container.innerHTML = '';
+                }
+
+                const lowerDest = destInput.toLowerCase();
+                
+                // Search match via Alias Map first
+                let matchedKey = null;
+                for (const [alias, targetKey] of Object.entries(DESTINATION_ALIASES)) {
+                    if (lowerDest.includes(alias)) {
+                        matchedKey = targetKey;
+                        break;
+                    }
+                }
+
+                // Direct DB key match search
+                if (!matchedKey) {
+                    for (const key of Object.keys(DESTINATION_DATABASE)) {
+                        if (lowerDest.includes(key) || key.includes(lowerDest)) {
+                            matchedKey = key;
+                            break;
+                        }
+                    }
+                }
+
+                const dbPlans = matchedKey ? DESTINATION_DATABASE[matchedKey] : null;
+
+                // Strict tracking set to prevent ANY place or task repetition
+                const usedTasks = new Set();
+                const usedThemes = new Set();
+
+                for (let i = 1; i <= daysInput; i++) {
+                    let dayData = null;
+
+                    // 1. Check if curated plan exists for this day index and hasn't been used yet
+                    if (dbPlans && (i - 1) < dbPlans.length && !usedThemes.has(dbPlans[i - 1].theme)) {
+                        dayData = dbPlans[i - 1];
+                        usedThemes.add(dayData.theme);
+                    } else {
+                        // 2. Otherwise generate a 100% unique dynamic fallback day with zero repetition
+                        dayData = generateProceduralUniqueDay(destInput, i, usedTasks, usedThemes);
+                    }
+
+                    // Add activities to tracking set
+                    dayData.activities.forEach(a => usedTasks.add(a.task.toLowerCase()));
+
+                    const dayDiv = document.createElement('div');
+                    dayDiv.className = 'itinerary-day';
+                    dayDiv.innerHTML = `
+                        <div class="timeline-dot"></div>
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+                            <div>
+                                <span class="text-xs text-sky-400 font-extrabold uppercase tracking-widest block mb-1">Day ${i} of ${daysInput}</span>
+                                <h4 class="text-2xl font-black text-white uppercase tracking-tight">${destInput}: ${dayData.theme}</h4>
+                            </div>
+                            <span class="self-start sm:self-center px-3 py-1 rounded-full bg-sky-500/10 text-sky-300 text-[10px] font-black uppercase tracking-widest border border-sky-500/20 whitespace-nowrap">
+                                Phase ${i}
+                            </span>
+                        </div>
+                        <div class="space-y-4">
+                            ${dayData.activities.map(a => `
+                                <div class="flex items-start gap-4">
+                                    <span class="text-xs font-black text-slate-400 w-20 pt-2.5 uppercase font-mono">${a.time}</span>
+                                    <div class="flex-grow p-4 rounded-xl bg-white/5 border border-white/5 flex items-center justify-between group hover:border-sky-500/40 hover:bg-white/[0.08] transition-all">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-8 h-8 rounded-lg bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400">
+                                                <i data-lucide="${a.icon}" class="w-4 h-4"></i>
+                                            </div>
+                                            <span class="text-sm font-semibold text-slate-200">${a.task}</span>
+                                        </div>
+                                        <i data-lucide="check-circle-2" class="w-4 h-4 text-slate-600 group-hover:text-emerald-400 transition-colors cursor-pointer"></i>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                    container.appendChild(dayDiv);
+                }
+
+                if (typeof lucide !== 'undefined') {
+                    try {
+                        lucide.createIcons();
+                    } catch (err) {
+                        console.warn("Lucide icon render notice:", err);
+                    }
+                }
+            } catch (err) {
+                alert("Itinerary Builder Error: " + err.message + "\nStack: " + err.stack);
+                console.error("Itinerary Builder Error:", err);
+            }
+        }
+        
+        // Expose globally to window object for instant access
+        window.generateItinerary = generateItinerary;
+
+        function generateProceduralUniqueDay(dest, dayNum, usedTasks, usedThemes) {
+            const districtIndex = (dayNum - 1) % PROCEDURAL_DISTRICTS.length;
+            const districtName = PROCEDURAL_DISTRICTS[districtIndex];
+            
+            let theme = `${districtName} Discovery`;
+            if (usedThemes.has(theme)) {
+                theme = `${districtName} & Local Wonders (Day ${dayNum})`;
+            }
+            usedThemes.add(theme);
+
+            const pickUnique = (pool, offset) => {
+                for (let attempt = 0; attempt < pool.length; attempt++) {
+                    const idx = (offset + attempt) % pool.length;
+                    const candidate = pool[idx];
+                    const formatted = candidate.task.replace(/{{dest}}/g, dest).replace(/{{district}}/g, districtName);
+                    if (!usedTasks.has(formatted.toLowerCase())) {
+                        return { task: formatted, icon: candidate.icon };
+                    }
+                }
+                const fallback = pool[(offset) % pool.length];
+                return { 
+                    task: fallback.task.replace(/{{dest}}/g, dest).replace(/{{district}}/g, districtName) + ` (Day ${dayNum})`, 
+                    icon: fallback.icon 
+                };
+            };
+
+            const m = pickUnique(PROCEDURAL_MORNINGS, dayNum - 1);
+            const l = pickUnique(PROCEDURAL_LUNCHES, dayNum - 1);
+            const a = pickUnique(PROCEDURAL_AFTERNOONS, dayNum - 1);
+            const e = pickUnique(PROCEDURAL_EVENINGS, dayNum - 1);
+
+            return {
+                theme: theme,
+                activities: [
+                    { time: "09:00 AM", task: m.task, icon: m.icon },
+                    { time: "01:00 PM", task: l.task, icon: l.icon },
+                    { time: "03:30 PM", task: a.task, icon: a.icon },
+                    { time: "07:30 PM", task: e.task, icon: e.icon }
+                ]
+            };
+        }
+
+        // Auto-initialize when script loads or DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', generateItinerary);
+        } else {
+            generateItinerary();
+        }
+    </script>
+    {% endraw %}
+</body>
+
+</html>

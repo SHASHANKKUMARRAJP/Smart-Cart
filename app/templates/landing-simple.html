@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Cart - Modern Grocery Price Comparison</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e40af 0%, #f97316 50%, #fb923c 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        .hero-content {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .logo-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            display: inline-block;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #1e40af, #f97316);
+            color: white;
+            padding: 1.25rem 2.5rem;
+            border-radius: 50px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 2rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-icon {
+            width: 3.5rem;
+            height: 3.5rem;
+            background: linear-gradient(135deg, #1e40af, #f97316);
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-desc {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.5;
+        }
+
+        .nav-menu {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 100;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-button {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                padding: 0 1rem;
+            }
+
+            .nav-menu {
+                top: 1rem;
+                right: 1rem;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Hero Content -->
+    <div class="hero-content">
+        <div>
+            <!-- Logo Section -->
+            <div class="logo-card">
+                <div style="display: flex; align-items: center; gap: 1.5rem;">
+                    <div
+                        style="background: linear-gradient(135deg, #1e40af, #f97316); width: 4rem; height: 4rem; border-radius: 1rem; display: flex; align-items: center; justify-content: center;">
+                        <i data-lucide="shopping-cart" style="color: white; width: 2rem; height: 2rem;"></i>
+                    </div>
+                    <div style="text-align: left;">
+                        <h1 style="font-size: 2.5rem; font-weight: 800; color: white; margin: 0;">Smart Cart</h1>
+                        <p style="font-size: 1rem; color: rgba(255, 255, 255, 0.8); margin: 0;">Modern Grocery
+                            Comparison</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hero Title -->
+            <h2 class="hero-title">
+                Compare Grocery Prices<br>
+                <span
+                    style="background: linear-gradient(135deg, #fbbf24, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent;">Across
+                    Multiple Stores</span>
+            </h2>
+
+            <p class="hero-subtitle">
+                Find best deals on fresh produce, dairy, and household essentials.<br>
+                <span style="color: #fbbf24;">Save up to 40%</span> on your grocery shopping.
+            </p>
+
+            <!-- CTA Button -->
+            <a href="{{ url_for('index') }}" class="cta-button">
+                Start Comparing Prices
+            </a>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i data-lucide="trending-down" style="color: white; width: 2rem; height: 2rem;"></i>
+            </div>
+            <div class="feature-title">Save Money</div>
+            <div class="feature-desc">Compare prices across multiple platforms and find best deals</div>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i data-lucide="clock" style="color: white; width: 2rem; height: 2rem;"></i>
+            </div>
+            <div class="feature-title">Real-Time Updates</div>
+            <div class="feature-desc">Get instant price updates from all major grocery platforms</div>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i data-lucide="shield-check" style="color: white; width: 2rem; height: 2rem;"></i>
+            </div>
+            <div class="feature-title">Trusted Sources</div>
+            <div class="feature-desc">Reliable price data from verified grocery retailers</div>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i data-lucide="smartphone" style="color: white; width: 2rem; height: 2rem;"></i>
+            </div>
+            <div class="feature-title">Easy to Use</div>
+            <div class="feature-desc">Simple interface designed for quick and easy price comparison</div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-menu">
+        <a href="{{ url_for('index') }}" class="nav-button">
+            <i data-lucide="shopping-cart" style="color: white; width: 1rem; height: 1rem; margin-right: 0.5rem;"></i>
+            Shopping
+        </a>
+        <a href="{{ url_for('landing') }}" class="nav-button">
+            <i data-lucide="home" style="color: white; width: 1rem; height: 1rem; margin-right: 0.5rem;"></i>
+            Home
+        </a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+        });
+    </script>
+</body>
+
+</html>

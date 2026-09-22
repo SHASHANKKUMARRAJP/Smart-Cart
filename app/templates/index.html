@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Cart - AI Price Comparison | Instant & E-commerce</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='premium-css.css') }}">
+    <style>
+        /* Specific overrides for search page */
+        .search-container-glass {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 24px;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.05);
+            max-width: 800px;
+            margin: 0 auto;
+            transition: all 0.3s ease;
+        }
+
+        .search-container-glass:focus-within {
+            transform: translateY(-2px);
+            box-shadow: 0 25px 50px -10px rgba(0, 0, 0, 0.08);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .search-input {
+            border: none;
+            background: transparent;
+            font-size: 1.25rem;
+            padding: 16px 24px;
+            width: 100%;
+            outline: none;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .search-btn {
+            background: #0f172a;
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            border-radius: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-btn:hover {
+            background: #000;
+            transform: translateX(2px);
+        }
+
+        .pill {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            backdrop-filter: blur(4px);
+        }
+
+        .pill:hover {
+            background: #fff;
+            color: var(--text-primary);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Loading */
+        .loader {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(99, 102, 241, 0.1);
+            border-radius: 50%;
+            border-top-color: #4f46e5;
+            animation: spin 1s ease-in-out infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Grid overrides */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 32px;
+            margin-top: 40px;
+        }
+
+        /* Hide stuff */
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- BACKGROUND SYSTEM -->
+    <div class="bg-grid"></div>
+    <div class="noise-overlay"></div>
+    <div class="orb-container">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav-glass reveal">
+        <a href="{{ url_for('main.dashboard') }}"
+            style="text-decoration: none; font-weight: 700; font-size: 1.25rem; color: #000; display: flex; align-items: center; gap: 8px;">
+            <div
+                style="background: var(--gradient-primary); width: 32px; height: 32px; border-radius: 8px; display: flex; justify-content: center; align-items: center; color: white;">
+                <i data-lucide="shopping-cart" size="18"></i>
+            </div>
+            Smart Cart
+        </a>
+        <div style="display: flex; gap: 20px;">
+            <a href="{{ url_for('main.dashboard') }}" class="nav-link">Home</a>
+            <a href="{{ url_for('main.dashboard') }}" class="nav-link"
+                style="color: var(--text-primary); font-weight: 700;">Smart Cart</a>
+            <a href="{{ url_for('main.ecommerce') }}" class="nav-link">E-commerce</a>
+            <button onclick="logout()" class="nav-link"
+                style="background: none; border: none; cursor: pointer; color: #ef4444;">Logout</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <section class="section" style="padding-top: 160px; min-height: 90vh;">
+        <div class="container">
+
+            <!-- Search Header -->
+            <div class="center reveal d-1" style="margin-bottom: 60px;">
+                <h1 style="margin-bottom: 16px;">What are you shopping for?</h1>
+                <p style="font-size: 1.25rem;">Compare prices across Blinkit, Zepto, Instamart & BigBasket Now
+                    instantly.</p>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-container-glass reveal d-2" style="margin-bottom: 32px;">
+                <i data-lucide="search" style="margin-left: 24px; color: #94a3b8;"></i>
+                <input type="text" id="searchInput" class="search-input"
+                    placeholder="Search for 'Milk', 'Bread', 'Eggs'..." onkeypress="handleKeyPress(event)">
+                <button onclick="searchProducts()" class="search-btn">
+                    Search
+                </button>
+            </div>
+
+            <!-- Quick Tags -->
+            <div class="center reveal d-3"
+                style="margin-bottom: 80px; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+                <span style="font-size: 0.9rem; color: #94a3b8; align-self: center;">Trending:</span>
+                <button onclick="quickSearch('Amul Milk')" class="pill">🥛 Amul Milk</button>
+                <button onclick="quickSearch('Bread')" class="pill">🍞 Bread</button>
+                <button onclick="quickSearch('Eggs')" class="pill">🥚 Eggs</button>
+                <button onclick="quickSearch('Coke')" class="pill">🥤 Coke</button>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loadingState" class="hidden center" style="padding: 80px 0;">
+                <div class="loader"></div>
+                <p style="margin-top: 20px; color: var(--text-secondary);">Scanning platforms for best prices...</p>
+            </div>
+
+            <!-- Results Area -->
+            <div id="resultsSection" class="hidden">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px;">
+                    <h2>Top Results</h2>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span style="font-size: 0.9rem; color: var(--text-secondary);">Sort by:</span>
+                        <select id="sortSelect" onchange="sortResults()"
+                            style="padding: 8px 16px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.1); background: rgba(255,255,255,0.5); font-family: inherit;">
+                            <option value="price">Lowest Price</option>
+                            <option value="delivery">Fastest Delivery</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="productGrid" class="results-grid">
+                    <!-- Cards injected by JS -->
+                </div>
+            </div>
+
+            <!-- No Results -->
+            <div id="noResults" class="hidden center" style="padding: 60px 0;">
+                <div
+                    style="width: 80px; height: 80px; background: #f1f5f9; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; color: #94a3b8;">
+                    <i data-lucide="search-x" size="32"></i>
+                </div>
+                <h3>No products found</h3>
+                <p>Try searching for something else like "Onion" or "Potato".</p>
+            </div>
+
+        </div>
+    </section>
+
+    <footer
+        style="padding: 40px 0; border-top: 1px solid rgba(0,0,0,0.05); text-align: center; color: var(--text-secondary);">
+        <div class="container">
+            <p>&copy; 2024 10 Min Shopping Intelligence.</p>
+        </div>
+    </footer>
+
+    <!-- App Logic -->
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+    <script>
+        async function logout() {
+            try {
+                const res = await fetch('/auth/logout', { method: 'POST' });
+                if (res.ok) window.location.reload();
+            } catch (err) {
+                console.error(err);
+            }
+        }
+    </script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

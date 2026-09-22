@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore - Smart Cart How It Works</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            --glass-glow: 0 0 20px rgba(99, 102, 241, 0.4);
+            --glass-hover: rgba(255, 255, 255, 0.08);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #030712;
+            color: #f3f4f6;
+            margin: 0;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .aurora-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            overflow: hidden;
+            background: #030712;
+        }
+
+        .aurora-blob {
+            position: absolute;
+            filter: blur(140px);
+            opacity: 0.6;
+            animation: floatBlob 20s infinite ease-in-out alternate;
+            border-radius: 50%;
+        }
+
+        .blob-1 {
+            top: -10%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: rgba(79, 70, 229, 0.4);
+            animation-delay: 0s;
+        }
+
+        .blob-2 {
+            bottom: -20%;
+            right: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: rgba(147, 51, 234, 0.3);
+            animation-delay: -5s;
+        }
+
+        .blob-3 {
+            top: 40%;
+            left: 30%;
+            width: 40vw;
+            height: 40vw;
+            background: rgba(59, 130, 246, 0.3);
+            animation-delay: -10s;
+        }
+
+        .blob-4 {
+            top: 10%;
+            right: 20%;
+            width: 40vw;
+            height: 40vw;
+            background: rgba(236, 72, 153, 0.2);
+            animation-delay: -15s;
+        }
+
+        @keyframes floatBlob {
+            0% {
+                transform: translate(0, 0) scale(1) rotate(0deg);
+            }
+
+            33% {
+                transform: translate(5%, 5%) scale(1.1) rotate(5deg);
+            }
+
+            66% {
+                transform: translate(-5%, 10%) scale(0.9) rotate(-5deg);
+            }
+
+            100% {
+                transform: translate(0, -5%) scale(1) rotate(0deg);
+            }
+        }
+
+        .grid-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+
+        .glass-morphism {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 40px rgba(31, 38, 135, 0.1), 0 8px 32px rgba(31, 38, 135, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+
+        .glass-card-premium {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            border-radius: 24px;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .glass-card-premium.card-hover:hover {
+            transform: translateY(-4px);
+            border-color: rgba(99, 102, 241, 0.4);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5), 0 0 20px rgba(99, 102, 241, 0.2);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .gradient-text-premium {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 20%, #8b5cf6 40%, #ec4899 60%, #f97316 80%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-clip: text;
+            filter: drop-shadow(0 4px 8px rgba(99, 102, 241, 0.4));
+        }
+
+        .glass-nav-item {
+            padding: 8px 16px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            position: relative;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 500;
+        }
+
+        .glass-nav-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: white;
+        }
+
+        .glass-nav-item.active {
+            color: white;
+            font-weight: 700;
+        }
+
+        .glass-button-premium {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .glass-button-premium:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(99, 102, 241, 0.6);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+
+<body class="text-primary antialiased selection:bg-indigo-500/30">
+    <div class="aurora-bg">
+        <div class="aurora-blob blob-1"></div>
+        <div class="aurora-blob blob-2"></div>
+        <div class="aurora-blob blob-3"></div>
+        <div class="aurora-blob blob-4"></div>
+        <div class="grid-overlay"></div>
+    </div>
+
+    <nav class="sticky top-0 z-50 glass-morphism">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <a href="{{ url_for('main.index') }}" class="flex items-center space-x-2">
+                    <div
+                        class="w-8 h-8 glass-card-premium rounded-lg flex items-center justify-center border border-white/20">
+                        <i data-lucide="shopping-cart" size="18" class="text-white"></i>
+                    </div>
+                    <span class="text-xl font-bold text-white">Smart Cart</span>
+                </a>
+
+                <!-- Desktop Menu -->
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-2">
+                    <a href="{{ url_for('main.index') }}" class="glass-nav-item">Home</a>
+                    <a href="{{ url_for('main.explore') }}" class="glass-nav-item active">
+                        Explore
+                        <span
+                            class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-indigo-500 rounded-full shadow-[0_0_8px_rgba(99,102,241,0.8)]"></span>
+                    </a>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-4 flex-1 justify-end max-w-sm ml-8">
+                    {% if session.get('user') %}
+                    <a href="#"
+                        onclick="event.preventDefault(); fetch('{{ url_for('main.auth_logout') }}', {method: 'POST'}).then(() => window.location.href='/');"
+                        class="glass-button-premium px-6 py-2 rounded-xl text-sm font-bold uppercase tracking-widest hover:bg-rose-500/10 hover:border-rose-500/40 hover:text-rose-400 transition-all text-white">
+                        Logout
+                    </a>
+                    {% else %}
+                    <a href="{{ url_for('main.login') }}"
+                        class="glass-button-premium px-6 py-2 rounded-xl text-sm font-bold uppercase tracking-widest hover:bg-sky-500/10 hover:border-sky-500/40 hover:text-sky-400 transition-all text-white">
+                        Login
+                    </a>
+                    {% endif %}
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-gray-300 hover:text-white">
+                        <i data-lucide="menu" size="24"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden"
+            style="background: rgba(3, 7, 18, 0.95); backdrop-filter: blur(20px);">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="{{ url_for('main.index') }}"
+                    class="block px-3 py-2 text-gray-300 hover:text-white font-medium">Home</a>
+                <a href="{{ url_for('main.explore') }}" class="block px-3 py-2 text-white font-bold">Explore</a>
+                {% if session.get('user') %}
+                <a href="#"
+                    onclick="event.preventDefault(); fetch('{{ url_for('main.auth_logout') }}', {method: 'POST'}).then(() => window.location.href='/');"
+                    class="glass-card-premium text-white block px-3 py-2 rounded-lg font-medium transition-all hover:bg-red-500/20 hover:border-red-500/50"
+                    style="background: rgba(255,255,255,0.05)">
+                    Logout
+                </a>
+                {% else %}
+                <a href="{{ url_for('main.login') }}"
+                    class="glass-card-premium text-white block px-3 py-2 rounded-lg font-medium transition-all"
+                    style="background: rgba(255,255,255,0.05)">
+                    Login
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="max-w-7xl mx-auto w-full">
+            <div class="text-center mb-16">
+                <h1 class="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
+                    Choose Your <span class="gradient-text-premium">Experience</span>
+                </h1>
+                <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+                    Select a category below to start comparing and exploring the best options tailored for you.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto mb-10">
+                <!-- Style Your Outfit Category -->
+                <a href="{{ url_for('main.style_outfit') }}"
+                    class="glass-card-premium group block relative overflow-hidden transition-all duration-300 transform hover:-translate-y-2 hover:shadow-[0_15px_30px_-10px_rgba(59,130,246,0.2)] border border-white/10 hover:border-blue-500/30 rounded-2xl p-6 flex flex-col items-center text-center">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                    </div>
+
+                    <div
+                        class="w-16 h-16 bg-gradient-to-br from-blue-900/80 to-blue-600/80 border border-blue-500/30 rounded-[16px] flex items-center justify-center mb-5 shadow-lg shadow-blue-900/40 group-hover:scale-110 group-hover:-translate-y-1 group-hover:from-blue-800 group-hover:to-blue-500 transition-all duration-300 relative z-10">
+                        <i data-lucide="shirt" size="28"
+                            class="text-blue-100 group-hover:text-white transition-colors"></i>
+                    </div>
+
+                    <h3
+                        class="text-xl font-bold text-gray-200 mb-2 tracking-tight group-hover:text-blue-100 transition-colors">
+                        Style Your Outfit</h3>
+                    <p class="text-gray-400 mb-5 text-sm leading-relaxed group-hover:text-gray-300 transition-colors">
+                        Discover fashion trends, try new looks, and browse curated collections tailored for your
+                        personal style.</p>
+
+                    <span
+                        class="mt-auto inline-flex items-center justify-center px-5 py-2 rounded-full bg-blue-500/10 text-blue-300 font-bold text-sm tracking-wide group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 ring-1 ring-blue-500/20 group-hover:ring-blue-500 relative z-10">
+                        Explore Fashion <i data-lucide="arrow-right" size="16"
+                            class="ml-2 group-hover:translate-x-1 transition-transform"></i>
+                    </span>
+                </a>
+
+                <!-- Find This Dress Category -->
+                <a href="{{ url_for('main.find_dress') }}"
+                    class="glass-card-premium group block relative overflow-hidden transition-all duration-300 transform hover:-translate-y-2 hover:shadow-[0_15px_30px_-10px_rgba(168,85,247,0.2)] border border-white/10 hover:border-purple-500/30 rounded-2xl p-6 flex flex-col items-center text-center">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                    </div>
+
+                    <div
+                        class="w-16 h-16 bg-gradient-to-br from-purple-900/80 to-purple-600/80 border border-purple-500/30 rounded-[16px] flex items-center justify-center mb-5 shadow-lg shadow-purple-900/40 group-hover:scale-110 group-hover:-translate-y-1 group-hover:from-purple-800 group-hover:to-purple-500 transition-all duration-300 relative z-10">
+                        <i data-lucide="camera" size="28"
+                            class="text-purple-100 group-hover:text-white transition-colors"></i>
+                    </div>
+
+                    <h3
+                        class="text-xl font-bold text-gray-200 mb-2 tracking-tight group-hover:text-purple-100 transition-colors">
+                        Find This Dress</h3>
+                    <p class="text-gray-400 mb-5 text-sm leading-relaxed group-hover:text-gray-300 transition-colors">
+                        Web Scraping feature: Upload an image or link to find exact dress matches and compare real live
+                        prices across the web.</p>
+
+                    <span
+                        class="mt-auto inline-flex items-center justify-center px-5 py-2 rounded-full bg-purple-500/10 text-purple-300 font-bold text-sm tracking-wide group-hover:bg-purple-600 group-hover:text-white transition-all duration-300 ring-1 ring-purple-500/20 group-hover:ring-purple-500 relative z-10">
+                        Find Dress <i data-lucide="search" size="16"
+                            class="ml-2 group-hover:scale-110 transition-transform"></i>
+                    </span>
+                </a>
+
+                <!-- Price History Category -->
+                <a href="{{ url_for('main.price_history') }}"
+                    class="glass-card-premium group block relative overflow-hidden transition-all duration-300 transform hover:-translate-y-2 hover:shadow-[0_15px_30px_-10px_rgba(16,185,129,0.2)] border border-white/10 hover:border-emerald-500/30 rounded-2xl p-6 flex flex-col items-center text-center">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                    </div>
+
+                    <div
+                        class="w-16 h-16 bg-gradient-to-br from-emerald-900/80 to-emerald-600/80 border border-emerald-500/30 rounded-[16px] flex items-center justify-center mb-5 shadow-lg shadow-emerald-900/40 group-hover:scale-110 group-hover:-translate-y-1 group-hover:from-emerald-800 group-hover:to-emerald-500 transition-all duration-300 relative z-10">
+                        <i data-lucide="line-chart" size="28"
+                            class="text-emerald-100 group-hover:text-white transition-colors"></i>
+                    </div>
+
+                    <h3
+                        class="text-xl font-bold text-gray-200 mb-2 tracking-tight group-hover:text-emerald-100 transition-colors">
+                        Price History</h3>
+                    <p class="text-gray-400 mb-5 text-sm leading-relaxed group-hover:text-gray-300 transition-colors">
+                        Track product prices over time and ensure you're getting the best deal with interactive price
+                        drop charts.</p>
+
+                    <span
+                        class="mt-auto inline-flex items-center justify-center px-5 py-2 rounded-full bg-emerald-500/10 text-emerald-300 font-bold text-sm tracking-wide group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300 ring-1 ring-emerald-500/20 group-hover:ring-emerald-500 relative z-10">
+                        View Trends <i data-lucide="arrow-right" size="16"
+                            class="ml-2 group-hover:translate-x-1 transition-transform"></i>
+                    </span>
+                </a>
+
+                <!-- Plan My Trip Category -->
+                <a href="{{ url_for('main.plan_trip') }}"
+                    class="glass-card-premium group block relative overflow-hidden transition-all duration-300 transform hover:-translate-y-2 hover:shadow-[0_15px_30px_-10px_rgba(236,72,153,0.2)] border border-white/10 hover:border-pink-500/30 rounded-2xl p-6 flex flex-col items-center text-center">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-pink-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                    </div>
+
+                    <div
+                        class="w-16 h-16 bg-gradient-to-br from-pink-900/80 to-pink-600/80 border border-pink-500/30 rounded-[16px] flex items-center justify-center mb-5 shadow-lg shadow-pink-900/40 group-hover:scale-110 group-hover:-translate-y-1 group-hover:from-pink-800 group-hover:to-pink-500 transition-all duration-300 relative z-10">
+                        <i data-lucide="plane" size="28"
+                            class="text-pink-100 group-hover:text-white transition-colors"></i>
+                    </div>
+
+                    <h3
+                        class="text-xl font-bold text-gray-200 mb-2 tracking-tight group-hover:text-pink-100 transition-colors">
+                        Plan My Trip</h3>
+                    <p class="text-gray-400 mb-5 text-sm leading-relaxed group-hover:text-gray-300 transition-colors">
+                        Compare prices for Flights, Trains, Buses, and Movies all in one place. Ensure you get the best
+                        deal.</p>
+
+                    <span
+                        class="mt-auto inline-flex items-center justify-center px-5 py-2 rounded-full bg-pink-500/10 text-pink-300 font-bold text-sm tracking-wide group-hover:bg-pink-600 group-hover:text-white transition-all duration-300 ring-1 ring-pink-500/20 group-hover:ring-pink-500 relative z-10">
+                        Compare Tickets <i data-lucide="arrow-right" size="16"
+                            class="ml-2 group-hover:translate-x-1 transition-transform"></i>
+                    </span>
+                </a>
+
+            </div>
+        </div>
+    </main>
+
+    <footer
+        class="bg-black/40 backdrop-blur-xl border-t border-white/10 text-gray-400 py-8 px-4 sm:px-6 lg:px-8 mt-auto z-10 relative">
+        <div class="max-w-7xl mx-auto text-center">
+            <p>&copy; 2024 Smart Cart. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+
+</html>
