@@ -16,7 +16,3 @@ dependencies = [
     "google-generativeai",
     "pillow",
 ]
-
-[tool.vercel]
-entrypoint = "api.index:app"
-
