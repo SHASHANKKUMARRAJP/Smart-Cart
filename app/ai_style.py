@@ -112,15 +112,29 @@ def analyze_outfit_image(file_bytes, filename, gender="Auto"):
     try:
         genai.configure(api_key=gemini_key)
         
-        # We use vision powers
-        model = genai.GenerativeModel('gemini-2.5-flash')
+        # We use vision powers with reliable model fallback
+        model = None
+        for m_name in ['gemini-1.5-flash', 'gemini-2.0-flash', 'gemini-2.5-flash']:
+            try:
+                model = genai.GenerativeModel(m_name)
+                if model:
+                    break
+            except Exception:
+                continue
+        if not model:
+            model = genai.GenerativeModel('gemini-1.5-flash')
         
         image = Image.open(io.BytesIO(file_bytes))
 
         # STEP 1: Strict Validation
         validation_prompt = "Analyze this image. Is there a human person (or at least a human face/body) clearly visible in this image? Answer strictly with the word YES or NO, and nothing else."
-        val_response = model.generate_content([validation_prompt, image])
+        try:
+            val_response = model.generate_content([validation_prompt, image])
+        except Exception:
+            model = genai.GenerativeModel('gemini-1.5-flash')
+            val_response = model.generate_content([validation_prompt, image])
         val_text = val_response.text.strip().upper()
+
         
         if "NO" in val_text or "YES" not in val_text:
             return {
