@@ -16,3 +16,7 @@ dependencies = [
     "google-generativeai",
     "pillow",
 ]
+
+[tool.setuptools.packages.find]
+include = ["app*", "api*"]
+
