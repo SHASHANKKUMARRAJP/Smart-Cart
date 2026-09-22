@@ -1,6 +1,7 @@
 import os
 import io
 import json
+import re
 from PIL import Image
 
 try:
@@ -98,23 +99,21 @@ MOCK_RESPONSE_FEMALE = {
 
 def analyze_outfit_image(file_bytes, filename, gender="Auto"):
     """
-    Analyzes an image and returns outfit suggestions based on the user's 3 prompts.
+    Analyzes an image and returns outfit suggestions based on Gemini AI vision.
     """
-    gemini_key = os.environ.get("GEMINI_API_KEY", "")
-
-    # Determine which mock response to show based on dropdown
-    mock = MOCK_RESPONSE_FEMALE if (str(gender).lower() == "female") else MOCK_RESPONSE_MALE
+    gemini_key = os.environ.get("GEMINI_API_KEY", "").strip(' \t\n\r\'"')
 
     if not genai or not gemini_key:
-        print("Using MOCK response because GEMINI_API_KEY is missing or google-generativeai is not installed.")
-        return mock
+        return {
+            "error": "Gemini API Key is not configured. Please add GEMINI_API_KEY in Vercel Environment Variables."
+        }
 
     try:
         genai.configure(api_key=gemini_key)
         
-        # We use vision powers with reliable model fallback
+        # Select reliable vision model
         model = None
-        for m_name in ['gemini-1.5-flash', 'gemini-2.0-flash', 'gemini-2.5-flash']:
+        for m_name in ['gemini-1.5-flash', 'gemini-2.0-flash', 'gemini-1.5-pro']:
             try:
                 model = genai.GenerativeModel(m_name)
                 if model:
@@ -130,12 +129,14 @@ def analyze_outfit_image(file_bytes, filename, gender="Auto"):
         validation_prompt = "Analyze this image. Is there a human person (or at least a human face/body) clearly visible in this image? Answer strictly with the word YES or NO, and nothing else."
         try:
             val_response = model.generate_content([validation_prompt, image])
-        except Exception:
+            val_text = val_response.text.strip().upper()
+        except Exception as ve:
+            print(f"Validation API call error: {ve}")
+            # Try alternate fallback model
             model = genai.GenerativeModel('gemini-1.5-flash')
             val_response = model.generate_content([validation_prompt, image])
-        val_text = val_response.text.strip().upper()
+            val_text = val_response.text.strip().upper()
 
-        
         if "NO" in val_text or "YES" not in val_text:
             return {
                 "error": "Please upload a clear photo of a person. I cannot style animals, objects, cartoons, or landscapes!"
@@ -194,24 +195,24 @@ Return ONLY JSON matching this exact structure:
 }}
 """
 
-        response = model.generate_content([prompt, image])
-        text = response.text
+        try:
+            response = model.generate_content([prompt, image])
+            text = response.text
+        except Exception:
+            model = genai.GenerativeModel('gemini-1.5-flash')
+            response = model.generate_content([prompt, image])
+            text = response.text
 
-        # Clean JSON markdown if model adds it
-        if text.startswith("```json"):
-            text = text[7:]
-        if text.endswith("```"):
-            text = text[:-3]
-        if text.endswith("```\n"):
-            text = text[:-4]
+        # Robust JSON extraction
+        match = re.search(r'\{.*\}', text, re.DOTALL)
+        json_str = match.group(0) if match else text.strip()
 
-        parsed_data = json.loads(text.strip())
+        parsed_data = json.loads(json_str)
         return parsed_data
 
     except Exception as e:
         print(f"Error calling Gemini AI: {e}")
         return {
-            "error": "Failed to analyze image using AI.",
-            "details": str(e),
-            "fallback": mock
+            "error": f"AI Style Analysis error: {str(e)}"
         }
+
