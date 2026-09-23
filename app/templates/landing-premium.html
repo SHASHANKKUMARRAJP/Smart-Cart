@@ -405,6 +405,61 @@
         .cta-primary-btn:active {
             transform: translateY(0) scale(0.97);
         }
+
+        /* ── Ultra-Sleek Modern SaaS Showcase ── */
+        .hero-showcase-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(24px) saturate(160%);
+            -webkit-backdrop-filter: blur(24px) saturate(160%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 28px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5),
+                        0 0 40px rgba(99, 102, 241, 0.15);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hero-showcase-card:hover {
+            border-color: rgba(168, 85, 247, 0.3);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.6),
+                        0 0 50px rgba(168, 85, 247, 0.25);
+        }
+
+        .hero-float-smooth {
+            animation: heroFloatSmooth 5s ease-in-out infinite alternate;
+        }
+
+        @keyframes heroFloatSmooth {
+            0% {
+                transform: translateY(0px);
+            }
+            100% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .store-pill-card {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .store-pill-card:hover {
+            transform: translateY(-3px) scale(1.02);
+            border-color: rgba(99, 102, 241, 0.4);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4), 0 0 20px rgba(99, 102, 241, 0.2);
+        }
+
+        .store-pill-card.best-price-pill {
+            border-color: rgba(16, 185, 129, 0.45);
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.18);
+        }
+
+        .store-pill-card.best-price-pill:hover {
+            border-color: rgba(16, 185, 129, 0.7);
+            box-shadow: 0 12px 30px rgba(16, 185, 129, 0.3);
+        }
     </style>
 </head>
 
@@ -590,107 +645,108 @@
                 </div>
             </div>
 
-            <!-- Right Hero 3D Smartphone & Live Price Stack -->
-            <div class="lg:col-span-6 relative flex flex-col items-center justify-center min-h-[460px] sm:min-h-[520px] w-full overflow-hidden sm:overflow-visible">
+            <!-- Right Hero Section: Ultra-Sleek Modern SaaS Showcase -->
+            <div id="hero3DStage" class="lg:col-span-6 relative flex items-center justify-center min-h-[460px] sm:min-h-[500px] w-full">
                 
-                <!-- Background Aura Glow System -->
-                <div class="absolute w-[300px] sm:w-[420px] h-[300px] sm:h-[420px] bg-gradient-to-tr from-purple-600/30 via-indigo-600/20 to-blue-500/20 rounded-full blur-[90px] sm:blur-[110px] pointer-events-none -z-10 animate-pulse"></div>
-                <div class="absolute w-56 sm:w-72 h-56 sm:h-72 bg-indigo-500/25 rounded-full blur-[50px] sm:blur-[70px] pointer-events-none -z-10"></div>
+                <!-- Ambient Soft Glow Behind Frame -->
+                <div class="absolute w-72 sm:w-96 h-72 sm:h-96 bg-gradient-to-tr from-indigo-600/25 via-purple-600/20 to-pink-500/15 rounded-full blur-[90px] pointer-events-none -z-10"></div>
 
-                <!-- Handwritten Curve Annotation -->
-                <div class="absolute -top-10 sm:-top-16 left-1/2 -translate-x-1/2 lg:left-auto lg:right-12 z-30 flex items-center gap-2 sm:gap-3 pointer-events-none">
-                    <span class="font-serif italic text-lg sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-pink-300 to-amber-300 tracking-wide drop-shadow-[0_2px_12px_rgba(168,85,247,0.6)]">
-                        Compare before you buy!
-                    </span>
-                    <svg class="w-12 h-12 sm:w-16 sm:h-16 text-pink-400 filter drop-shadow-[0_0_12px_rgba(236,72,153,0.8)] animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 100 80">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M 15 15 C 45 5, 80 15, 75 55"></path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M 60 45 L 75 55 L 85 42"></path>
-                    </svg>
-                </div>
-
-                <!-- Phone Showcase Render (Seamless Cutout) -->
-                <div class="relative z-10 flex items-center justify-center">
-                    <img src="{{ url_for('static', filename='hero_iphone_showcase.png') }}" 
-                        alt="3D iPhone Product Comparison" 
-                        class="w-56 sm:w-72 lg:w-[340px] max-h-[380px] sm:max-h-[460px] object-contain filter drop-shadow-[0_20px_40px_rgba(0,0,0,0.85)] transform -rotate-2 hover:rotate-0 transition-transform duration-700">
-                </div>
-
-                <!-- Live Price Comparison Cards Stack -->
-                <div class="relative sm:absolute right-auto sm:right-0 lg:-right-6 top-auto sm:top-1/2 sm:-translate-y-1/2 z-30 flex flex-col gap-2.5 sm:gap-3.5 mt-4 sm:mt-0 w-full max-w-xs sm:w-auto items-center sm:items-stretch">
+                <!-- Main Glass Showcase Frame -->
+                <div class="hero-showcase-card w-full max-w-lg p-5 sm:p-7 relative overflow-hidden flex flex-col sm:flex-row items-center gap-6 z-10">
                     
-                    <!-- Blinkit Card (Best Price) -->
-                    <div class="glass-card-premium p-3 sm:p-3.5 rounded-2xl border border-emerald-500/50 bg-gray-950/90 shadow-[0_10px_30px_rgba(16,185,129,0.2)] flex items-center justify-between gap-3 w-full sm:w-64 transform hover:scale-105 transition-all duration-300">
-                        <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-yellow-400 flex items-center justify-center p-1 font-black text-black text-xs tracking-tighter shrink-0 shadow-md shadow-yellow-500/20">
-                                blinkit
-                            </div>
-                            <div>
-                                <h4 class="text-xs font-bold text-white">Blinkit</h4>
-                                <p class="text-[11px] text-gray-400">10 min</p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-sm font-black text-white">₹69,900</p>
-                            <span class="px-2 py-0.5 rounded-md bg-emerald-400 text-gray-950 font-black text-[10px] uppercase tracking-wide">Best Price</span>
+                    <!-- Decorative Top Glass Bar -->
+                    <div class="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"></div>
+
+                    <!-- Left: 3D iPhone Product Image (Clean Render) -->
+                    <div class="relative flex-1 flex items-center justify-center group">
+                        <div class="relative z-10 hero-float-smooth">
+                            <img src="{{ url_for('static', filename='hero_iphone_showcase.png') }}" 
+                                alt="iPhone Product Comparison" 
+                                class="w-48 sm:w-56 lg:w-64 max-h-[340px] object-contain rounded-2xl filter drop-shadow-[0_20px_35px_rgba(0,0,0,0.6)]">
                         </div>
                     </div>
 
-                    <!-- Zepto Card -->
-                    <div class="glass-card-premium p-3 sm:p-3.5 rounded-2xl border border-white/12 bg-gray-950/90 shadow-2xl flex items-center justify-between gap-3 w-full sm:w-64 transform hover:scale-105 transition-all duration-300">
-                        <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-purple-600 flex items-center justify-center font-black text-white text-base shrink-0 shadow-md shadow-purple-500/20">
-                                Z
+                    <!-- Right: Clean Store Price Cards Stack -->
+                    <div class="w-full sm:w-56 flex flex-col gap-3 z-20">
+                        
+                        <!-- Blinkit (Best Price) -->
+                        <div class="store-pill-card best-price-pill p-3 flex items-center justify-between gap-3">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-9 h-9 rounded-xl bg-yellow-400 flex items-center justify-center p-1 font-black text-black text-[11px] tracking-tighter shrink-0 shadow-md">
+                                    blinkit
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-white leading-tight">Blinkit</h4>
+                                    <p class="text-[10px] text-gray-400">10 min</p>
+                                </div>
                             </div>
-                            <div>
-                                <h4 class="text-xs font-bold text-white">Zepto</h4>
-                                <p class="text-[11px] text-gray-400">10 min</p>
+                            <div class="text-right">
+                                <p class="text-sm font-black text-white">₹69,900</p>
+                                <span class="px-2 py-0.5 rounded bg-emerald-400 text-gray-950 font-black text-[9px] uppercase tracking-wider shadow-sm inline-block">Best Price</span>
                             </div>
                         </div>
-                        <div class="text-right">
-                            <p class="text-sm font-extrabold text-white">₹70,499</p>
-                        </div>
-                    </div>
 
-                    <!-- Instamart Card -->
-                    <div class="glass-card-premium p-3 sm:p-3.5 rounded-2xl border border-white/12 bg-gray-950/90 shadow-2xl flex items-center justify-between gap-3 w-full sm:w-64 transform hover:scale-105 transition-all duration-300">
-                        <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-orange-500 flex items-center justify-center font-black text-white text-base shrink-0 shadow-md shadow-orange-500/20">
-                                9
+                        <!-- Zepto -->
+                        <div class="store-pill-card p-3 flex items-center justify-between gap-3">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-9 h-9 rounded-xl bg-purple-600 flex items-center justify-center font-black text-white text-sm shrink-0 shadow-md">
+                                    Z
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-white leading-tight">Zepto</h4>
+                                    <p class="text-[10px] text-gray-400">10 min</p>
+                                </div>
                             </div>
-                            <div>
-                                <h4 class="text-xs font-bold text-white">Instamart</h4>
-                                <p class="text-[11px] text-gray-400">12 min</p>
+                            <div class="text-right">
+                                <p class="text-sm font-extrabold text-white">₹70,499</p>
                             </div>
                         </div>
-                        <div class="text-right">
-                            <p class="text-sm font-extrabold text-white">₹70,990</p>
-                        </div>
-                    </div>
 
-                    <!-- Amazon Card -->
-                    <div class="glass-card-premium p-3 sm:p-3.5 rounded-2xl border border-white/12 bg-gray-950/90 shadow-2xl flex items-center justify-between gap-3 w-full sm:w-64 transform hover:scale-105 transition-all duration-300">
-                        <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-slate-900 border border-amber-500/30 flex items-center justify-center p-1.5 shrink-0 shadow-md">
-                                <svg class="w-5 h-5 sm:w-6 sm:h-6 text-amber-400 fill-current" viewBox="0 0 24 24">
-                                    <path d="M13.94 11.08c-2.07.19-3.48.65-4.23 1.38-.75.73-1.12 1.76-1.12 3.09 0 1.25.38 2.22 1.14 2.91.76.69 1.83 1.04 3.2 1.04 1.28 0 2.37-.36 3.27-1.08.9-.72 1.35-1.74 1.35-3.06v-5.26h-3.61v1zm1.26 5.86c-.53.53-1.22.8-2.07.8-.75 0-1.32-.2-1.71-.6-.39-.4-.59-.97-.59-1.71 0-.8.26-1.39.78-1.77.52-.38 1.35-.61 2.49-.69v1.2c0 .94.37 1.87 1.1 2.77zM20.25 19.86c-4.47 2.1-9.98 2.14-14.73-.27-1.01-.51-2.48-1.51-2.48-1.51s-.11-.08-.05-.14c.06-.06.18-.04.28.02 1.79 1.11 3.91 1.78 6.09 1.95 2.68.21 5.37-.41 7.78-1.75.25-.14.47.16.2.32zM21.2 18.25c.34-.41.98-1.11 1.22-1.51.1-.16.03-.29-.14-.24-.49.16-1.63.49-2.22.56-.25.03-.26-.14-.04-.27 1.38-.85 2.82-1.7 4.25-2.5.21-.12.38.03.26.23-.74 1.25-1.74 2.75-2.61 4.09-.15.23-.39.2-.72-.36z"/>
-                                </svg>
+                        <!-- Instamart -->
+                        <div class="store-pill-card p-3 flex items-center justify-between gap-3">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-9 h-9 rounded-xl bg-orange-500 flex items-center justify-center font-black text-white text-sm shrink-0 shadow-md">
+                                    9
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-white leading-tight">Instamart</h4>
+                                    <p class="text-[10px] text-gray-400">12 min</p>
+                                </div>
                             </div>
-                            <div>
-                                <h4 class="text-xs font-bold text-white">Amazon</h4>
-                                <p class="text-[11px] text-gray-400">1-2 days</p>
+                            <div class="text-right">
+                                <p class="text-sm font-extrabold text-white">₹70,990</p>
                             </div>
                         </div>
-                        <div class="text-right">
-                            <p class="text-sm font-extrabold text-white">₹71,990</p>
+
+                        <!-- Amazon -->
+                        <div class="store-pill-card p-3 flex items-center justify-between gap-3">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-9 h-9 rounded-xl bg-slate-900 border border-amber-500/30 flex items-center justify-center p-1 shrink-0 shadow-md">
+                                    <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 24 24">
+                                        <path d="M13.94 11.08c-2.07.19-3.48.65-4.23 1.38-.75.73-1.12 1.76-1.12 3.09 0 1.25.38 2.22 1.14 2.91.76.69 1.83 1.04 3.2 1.04 1.28 0 2.37-.36 3.27-1.08.9-.72 1.35-1.74 1.35-3.06v-5.26h-3.61v1zm1.26 5.86c-.53.53-1.22.8-2.07.8-.75 0-1.32-.2-1.71-.6-.39-.4-.59-.97-.59-1.71 0-.8.26-1.39.78-1.77.52-.38 1.35-.61 2.49-.69v1.2c0 .94.37 1.87 1.1 2.77zM20.25 19.86c-4.47 2.1-9.98 2.14-14.73-.27-1.01-.51-2.48-1.51-2.48-1.51s-.11-.08-.05-.14c.06-.06.18-.04.28.02 1.79 1.11 3.91 1.78 6.09 1.95 2.68.21 5.37-.41 7.78-1.75.25-.14.47.16.2.32zM21.2 18.25c.34-.41.98-1.11 1.22-1.51.1-.16.03-.29-.14-.24-.49.16-1.63.49-2.22.56-.25.03-.26-.14-.04-.27 1.38-.85 2.82-1.7 4.25-2.5.21-.12.38.03.26.23-.74 1.25-1.74 2.75-2.61 4.09-.15.23-.39.2-.72-.36z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-white leading-tight">Amazon</h4>
+                                    <p class="text-[10px] text-gray-400">1-2 days</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm font-extrabold text-white">₹71,990</p>
+                            </div>
                         </div>
+
                     </div>
 
                 </div>
 
-                <!-- Savings Card (Bottom Left on Desktop, Relative on Mobile) -->
-                <div class="relative sm:absolute left-auto sm:-left-2 lg:left-2 bottom-auto sm:bottom-2 mt-4 sm:mt-0 z-30 glass-card-premium p-3.5 sm:p-4 rounded-2xl border border-indigo-500/50 bg-indigo-950/90 shadow-[0_10px_35px_rgba(99,102,241,0.3)] backdrop-blur-xl hover:scale-105 transition-transform text-center sm:text-left">
-                    <p class="text-[10px] font-bold text-indigo-300 uppercase tracking-widest">Save up to</p>
-                    <p class="text-2xl sm:text-3xl font-black text-white tracking-tight">₹5,000</p>
+                <!-- Savings Floating Badge -->
+                <div class="absolute -bottom-4 left-4 sm:left-8 z-30 px-4 py-2.5 rounded-xl bg-gradient-to-r from-indigo-900/90 to-purple-900/90 backdrop-blur-md border border-indigo-500/40 shadow-xl flex items-center gap-2">
+                    <i data-lucide="sparkles" class="w-4 h-4 text-indigo-400"></i>
+                    <div>
+                        <p class="text-[9px] font-bold text-indigo-300 uppercase tracking-widest leading-none">Save up to</p>
+                        <p class="text-lg font-black text-white leading-tight">₹5,000</p>
+                    </div>
                 </div>
 
             </div>
@@ -1172,7 +1228,7 @@
             </div>
 
             <div class="border-t border-white/10 mt-8 pt-8 text-center text-sm">
-                <p>&copy; 2024 Smart Cart. All rights reserved. Made with ❤️ for smart shoppers.</p>
+                <p>&copy; 2026 Smart Cart. All rights reserved. Made with ❤️ for smart shoppers.</p>
             </div>
         </div>
     </footer>
@@ -1237,6 +1293,48 @@
                 console.error('Logout error:', err);
             }
         }
+
+        // ── Clean Modern SaaS Tilt Physics Engine ──
+        (function initShowcaseTilt() {
+            const stage = document.getElementById('hero3DStage');
+            const showcaseCard = document.querySelector('.hero-showcase-card');
+
+            if (!stage || !showcaseCard) return;
+
+            let currentRx = 0, currentRy = 0;
+            let targetRx = 0, targetRy = 0;
+
+            document.addEventListener('mousemove', (e) => {
+                const rect = stage.getBoundingClientRect();
+                if (
+                    e.clientX >= rect.left - 100 &&
+                    e.clientX <= rect.right + 100 &&
+                    e.clientY >= rect.top - 100 &&
+                    e.clientY <= rect.bottom + 100
+                ) {
+                    const centerX = rect.left + rect.width / 2;
+                    const centerY = rect.top + rect.height / 2;
+
+                    const normX = (e.clientX - centerX) / (rect.width / 2);
+                    const normY = (e.clientY - centerY) / (rect.height / 2);
+
+                    targetRy = normX * 6;  // Subtle 6 deg tilt
+                    targetRx = -normY * 5;
+                } else {
+                    targetRx = 0;
+                    targetRy = 0;
+                }
+            });
+
+            function renderTilt() {
+                currentRx += (targetRx - currentRx) * 0.08;
+                currentRy += (targetRy - currentRy) * 0.08;
+
+                showcaseCard.style.transform = `perspective(1000px) rotateX(${currentRx}deg) rotateY(${currentRy}deg)`;
+                requestAnimationFrame(renderTilt);
+            }
+            renderTilt();
+        })();
     </script>
 </body>
 

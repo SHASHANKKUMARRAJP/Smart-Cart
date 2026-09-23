@@ -390,6 +390,19 @@
         .text-accent {
             color: var(--glass-accent-primary);
         }
+
+        /* Hide Scrollbar Track */
+        .scrollbar-none::-webkit-scrollbar,
+        .no-scrollbar::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+        .scrollbar-none,
+        .no-scrollbar {
+            -ms-overflow-style: none !important;
+            scrollbar-width: none !important;
+        }
     </style>
     <!-- Vanilla Tilt for 3D physics-based card hover -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
@@ -487,22 +500,7 @@
     <section class="pt-32 pb-20 px-4 relative overflow-hidden">
         <div class="max-w-7xl mx-auto relative z-10">
             <div class="text-center mb-16">
-                <!-- Quick Navigation & Tool Switcher Pills -->
-                <div class="flex items-center justify-center gap-2 mb-8 overflow-x-auto pb-2 scrollbar-none px-4 max-w-3xl mx-auto">
-                    <a href="{{ url_for('main.index') }}" class="glass-button-premium px-4 py-2 rounded-full text-xs sm:text-sm font-semibold text-gray-300 hover:text-white flex items-center gap-2 whitespace-nowrap transition-all hover:scale-105">
-                        <i data-lucide="arrow-left" class="w-4 h-4 text-indigo-400"></i> Back to Home
-                    </a>
-                    <div class="h-4 w-px bg-white/20 hidden sm:block"></div>
-                    <a href="{{ url_for('main.shop') }}" class="glass-button-premium px-4 py-2 rounded-full text-xs sm:text-sm font-semibold text-gray-300 hover:text-white flex items-center gap-2 whitespace-nowrap transition-all hover:scale-105">
-                        <i data-lucide="zap" class="w-4 h-4 text-amber-400"></i> 10-Min Delivery
-                    </a>
-                    <a href="{{ url_for('main.ecommerce') }}" class="glass-button-premium px-4 py-2 rounded-full text-xs sm:text-sm font-bold text-white bg-pink-500/20 border-pink-500/50 flex items-center gap-2 whitespace-nowrap shadow-[0_0_15px_rgba(236,72,153,0.3)]">
-                        <i data-lucide="shopping-bag" class="w-4 h-4 text-pink-400"></i> E-Commerce
-                    </a>
-                    <a href="{{ url_for('main.tickets') }}" class="glass-button-premium px-4 py-2 rounded-full text-xs sm:text-sm font-semibold text-gray-300 hover:text-white flex items-center gap-2 whitespace-nowrap transition-all hover:scale-105">
-                        <i data-lucide="ticket" class="w-4 h-4 text-rose-400"></i> Ticket Booking
-                    </a>
-                </div>
+
 
                 <div
                     class="inline-flex items-center glass-card-premium px-4 py-2 rounded-full text-sm font-medium mb-6 text-pink-300 border border-pink-500/30">
@@ -1024,7 +1022,7 @@
             </div>
 
             <div class="border-t border-white/10 pt-8 text-center text-gray-500">
-                <p>&copy; 2024 E-commerce Intelligence. All rights reserved.</p>
+                <p>&copy; 2026 E-commerce Intelligence. All rights reserved.</p>
             </div>
         </div>
     </footer>

@@ -222,6 +222,24 @@
             .glass-card-premium, .gear-card { border: 1px solid #ccc; background: none; color: black; box-shadow: none; }
             .gear-card .item-title { color: black !important; }
         }
+
+        /* Hide Scrollbar Track */
+        ::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+        .scrollbar-none::-webkit-scrollbar,
+        .no-scrollbar::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+        .scrollbar-none,
+        .no-scrollbar {
+            -ms-overflow-style: none !important;
+            scrollbar-width: none !important;
+        }
     </style>
 </head>
 
@@ -360,7 +378,7 @@
 
         <!-- Filter & Category Tabs -->
         <div class="space-y-6 mb-8 no-print">
-            <div class="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-none">
+            <div class="flex flex-wrap items-center gap-3 scrollbar-none">
                 <button onclick="filterCategory('all')" class="tab-btn active" data-cat="all">
                     <i data-lucide="layers" class="w-4 h-4"></i> All Gear
                 </button>

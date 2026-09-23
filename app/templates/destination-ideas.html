@@ -147,6 +147,26 @@
             background: rgba(11, 19, 41, 0.85);
             backdrop-filter: blur(12px);
         }
+
+        /* Hide Scrollbar Track */
+        ::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+        .scrollbar-none::-webkit-scrollbar,
+        .scrollbar-thin::-webkit-scrollbar,
+        .no-scrollbar::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+        .scrollbar-none,
+        .scrollbar-thin,
+        .no-scrollbar {
+            -ms-overflow-style: none !important;
+            scrollbar-width: none !important;
+        }
     </style>
 </head>
 
@@ -249,7 +269,7 @@
             </div>
 
             <!-- Country Selection Tabs (10 Countries) -->
-            <div class="flex items-center gap-2 overflow-x-auto pb-3 mb-4 scrollbar-thin">
+            <div class="flex flex-wrap items-center gap-2 mb-4 scrollbar-none">
                 <button onclick="filterByCountry('ALL')" class="country-tab active px-4 py-2 rounded-xl text-xs font-bold cursor-pointer" id="ctab-ALL">
                     🌍 All Countries
                 </button>

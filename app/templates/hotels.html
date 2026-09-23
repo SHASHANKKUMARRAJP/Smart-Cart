@@ -131,6 +131,24 @@
             background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(20px);
         }
+
+        /* Hide Scrollbar Track */
+        ::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+        .scrollbar-none::-webkit-scrollbar,
+        .no-scrollbar::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+        .scrollbar-none,
+        .no-scrollbar {
+            -ms-overflow-style: none !important;
+            scrollbar-width: none !important;
+        }
     </style>
 </head>
 
@@ -249,7 +267,7 @@
             </div>
 
             <!-- Country Quick Selector Bar -->
-            <div id="country-quick-bar" class="flex items-center gap-3 overflow-x-auto pb-4 mb-10 scrollbar-none">
+            <div id="country-quick-bar" class="flex flex-wrap items-center gap-3 mb-10 scrollbar-none">
                 <!-- Injected via JavaScript -->
             </div>
 
@@ -275,7 +293,7 @@
     <!-- Footer -->
     <footer class="bg-black/40 backdrop-blur-xl border-t border-white/10 text-gray-400 py-8 px-4 mt-auto">
         <div class="max-w-7xl mx-auto text-center">
-            <p>&copy; 2024 Smart Cart. Global Luxury Destination Intelligence.</p>
+            <p>&copy; 2026 Smart Cart. Global Luxury Destination Intelligence.</p>
         </div>
     </footer>
 

@@ -209,6 +209,24 @@
             color: white;
             font-weight: 700;
         }
+
+        /* Hide Scrollbar Track */
+        ::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+        .scrollbar-none::-webkit-scrollbar,
+        .no-scrollbar::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+        .scrollbar-none,
+        .no-scrollbar {
+            -ms-overflow-style: none !important;
+            scrollbar-width: none !important;
+        }
     </style>
 </head>
 
@@ -436,7 +454,7 @@
                     </div>
 
                     <!-- Time Filter Buttons -->
-                    <div class="flex items-center gap-1.5 bg-gray-900/80 p-1.5 rounded-xl border border-white/10 self-start sm:self-auto overflow-x-auto">
+                    <div class="flex flex-wrap items-center gap-1.5 bg-gray-900/80 p-1.5 rounded-xl border border-white/10 self-start sm:self-auto scrollbar-none">
                         <button onclick="setTimeFilter('24H')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer" id="filter-24H">24H</button>
                         <button onclick="setTimeFilter('7D')" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer" id="filter-7D">7D</button>
                         <button onclick="setTimeFilter('30D')" class="filter-btn active px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer" id="filter-30D">30D</button>

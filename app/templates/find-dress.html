@@ -231,6 +231,19 @@
             border-color: rgba(99, 102, 241, 0.8);
             background: rgba(99, 102, 241, 0.05);
         }
+
+        /* Hide Scrollbar Track */
+        .scrollbar-none::-webkit-scrollbar,
+        .no-scrollbar::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+        .scrollbar-none,
+        .no-scrollbar {
+            -ms-overflow-style: none !important;
+            scrollbar-width: none !important;
+        }
     </style>
 </head>
 
@@ -328,28 +341,7 @@
 
     <!-- Main Content -->
     <section class="pt-32 pb-20 px-4 min-h-screen flex flex-col items-center">
-        <!-- Quick Navigation & Tool Switcher Pills -->
-        <div class="flex items-center justify-center gap-2 mb-8 overflow-x-auto pb-2 scrollbar-none px-4 max-w-4xl mx-auto">
-            <a href="{{ url_for('main.index') }}" class="glass-button-premium px-4 py-2 rounded-full text-xs sm:text-sm font-semibold text-gray-300 hover:text-white flex items-center gap-2 whitespace-nowrap transition-all hover:scale-105">
-                <i data-lucide="arrow-left" class="w-4 h-4 text-indigo-400"></i> Back to Home
-            </a>
-            <div class="h-4 w-px bg-white/20 hidden sm:block"></div>
-            <a href="{{ url_for('main.shop') }}" class="glass-button-premium px-4 py-2 rounded-full text-xs sm:text-sm font-semibold text-gray-300 hover:text-white flex items-center gap-2 whitespace-nowrap transition-all hover:scale-105">
-                <i data-lucide="zap" class="w-4 h-4 text-amber-400"></i> 10-Min Delivery
-            </a>
-            <a href="{{ url_for('main.ecommerce') }}" class="glass-button-premium px-4 py-2 rounded-full text-xs sm:text-sm font-semibold text-gray-300 hover:text-white flex items-center gap-2 whitespace-nowrap transition-all hover:scale-105">
-                <i data-lucide="shopping-bag" class="w-4 h-4 text-pink-400"></i> E-Commerce
-            </a>
-            <a href="{{ url_for('main.plan_trip') }}" class="glass-button-premium px-4 py-2 rounded-full text-xs sm:text-sm font-semibold text-gray-300 hover:text-white flex items-center gap-2 whitespace-nowrap transition-all hover:scale-105">
-                <i data-lucide="plane" class="w-4 h-4 text-teal-400"></i> Plan My Trip
-            </a>
-            <a href="{{ url_for('main.style_outfit') }}" class="glass-button-premium px-4 py-2 rounded-full text-xs sm:text-sm font-semibold text-gray-300 hover:text-white flex items-center gap-2 whitespace-nowrap transition-all hover:scale-105">
-                <i data-lucide="sparkles" class="w-4 h-4 text-purple-400"></i> AI Outfit
-            </a>
-            <a href="{{ url_for('main.find_dress') }}" class="glass-button-premium px-4 py-2 rounded-full text-xs sm:text-sm font-bold text-white bg-indigo-500/20 border-indigo-500/50 flex items-center gap-2 whitespace-nowrap shadow-[0_0_15px_rgba(99,102,241,0.3)]">
-                <i data-lucide="search" class="w-4 h-4 text-indigo-400"></i> Find Dress
-            </a>
-        </div>
+
 
         <div class="text-center mb-12">
             <h1 class="text-5xl md:text-6xl font-bold mb-4 leading-tight">
