@@ -1251,7 +1251,7 @@
                     body: JSON.stringify({ email: email, password: password })
                 });
                 const d = await r.json();
-                if (r.ok) location.href = "{{ url_for('main.dashboard') }}";
+                if (r.ok) location.href = "{{ url_for('main.index') }}";
                 else alert(d.error || 'Login failed.');
             } catch { alert('Connection error.'); }
             finally { btn.textContent = 'Sign In →'; btn.disabled = false; }
@@ -1277,7 +1277,7 @@
                     body: JSON.stringify({ name: name, email: email, password: password })
                 });
                 const d = await r.json();
-                if (r.ok) location.href = "{{ url_for('main.dashboard') }}";
+                if (r.ok) location.href = "{{ url_for('main.index') }}";
                 else alert(d.error || 'Sign up failed.');
             } catch { alert('Connection error.'); }
             finally { btn.textContent = 'Create Account →'; btn.disabled = false; }
@@ -1325,7 +1325,7 @@
                     body: JSON.stringify({ email: email, name: name, provider: 'google' })
                 });
                 const d = await r.json();
-                if (r.ok) location.href = "{{ url_for('main.dashboard') }}";
+                if (r.ok) location.href = "{{ url_for('main.index') }}";
                 else alert(d.error || 'Google login failed.');
             } catch {
                 alert('Connection error.');

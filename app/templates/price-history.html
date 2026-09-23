@@ -180,6 +180,35 @@
             background: rgba(3, 7, 18, 0.85);
             backdrop-filter: blur(12px);
         }
+
+        .glass-nav-item {
+            padding: 8px 16px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 500;
+            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+            border: 1px solid transparent;
+        }
+
+        .glass-nav-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: white;
+        }
+
+        .glass-nav-item.active {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: white;
+            font-weight: 700;
+        }
     </style>
 </head>
 
@@ -196,22 +225,46 @@
     <nav class="sticky top-0 z-40 glass-morphism">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
-                <a href="{{ url_for('main.index') }}" class="flex items-center space-x-3 group">
-                    <div class="w-9 h-9 glass-card-premium rounded-xl flex items-center justify-center border border-white/10 group-hover:border-indigo-500/50 transition-all">
-                        <i data-lucide="arrow-left" class="w-5 h-5 text-gray-300 group-hover:text-white transition-colors"></i>
+                <!-- Branding / Logo -->
+                <a href="{{ url_for('main.index') }}" class="flex items-center space-x-2">
+                    <div class="w-8 h-8 glass-card-premium rounded-lg flex items-center justify-center border border-white/20">
+                        <i data-lucide="line-chart" size="18" class="text-emerald-400"></i>
                     </div>
-                    <span class="text-lg font-bold text-white tracking-wide hidden sm:inline">Home</span>
+                    <span class="text-xl font-bold text-white">Smart Cart</span>
                 </a>
-                <div class="flex items-center space-x-3">
-                    <div class="w-9 h-9 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/30">
-                        <i data-lucide="line-chart" class="w-5 h-5 text-white"></i>
-                    </div>
-                    <span class="text-lg sm:text-xl font-extrabold text-white tracking-tight">Price <span class="gradient-text-premium">Intelligence</span></span>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-2">
+                    <a href="{{ url_for('main.index') }}" class="glass-nav-item">Home</a>
+                    <a href="{{ url_for('main.style_outfit') }}" class="glass-nav-item">Style Your Outfit</a>
+                    <a href="{{ url_for('main.find_dress') }}" class="glass-nav-item">Find This Dress</a>
+                    <a href="{{ url_for('main.price_history') }}" class="glass-nav-item active text-emerald-400 font-bold">
+                        Price History
+                    </a>
+                    <a href="{{ url_for('main.plan_trip') }}" class="glass-nav-item">Plan My Trip</a>
                 </div>
+
+                <div class="hidden md:flex items-center space-x-4 flex-1 justify-end max-w-sm ml-8">
+                    {% if session.get('user') %}
+                    <a href="#"
+                        onclick="event.preventDefault(); fetch('{{ url_for('main.auth_logout') }}', {method: 'POST'}).then(() => window.location.href='/');"
+                        class="glass-button-premium px-6 py-2 rounded-xl text-sm font-bold uppercase tracking-widest hover:bg-rose-500/10 hover:border-rose-500/40 hover:text-rose-400 transition-all text-white">
+                        Logout
+                    </a>
+                    {% else %}
+                    <a href="{{ url_for('main.login') }}"
+                        class="glass-button-premium px-6 py-2 rounded-xl text-sm font-bold uppercase tracking-widest hover:bg-sky-500/10 hover:border-sky-500/40 hover:text-sky-400 transition-all text-white">
+                        Login
+                    </a>
+                    {% endif %}
+                </div>
+
                 <!-- Mobile menu button -->
-                <button class="md:hidden text-white p-2" onclick="toggleMobileMenu()">
-                    <i data-lucide="menu" class="w-6 h-6"></i>
-                </button>
+                <div class="md:hidden">
+                    <button class="text-white p-2" onclick="toggleMobileMenu()">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -228,25 +281,25 @@
                     <span>Home</span>
                     <i data-lucide="home" class="w-5 h-5 text-indigo-400"></i>
                 </a>
-                <a href="{{ url_for('main.shop') }}" onclick="toggleMobileMenu()"
+                <a href="{{ url_for('main.style_outfit') }}" onclick="toggleMobileMenu()"
                     class="px-4 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 font-semibold flex items-center justify-between text-base">
-                    <span>10 Min Delivery</span>
-                    <i data-lucide="zap" class="w-5 h-5 text-amber-400"></i>
+                    <span>Style Your Outfit</span>
+                    <i data-lucide="sparkles" class="w-5 h-5 text-purple-400"></i>
                 </a>
-                <a href="{{ url_for('main.ecommerce') }}" onclick="toggleMobileMenu()"
+                <a href="{{ url_for('main.find_dress') }}" onclick="toggleMobileMenu()"
                     class="px-4 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 font-semibold flex items-center justify-between text-base">
-                    <span>E-Commerce</span>
-                    <i data-lucide="shopping-bag" class="w-5 h-5 text-pink-400"></i>
+                    <span>Find This Dress</span>
+                    <i data-lucide="camera" class="w-5 h-5 text-pink-400"></i>
                 </a>
                 <a href="{{ url_for('main.price_history') }}" onclick="toggleMobileMenu()"
                     class="px-4 py-3.5 rounded-xl bg-white/10 text-white font-bold flex items-center justify-between text-base">
-                    <span>Price Intelligence</span>
-                    <i data-lucide="line-chart" class="w-5 h-5 text-sky-400"></i>
+                    <span>Price History</span>
+                    <i data-lucide="line-chart" class="w-5 h-5 text-emerald-400"></i>
                 </a>
-                <a href="{{ url_for('main.tickets') }}" onclick="toggleMobileMenu()"
+                <a href="{{ url_for('main.plan_trip') }}" onclick="toggleMobileMenu()"
                     class="px-4 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 font-semibold flex items-center justify-between text-base">
-                    <span>Tickets & Travel</span>
-                    <i data-lucide="ticket" class="w-5 h-5 text-rose-400"></i>
+                    <span>Plan My Trip</span>
+                    <i data-lucide="plane" class="w-5 h-5 text-teal-400"></i>
                 </a>
             </div>
         </div>
@@ -678,7 +731,8 @@
 
         function renderChart(filterStr) {
             if (!currentAnalyticsData || !currentAnalyticsData.series) return;
-            const series = currentAnalyticsData.series[filterStr] || currentAnalyticsData.series['30D'] || [];
+            let series = currentAnalyticsData.series[filterStr] || currentAnalyticsData.series['30D'] || [];
+            if (!series || series.length === 0) return;
             
             const labels = series.map(item => item.date);
             const dataPoints = series.map(item => item.price);
@@ -703,7 +757,7 @@
                         borderWidth: 3,
                         backgroundColor: gradient,
                         fill: true,
-                        tension: 0.35,
+                        tension: 0.25,
                         pointBackgroundColor: '#4f46e5',
                         pointBorderColor: '#c084fc',
                         pointBorderWidth: 2,
@@ -733,7 +787,7 @@
                                 label: function(context) {
                                     const index = context.dataIndex;
                                     const store = platformNames[index] || 'Store';
-                                    return `Price: ₹${context.parsed.y} (${store})`;
+                                    return `Best Price: ₹${context.parsed.y} (${store})`;
                                 }
                             }
                         }
@@ -749,7 +803,14 @@
                         },
                         x: {
                             grid: { display: false },
-                            ticks: { color: '#9ca3af', padding: 10 }
+                            ticks: {
+                                color: '#9ca3af',
+                                padding: 10,
+                                autoSkip: true,
+                                maxTicksLimit: 10,
+                                maxRotation: 30,
+                                minRotation: 0
+                            }
                         }
                     }
                 }

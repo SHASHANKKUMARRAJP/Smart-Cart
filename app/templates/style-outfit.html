@@ -87,6 +87,35 @@
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         }
 
+        .glass-nav-item {
+            padding: 8px 16px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 500;
+            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+            border: 1px solid transparent;
+        }
+
+        .glass-nav-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: white;
+        }
+
+        .glass-nav-item.active {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: white;
+            font-weight: 700;
+        }
+
         .glass-input {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -187,9 +216,18 @@
                 </div>
                 <span class="text-lg font-bold text-white hidden sm:inline">Home</span>
             </a>
-            <div class="text-lg sm:text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-400">
-                Style Your Outfit
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex items-center space-x-2">
+                <a href="{{ url_for('main.index') }}" class="glass-nav-item">Home</a>
+                <a href="{{ url_for('main.style_outfit') }}" class="glass-nav-item active text-purple-300 font-bold">
+                    Style Your Outfit
+                </a>
+                <a href="{{ url_for('main.find_dress') }}" class="glass-nav-item">Find This Dress</a>
+                <a href="{{ url_for('main.price_history') }}" class="glass-nav-item">Price History</a>
+                <a href="{{ url_for('main.plan_trip') }}" class="glass-nav-item">Plan My Trip</a>
             </div>
+
             <div class="flex items-center space-x-3">
                 {% if session.get('user') %}
                 <a href="#"
@@ -217,30 +255,25 @@
                     <span>Home</span>
                     <i data-lucide="home" size="18" class="text-indigo-400"></i>
                 </a>
-                <a href="{{ url_for('main.shop') }}" onclick="toggleMobileMenu()"
-                    class="px-4 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 font-semibold flex items-center justify-between text-base">
-                    <span>10 Min Delivery</span>
-                    <i data-lucide="zap" size="18" class="text-amber-400"></i>
-                </a>
-                <a href="{{ url_for('main.ecommerce') }}" onclick="toggleMobileMenu()"
-                    class="px-4 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 font-semibold flex items-center justify-between text-base">
-                    <span>E-Commerce</span>
-                    <i data-lucide="shopping-bag" size="18" class="text-pink-400"></i>
-                </a>
                 <a href="{{ url_for('main.style_outfit') }}" onclick="toggleMobileMenu()"
                     class="px-4 py-3.5 rounded-xl bg-white/10 text-white font-bold flex items-center justify-between text-base">
-                    <span>AI Outfit Assistant</span>
+                    <span>Style Your Outfit</span>
                     <i data-lucide="sparkles" size="18" class="text-purple-400"></i>
                 </a>
                 <a href="{{ url_for('main.find_dress') }}" onclick="toggleMobileMenu()"
                     class="px-4 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 font-semibold flex items-center justify-between text-base">
-                    <span>Find Dress</span>
-                    <i data-lucide="search" size="18" class="text-indigo-400"></i>
+                    <span>Find This Dress</span>
+                    <i data-lucide="camera" size="18" class="text-pink-400"></i>
                 </a>
                 <a href="{{ url_for('main.price_history') }}" onclick="toggleMobileMenu()"
                     class="px-4 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 font-semibold flex items-center justify-between text-base">
                     <span>Price History</span>
-                    <i data-lucide="line-chart" size="18" class="text-sky-400"></i>
+                    <i data-lucide="line-chart" size="18" class="text-emerald-400"></i>
+                </a>
+                <a href="{{ url_for('main.plan_trip') }}" onclick="toggleMobileMenu()"
+                    class="px-4 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 font-semibold flex items-center justify-between text-base">
+                    <span>Plan My Trip</span>
+                    <i data-lucide="plane" size="18" class="text-teal-400"></i>
                 </a>
 
                 <div class="pt-4 border-t border-white/10">
@@ -652,6 +685,21 @@
             }
         }
 
+        function openToolSwitcherModal() {
+            const modal = document.getElementById('toolSwitcherModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                setTimeout(() => lucide.createIcons(), 50);
+            }
+        }
+
+        function closeToolSwitcherModal() {
+            const modal = document.getElementById('toolSwitcherModal');
+            if (modal) {
+                modal.classList.add('hidden');
+            }
+        }
+
         function showError(msg) {
             const t = document.getElementById('errorToast');
             document.getElementById('errorMsg').innerText = msg;
@@ -659,6 +707,126 @@
             setTimeout(() => t.classList.add('translate-y-[200%]'), 4000);
         }
     </script>
+
+    <!-- Floating Navigation Dock -->
+    <div class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 p-2 rounded-2xl glass-morphism border border-white/20 shadow-2xl bg-slate-950/85 backdrop-blur-2xl">
+        <a href="{{ url_for('main.index') }}" class="glass-button-premium px-4 py-2.5 rounded-xl text-xs font-bold text-gray-200 hover:text-white flex items-center gap-2 transition-all hover:scale-105">
+            <i data-lucide="home" class="w-4 h-4 text-indigo-400"></i>
+            <span>Home</span>
+        </a>
+        <div class="w-px h-6 bg-white/15"></div>
+        <button onclick="openToolSwitcherModal()" class="glass-button-premium px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-purple-600/30 border-purple-500/50 flex items-center gap-2 transition-all hover:scale-105 shadow-[0_0_15px_rgba(168,85,247,0.4)]">
+            <i data-lucide="layout-grid" class="w-4 h-4 text-purple-400 animate-pulse"></i>
+            <span>Switch Option</span>
+        </button>
+        <div class="w-px h-6 bg-white/15"></div>
+        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="p-2.5 rounded-xl glass-button-premium text-gray-300 hover:text-white transition-all hover:scale-105" title="Scroll to Top">
+            <i data-lucide="arrow-up" class="w-4 h-4"></i>
+        </button>
+    </div>
+
+    <!-- Tool Switcher Modal -->
+    <div id="toolSwitcherModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-xl animate-fade-in">
+        <div class="relative w-full max-w-3xl glass-card-premium p-6 sm:p-8 border border-white/20 rounded-3xl shadow-2xl bg-slate-900/90 text-white max-h-[90vh] overflow-y-auto">
+            <button onclick="closeToolSwitcherModal()" class="absolute top-5 right-5 p-2 rounded-xl glass-button-premium text-gray-400 hover:text-white">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-400 text-xs font-semibold mb-3">
+                    <i data-lucide="sparkles" class="w-4 h-4"></i> Instant Navigation Hub
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Select Comparison Tool</h2>
+                <p class="text-gray-400 text-sm mt-1">Switch to any Smart Cart feature or return home.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Home -->
+                <a href="{{ url_for('main.index') }}" class="group glass-card-premium p-5 rounded-2xl border border-white/10 hover:border-indigo-500/50 hover:bg-white/5 transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-indigo-500/20 border border-indigo-500/40 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                            <i data-lucide="home" class="w-6 h-6 text-indigo-400"></i>
+                        </div>
+                        <h3 class="font-bold text-white text-lg group-hover:text-indigo-300 transition-colors">Main Landing Hub</h3>
+                        <p class="text-xs text-gray-400 mt-1">Return to home overview & dashboard.</p>
+                    </div>
+                    <div class="mt-4 flex items-center text-xs font-semibold text-indigo-400">
+                        Go Home <i data-lucide="arrow-right" class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </a>
+
+                <!-- 10-Min Delivery -->
+                <a href="{{ url_for('main.shop') }}" class="group glass-card-premium p-5 rounded-2xl border border-white/10 hover:border-amber-500/50 hover:bg-white/5 transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                            <i data-lucide="zap" class="w-6 h-6 text-amber-400"></i>
+                        </div>
+                        <h3 class="font-bold text-white text-lg group-hover:text-amber-300 transition-colors">10-Min Delivery</h3>
+                        <p class="text-xs text-gray-400 mt-1">Compare Blinkit, Zepto, Instamart & BigBasket.</p>
+                    </div>
+                    <div class="mt-4 flex items-center text-xs font-semibold text-amber-400">
+                        Open Delivery <i data-lucide="arrow-right" class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </a>
+
+                <!-- E-Commerce Deals -->
+                <a href="{{ url_for('main.ecommerce') }}" class="group glass-card-premium p-5 rounded-2xl border border-white/10 hover:border-pink-500/50 hover:bg-white/5 transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-pink-500/20 border border-pink-500/40 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                            <i data-lucide="shopping-bag" class="w-6 h-6 text-pink-400"></i>
+                        </div>
+                        <h3 class="font-bold text-white text-lg group-hover:text-pink-300 transition-colors">E-Commerce Deals</h3>
+                        <p class="text-xs text-gray-400 mt-1">Compare Amazon, Flipkart, Myntra, Nykaa, Ajio & Meesho.</p>
+                    </div>
+                    <div class="mt-4 flex items-center text-xs font-semibold text-pink-400">
+                        Open Deals <i data-lucide="arrow-right" class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </a>
+
+                <!-- Plan My Trip -->
+                <a href="{{ url_for('main.plan_trip') }}" class="group glass-card-premium p-5 rounded-2xl border border-white/10 hover:border-teal-500/50 hover:bg-white/5 transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-teal-500/20 border border-teal-500/40 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                            <i data-lucide="plane" class="w-6 h-6 text-teal-400"></i>
+                        </div>
+                        <h3 class="font-bold text-white text-lg group-hover:text-teal-300 transition-colors">Plan My Trip</h3>
+                        <p class="text-xs text-gray-400 mt-1">AI travel planner, flight comparison & budget planner.</p>
+                    </div>
+                    <div class="mt-4 flex items-center text-xs font-semibold text-teal-400">
+                        Plan Trip <i data-lucide="arrow-right" class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </a>
+
+                <!-- AI Outfit Assistant -->
+                <a href="{{ url_for('main.style_outfit') }}" class="group glass-card-premium p-5 rounded-2xl border border-purple-500/30 bg-purple-500/5 hover:border-purple-500/70 transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/20 border border-purple-500/40 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                            <i data-lucide="sparkles" class="w-6 h-6 text-purple-400"></i>
+                        </div>
+                        <h3 class="font-bold text-white text-lg group-hover:text-purple-300 transition-colors">AI Outfit Styling</h3>
+                        <p class="text-xs text-gray-400 mt-1">Styling recommendations & smart fashion matching.</p>
+                    </div>
+                    <div class="mt-4 flex items-center text-xs font-semibold text-purple-400">
+                        Active Mode <i data-lucide="check" class="w-4 h-4 ml-1"></i>
+                    </div>
+                </a>
+
+                <!-- Find Dress -->
+                <a href="{{ url_for('main.find_dress') }}" class="group glass-card-premium p-5 rounded-2xl border border-white/10 hover:border-indigo-500/50 hover:bg-white/5 transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-indigo-500/20 border border-indigo-500/40 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                            <i data-lucide="search" class="w-6 h-6 text-indigo-400"></i>
+                        </div>
+                        <h3 class="font-bold text-white text-lg group-hover:text-indigo-300 transition-colors">Find Dress</h3>
+                        <p class="text-xs text-gray-400 mt-1">Upload a dress photo & match across major stores.</p>
+                    </div>
+                    <div class="mt-4 flex items-center text-xs font-semibold text-indigo-400">
+                        Find Dress <i data-lucide="arrow-right" class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

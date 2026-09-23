@@ -2,858 +2,529 @@
   "records": {
     "amul butter 500g": [
       {
-        "timestamp": "2025-09-22T19:20:09Z",
+        "timestamp": "2025-09-23T12:00:00Z",
         "platform": "Blinkit",
-        "price": 260
+        "price": 260.0
       },
       {
-        "timestamp": "2025-11-26T19:20:09Z",
+        "timestamp": "2025-12-25T12:00:00Z",
+        "platform": "Zepto",
+        "price": 265.0
+      },
+      {
+        "timestamp": "2026-03-25T12:00:00Z",
+        "platform": "Instamart",
+        "price": 270.0
+      },
+      {
+        "timestamp": "2026-06-25T12:00:00Z",
         "platform": "BigBasket",
-        "price": 265
+        "price": 272.0
       },
       {
-        "timestamp": "2026-01-25T19:20:09Z",
-        "platform": "Amazon",
-        "price": 270
-      },
-      {
-        "timestamp": "2026-03-26T19:20:09Z",
-        "platform": "Zepto",
-        "price": 275
-      },
-      {
-        "timestamp": "2026-05-25T19:20:09Z",
-        "platform": "Instamart",
-        "price": 275
-      },
-      {
-        "timestamp": "2026-06-24T19:20:09Z",
+        "timestamp": "2026-08-24T12:00:00Z",
         "platform": "JioMart",
-        "price": 270
+        "price": 275.0
       },
       {
-        "timestamp": "2026-07-24T19:20:09Z",
-        "platform": "Blinkit",
-        "price": 280
-      },
-      {
-        "timestamp": "2026-08-23T19:20:09Z",
-        "platform": "Flipkart",
-        "price": 275
-      },
-      {
-        "timestamp": "2026-09-08T19:20:09Z",
-        "platform": "Zepto",
-        "price": 272
-      },
-      {
-        "timestamp": "2026-09-15T19:20:09Z",
-        "platform": "Instamart",
-        "price": 270
-      },
-      {
-        "timestamp": "2026-09-19T19:20:09Z",
-        "platform": "Blinkit",
-        "price": 275
-      },
-      {
-        "timestamp": "2026-09-21T19:20:09Z",
-        "platform": "BigBasket",
-        "price": 275
-      },
-      {
-        "timestamp": "2026-09-22T19:20:09Z",
-        "platform": "Blinkit",
-        "price": 275
-      },
-      {
-        "timestamp": "2026-09-22T19:20:09Z",
-        "platform": "Zepto",
-        "price": 267.0
-      },
-      {
-        "timestamp": "2026-09-22T19:20:09Z",
-        "platform": "Instamart",
-        "price": 270.0
-      },
-      {
-        "timestamp": "2026-09-22T19:20:09Z",
-        "platform": "BigBasket Now",
-        "price": 258.0
-      },
-      {
-        "timestamp": "2026-09-22T19:20:09Z",
-        "platform": "JioMart",
-        "price": 250.0
-      },
-      {
-        "timestamp": "2026-09-22T19:20:09Z",
-        "platform": "Amazon",
-        "price": 248.0
-      },
-      {
-        "timestamp": "2026-09-22T19:20:09Z",
-        "platform": "Flipkart",
-        "price": 253.0
-      },
-      {
-        "timestamp": "2026-09-22T19:21:44Z",
+        "timestamp": "2026-09-16T12:00:00Z",
         "platform": "Blinkit",
         "price": 275.0
       },
       {
-        "timestamp": "2026-09-22T19:21:44Z",
-        "platform": "Zepto",
-        "price": 267.0
-      },
-      {
-        "timestamp": "2026-09-22T19:21:44Z",
-        "platform": "Instamart",
-        "price": 270.0
-      },
-      {
-        "timestamp": "2026-09-22T19:21:44Z",
-        "platform": "BigBasket Now",
-        "price": 258.0
-      },
-      {
-        "timestamp": "2026-09-22T19:21:44Z",
-        "platform": "JioMart",
-        "price": 250.0
-      },
-      {
-        "timestamp": "2026-09-22T19:21:44Z",
-        "platform": "Amazon",
-        "price": 248.0
-      },
-      {
-        "timestamp": "2026-09-22T19:21:44Z",
-        "platform": "Flipkart",
-        "price": 253.0
-      },
-      {
-        "timestamp": "2026-09-22T19:21:46Z",
+        "timestamp": "2026-09-22T12:00:00Z",
         "platform": "Blinkit",
         "price": 275.0
       },
       {
-        "timestamp": "2026-09-22T19:21:46Z",
-        "platform": "Zepto",
-        "price": 267.0
-      },
-      {
-        "timestamp": "2026-09-22T19:21:46Z",
-        "platform": "Instamart",
-        "price": 270.0
-      },
-      {
-        "timestamp": "2026-09-22T19:21:46Z",
-        "platform": "BigBasket Now",
-        "price": 258.0
-      },
-      {
-        "timestamp": "2026-09-22T19:21:46Z",
-        "platform": "JioMart",
-        "price": 250.0
-      },
-      {
-        "timestamp": "2026-09-22T19:21:46Z",
-        "platform": "Amazon",
-        "price": 248.0
-      },
-      {
-        "timestamp": "2026-09-22T19:21:46Z",
-        "platform": "Flipkart",
-        "price": 253.0
-      },
-      {
-        "timestamp": "2026-09-22T19:21:47Z",
+        "timestamp": "2026-09-23T12:00:00Z",
         "platform": "Blinkit",
         "price": 275.0
       },
       {
-        "timestamp": "2026-09-22T19:21:47Z",
-        "platform": "Zepto",
-        "price": 267.0
-      },
-      {
-        "timestamp": "2026-09-22T19:21:47Z",
-        "platform": "Instamart",
-        "price": 270.0
-      },
-      {
-        "timestamp": "2026-09-22T19:21:47Z",
-        "platform": "BigBasket Now",
-        "price": 258.0
-      },
-      {
-        "timestamp": "2026-09-22T19:21:47Z",
-        "platform": "JioMart",
-        "price": 250.0
-      },
-      {
-        "timestamp": "2026-09-22T19:21:47Z",
-        "platform": "Amazon",
-        "price": 248.0
-      },
-      {
-        "timestamp": "2026-09-22T19:21:47Z",
-        "platform": "Flipkart",
-        "price": 253.0
-      },
-      {
-        "timestamp": "2026-09-23T01:25:38Z",
+        "timestamp": "2026-09-23T18:15:07Z",
         "platform": "Blinkit",
         "price": 275.0
       },
       {
-        "timestamp": "2026-09-23T01:25:38Z",
+        "timestamp": "2026-09-23T18:15:07Z",
         "platform": "Zepto",
         "price": 267.0
       },
       {
-        "timestamp": "2026-09-23T01:25:38Z",
+        "timestamp": "2026-09-23T18:15:07Z",
         "platform": "Instamart",
         "price": 270.0
       },
       {
-        "timestamp": "2026-09-23T01:25:38Z",
+        "timestamp": "2026-09-23T18:15:07Z",
         "platform": "BigBasket Now",
         "price": 258.0
       },
       {
-        "timestamp": "2026-09-23T01:25:38Z",
+        "timestamp": "2026-09-23T18:15:07Z",
         "platform": "JioMart",
         "price": 250.0
       },
       {
-        "timestamp": "2026-09-23T01:25:38Z",
+        "timestamp": "2026-09-23T18:15:07Z",
         "platform": "Amazon",
         "price": 248.0
       },
       {
-        "timestamp": "2026-09-23T01:25:38Z",
+        "timestamp": "2026-09-23T18:15:07Z",
         "platform": "Flipkart",
         "price": 253.0
       },
       {
-        "timestamp": "2026-09-23T01:28:54Z",
+        "timestamp": "2026-09-23T18:15:45Z",
         "platform": "Blinkit",
         "price": 275.0
       },
       {
-        "timestamp": "2026-09-23T01:28:54Z",
+        "timestamp": "2026-09-23T18:15:45Z",
         "platform": "Zepto",
         "price": 267.0
       },
       {
-        "timestamp": "2026-09-23T01:28:54Z",
+        "timestamp": "2026-09-23T18:15:45Z",
         "platform": "Instamart",
         "price": 270.0
       },
       {
-        "timestamp": "2026-09-23T01:28:54Z",
+        "timestamp": "2026-09-23T18:15:45Z",
         "platform": "BigBasket Now",
         "price": 258.0
       },
       {
-        "timestamp": "2026-09-23T01:28:54Z",
+        "timestamp": "2026-09-23T18:15:45Z",
         "platform": "JioMart",
         "price": 250.0
       },
       {
-        "timestamp": "2026-09-23T01:28:54Z",
+        "timestamp": "2026-09-23T18:15:45Z",
         "platform": "Amazon",
         "price": 248.0
       },
       {
-        "timestamp": "2026-09-23T01:28:54Z",
+        "timestamp": "2026-09-23T18:15:45Z",
+        "platform": "Flipkart",
+        "price": 253.0
+      },
+      {
+        "timestamp": "2026-09-23T18:15:53Z",
+        "platform": "Blinkit",
+        "price": 275.0
+      },
+      {
+        "timestamp": "2026-09-23T18:15:53Z",
+        "platform": "Zepto",
+        "price": 267.0
+      },
+      {
+        "timestamp": "2026-09-23T18:15:53Z",
+        "platform": "Instamart",
+        "price": 270.0
+      },
+      {
+        "timestamp": "2026-09-23T18:15:53Z",
+        "platform": "BigBasket Now",
+        "price": 258.0
+      },
+      {
+        "timestamp": "2026-09-23T18:15:53Z",
+        "platform": "JioMart",
+        "price": 250.0
+      },
+      {
+        "timestamp": "2026-09-23T18:15:53Z",
+        "platform": "Amazon",
+        "price": 248.0
+      },
+      {
+        "timestamp": "2026-09-23T18:15:53Z",
+        "platform": "Flipkart",
+        "price": 253.0
+      },
+      {
+        "timestamp": "2026-09-23T18:16:19Z",
+        "platform": "Blinkit",
+        "price": 275.0
+      },
+      {
+        "timestamp": "2026-09-23T18:16:19Z",
+        "platform": "Zepto",
+        "price": 267.0
+      },
+      {
+        "timestamp": "2026-09-23T18:16:19Z",
+        "platform": "Instamart",
+        "price": 270.0
+      },
+      {
+        "timestamp": "2026-09-23T18:16:19Z",
+        "platform": "BigBasket Now",
+        "price": 258.0
+      },
+      {
+        "timestamp": "2026-09-23T18:16:19Z",
+        "platform": "JioMart",
+        "price": 250.0
+      },
+      {
+        "timestamp": "2026-09-23T18:16:19Z",
+        "platform": "Amazon",
+        "price": 248.0
+      },
+      {
+        "timestamp": "2026-09-23T18:16:19Z",
+        "platform": "Flipkart",
+        "price": 253.0
+      },
+      {
+        "timestamp": "2026-09-23T18:18:47Z",
+        "platform": "Blinkit",
+        "price": 275.0
+      },
+      {
+        "timestamp": "2026-09-23T18:18:47Z",
+        "platform": "Zepto",
+        "price": 267.0
+      },
+      {
+        "timestamp": "2026-09-23T18:18:47Z",
+        "platform": "Instamart",
+        "price": 270.0
+      },
+      {
+        "timestamp": "2026-09-23T18:18:47Z",
+        "platform": "BigBasket Now",
+        "price": 258.0
+      },
+      {
+        "timestamp": "2026-09-23T18:18:47Z",
+        "platform": "JioMart",
+        "price": 250.0
+      },
+      {
+        "timestamp": "2026-09-23T18:18:47Z",
+        "platform": "Amazon",
+        "price": 248.0
+      },
+      {
+        "timestamp": "2026-09-23T18:18:47Z",
+        "platform": "Flipkart",
+        "price": 253.0
+      },
+      {
+        "timestamp": "2026-09-23T18:19:11Z",
+        "platform": "Blinkit",
+        "price": 275.0
+      },
+      {
+        "timestamp": "2026-09-23T18:19:11Z",
+        "platform": "Zepto",
+        "price": 267.0
+      },
+      {
+        "timestamp": "2026-09-23T18:19:11Z",
+        "platform": "Instamart",
+        "price": 270.0
+      },
+      {
+        "timestamp": "2026-09-23T18:19:11Z",
+        "platform": "BigBasket Now",
+        "price": 258.0
+      },
+      {
+        "timestamp": "2026-09-23T18:19:11Z",
+        "platform": "JioMart",
+        "price": 250.0
+      },
+      {
+        "timestamp": "2026-09-23T18:19:11Z",
+        "platform": "Amazon",
+        "price": 248.0
+      },
+      {
+        "timestamp": "2026-09-23T18:19:11Z",
+        "platform": "Flipkart",
+        "price": 253.0
+      },
+      {
+        "timestamp": "2026-09-23T21:51:29Z",
+        "platform": "Blinkit",
+        "price": 275.0
+      },
+      {
+        "timestamp": "2026-09-23T21:51:29Z",
+        "platform": "Zepto",
+        "price": 267.0
+      },
+      {
+        "timestamp": "2026-09-23T21:51:29Z",
+        "platform": "Instamart",
+        "price": 270.0
+      },
+      {
+        "timestamp": "2026-09-23T21:51:29Z",
+        "platform": "BigBasket Now",
+        "price": 258.0
+      },
+      {
+        "timestamp": "2026-09-23T21:51:29Z",
+        "platform": "JioMart",
+        "price": 250.0
+      },
+      {
+        "timestamp": "2026-09-23T21:51:29Z",
+        "platform": "Amazon",
+        "price": 248.0
+      },
+      {
+        "timestamp": "2026-09-23T21:51:29Z",
         "platform": "Flipkart",
         "price": 253.0
       }
     ],
     "aashirvaad atta 5kg": [
       {
-        "timestamp": "2025-09-22T19:20:09Z",
+        "timestamp": "2025-09-23T12:00:00Z",
         "platform": "BigBasket",
-        "price": 250
+        "price": 245.0
       },
       {
-        "timestamp": "2025-11-26T19:20:09Z",
-        "platform": "JioMart",
-        "price": 255
-      },
-      {
-        "timestamp": "2026-01-25T19:20:09Z",
+        "timestamp": "2026-03-07T12:00:00Z",
         "platform": "Amazon",
-        "price": 260
+        "price": 255.0
       },
       {
-        "timestamp": "2026-03-26T19:20:09Z",
-        "platform": "Instamart",
-        "price": 268
+        "timestamp": "2026-06-25T12:00:00Z",
+        "platform": "Flipkart",
+        "price": 260.0
       },
       {
-        "timestamp": "2026-05-25T19:20:09Z",
-        "platform": "Zepto",
-        "price": 270
-      },
-      {
-        "timestamp": "2026-06-24T19:20:09Z",
-        "platform": "Blinkit",
-        "price": 275
-      },
-      {
-        "timestamp": "2026-07-24T19:20:09Z",
+        "timestamp": "2026-08-24T12:00:00Z",
         "platform": "JioMart",
-        "price": 265
+        "price": 268.0
       },
       {
-        "timestamp": "2026-08-23T19:20:09Z",
-        "platform": "Amazon",
-        "price": 270
-      },
-      {
-        "timestamp": "2026-09-08T19:20:09Z",
-        "platform": "BigBasket",
-        "price": 268
-      },
-      {
-        "timestamp": "2026-09-15T19:20:09Z",
+        "timestamp": "2026-09-16T12:00:00Z",
         "platform": "Blinkit",
-        "price": 270
+        "price": 270.0
       },
       {
-        "timestamp": "2026-09-21T19:20:09Z",
+        "timestamp": "2026-09-23T12:00:00Z",
         "platform": "Zepto",
-        "price": 270
-      },
-      {
-        "timestamp": "2026-09-22T19:20:09Z",
-        "platform": "Blinkit",
-        "price": 270
+        "price": 270.0
       }
     ],
     "fortune sunflower oil 1l": [
       {
-        "timestamp": "2025-09-22T19:20:09Z",
-        "platform": "Amazon",
-        "price": 165
-      },
-      {
-        "timestamp": "2025-11-26T19:20:09Z",
+        "timestamp": "2025-09-23T12:00:00Z",
         "platform": "JioMart",
-        "price": 160
+        "price": 165.0
       },
       {
-        "timestamp": "2026-01-25T19:20:09Z",
+        "timestamp": "2026-03-27T12:00:00Z",
         "platform": "BigBasket",
-        "price": 155
+        "price": 155.0
       },
       {
-        "timestamp": "2026-03-26T19:20:09Z",
-        "platform": "Blinkit",
-        "price": 150
-      },
-      {
-        "timestamp": "2026-05-25T19:20:09Z",
+        "timestamp": "2026-07-25T12:00:00Z",
         "platform": "Instamart",
-        "price": 148
+        "price": 148.0
       },
       {
-        "timestamp": "2026-06-24T19:20:09Z",
+        "timestamp": "2026-09-09T12:00:00Z",
         "platform": "Zepto",
-        "price": 145
+        "price": 145.0
       },
       {
-        "timestamp": "2026-07-24T19:20:09Z",
-        "platform": "Amazon",
-        "price": 142
-      },
-      {
-        "timestamp": "2026-08-23T19:20:09Z",
-        "platform": "Flipkart",
-        "price": 145
-      },
-      {
-        "timestamp": "2026-09-08T19:20:09Z",
+        "timestamp": "2026-09-23T12:00:00Z",
         "platform": "Blinkit",
-        "price": 145
-      },
-      {
-        "timestamp": "2026-09-15T19:20:09Z",
-        "platform": "Zepto",
-        "price": 140
-      },
-      {
-        "timestamp": "2026-09-21T19:20:09Z",
-        "platform": "Instamart",
-        "price": 142
-      },
-      {
-        "timestamp": "2026-09-22T19:20:09Z",
-        "platform": "Blinkit",
-        "price": 145
-      }
-    ],
-    "maggi 2-min noodles 280g": [
-      {
-        "timestamp": "2025-09-22T19:20:09Z",
-        "platform": "Blinkit",
-        "price": 52
-      },
-      {
-        "timestamp": "2025-12-26T19:20:09Z",
-        "platform": "Instamart",
-        "price": 54
-      },
-      {
-        "timestamp": "2026-03-26T19:20:09Z",
-        "platform": "Zepto",
-        "price": 56
-      },
-      {
-        "timestamp": "2026-06-24T19:20:09Z",
-        "platform": "JioMart",
-        "price": 54
-      },
-      {
-        "timestamp": "2026-08-23T19:20:09Z",
-        "platform": "BigBasket",
-        "price": 56
-      },
-      {
-        "timestamp": "2026-09-15T19:20:09Z",
-        "platform": "Blinkit",
-        "price": 56
-      },
-      {
-        "timestamp": "2026-09-21T19:20:09Z",
-        "platform": "Amazon",
-        "price": 55
-      },
-      {
-        "timestamp": "2026-09-22T19:20:09Z",
-        "platform": "Blinkit",
-        "price": 56
+        "price": 145.0
       }
     ],
     "tata salt 1kg": [
       {
-        "timestamp": "2025-09-22T19:20:09Z",
+        "timestamp": "2025-09-23T12:00:00Z",
         "platform": "BigBasket",
-        "price": 25
+        "price": 25.0
       },
       {
-        "timestamp": "2026-01-25T19:20:09Z",
+        "timestamp": "2026-05-26T12:00:00Z",
         "platform": "JioMart",
-        "price": 26
+        "price": 27.0
       },
       {
-        "timestamp": "2026-03-26T19:20:09Z",
-        "platform": "Amazon",
-        "price": 28
-      },
-      {
-        "timestamp": "2026-06-24T19:20:09Z",
+        "timestamp": "2026-08-24T12:00:00Z",
         "platform": "Blinkit",
-        "price": 28
+        "price": 28.0
       },
       {
-        "timestamp": "2026-08-23T19:20:09Z",
+        "timestamp": "2026-09-23T12:00:00Z",
         "platform": "Zepto",
-        "price": 28
-      },
-      {
-        "timestamp": "2026-09-15T19:20:09Z",
-        "platform": "Instamart",
-        "price": 28
-      },
-      {
-        "timestamp": "2026-09-22T19:20:09Z",
-        "platform": "Blinkit",
-        "price": 28
+        "price": 28.0
       }
     ],
     "iphone 15": [
       {
-        "timestamp": "2025-09-22T19:20:09Z",
+        "timestamp": "2025-09-23T12:00:00Z",
         "platform": "Amazon",
-        "price": 79900
+        "price": 79900.0
       },
       {
-        "timestamp": "2025-11-26T19:20:09Z",
+        "timestamp": "2025-11-26T12:00:00Z",
         "platform": "Flipkart",
-        "price": 74990
+        "price": 74990.0
       },
       {
-        "timestamp": "2026-01-25T19:20:09Z",
+        "timestamp": "2026-01-25T12:00:00Z",
         "platform": "Amazon",
-        "price": 72990
+        "price": 72990.0
       },
       {
-        "timestamp": "2026-03-26T19:20:09Z",
+        "timestamp": "2026-03-26T12:00:00Z",
         "platform": "Croma",
-        "price": 71990
+        "price": 68999.0
       },
       {
-        "timestamp": "2026-05-25T19:20:09Z",
+        "timestamp": "2026-05-25T12:00:00Z",
         "platform": "Flipkart",
-        "price": 68999
+        "price": 66900.0
       },
       {
-        "timestamp": "2026-06-24T19:20:09Z",
+        "timestamp": "2026-07-24T12:00:00Z",
         "platform": "Amazon",
-        "price": 66900
+        "price": 65900.0
       },
       {
-        "timestamp": "2026-07-24T19:20:09Z",
+        "timestamp": "2026-09-09T12:00:00Z",
         "platform": "Flipkart",
-        "price": 65999
+        "price": 64900.0
       },
       {
-        "timestamp": "2026-08-23T19:20:09Z",
+        "timestamp": "2026-09-16T12:00:00Z",
         "platform": "Amazon",
-        "price": 64900
+        "price": 63999.0
       },
       {
-        "timestamp": "2026-09-08T19:20:09Z",
-        "platform": "Flipkart",
-        "price": 63999
-      },
-      {
-        "timestamp": "2026-09-15T19:20:09Z",
-        "platform": "Amazon",
-        "price": 64900
-      },
-      {
-        "timestamp": "2026-09-21T19:20:09Z",
-        "platform": "Flipkart",
-        "price": 64900
-      },
-      {
-        "timestamp": "2026-09-22T19:20:09Z",
-        "platform": "Amazon",
-        "price": 64900
-      },
-      {
-        "timestamp": "2026-09-22T19:20:29Z",
-        "platform": "Blinkit",
-        "price": 70000.0
-      },
-      {
-        "timestamp": "2026-09-22T19:20:29Z",
-        "platform": "Zepto",
-        "price": 67900.0
-      },
-      {
-        "timestamp": "2026-09-22T19:20:29Z",
-        "platform": "Instamart",
-        "price": 68600.0
-      },
-      {
-        "timestamp": "2026-09-22T19:20:29Z",
-        "platform": "BigBasket Now",
-        "price": 65800.0
-      },
-      {
-        "timestamp": "2026-09-22T19:20:29Z",
-        "platform": "JioMart",
-        "price": 63700.0
-      },
-      {
-        "timestamp": "2026-09-22T19:20:29Z",
+        "timestamp": "2026-09-22T12:00:00Z",
         "platform": "Amazon",
         "price": 63000.0
       },
       {
-        "timestamp": "2026-09-22T19:20:29Z",
-        "platform": "Flipkart",
-        "price": 64400.0
-      },
-      {
-        "timestamp": "2026-09-23T01:28:58Z",
-        "platform": "Blinkit",
-        "price": 70000.0
-      },
-      {
-        "timestamp": "2026-09-23T01:28:58Z",
-        "platform": "Zepto",
-        "price": 67900.0
-      },
-      {
-        "timestamp": "2026-09-23T01:28:58Z",
-        "platform": "Instamart",
-        "price": 68600.0
-      },
-      {
-        "timestamp": "2026-09-23T01:28:58Z",
-        "platform": "BigBasket Now",
-        "price": 65800.0
-      },
-      {
-        "timestamp": "2026-09-23T01:28:58Z",
-        "platform": "JioMart",
-        "price": 63700.0
-      },
-      {
-        "timestamp": "2026-09-23T01:28:58Z",
+        "timestamp": "2026-09-23T12:00:00Z",
         "platform": "Amazon",
         "price": 63000.0
       },
       {
-        "timestamp": "2026-09-23T01:28:58Z",
+        "timestamp": "2026-09-23T18:15:19Z",
+        "platform": "Blinkit",
+        "price": 70000.0
+      },
+      {
+        "timestamp": "2026-09-23T18:15:19Z",
+        "platform": "Zepto",
+        "price": 67900.0
+      },
+      {
+        "timestamp": "2026-09-23T18:15:19Z",
+        "platform": "Instamart",
+        "price": 68600.0
+      },
+      {
+        "timestamp": "2026-09-23T18:15:19Z",
+        "platform": "BigBasket Now",
+        "price": 65800.0
+      },
+      {
+        "timestamp": "2026-09-23T18:15:19Z",
+        "platform": "JioMart",
+        "price": 63700.0
+      },
+      {
+        "timestamp": "2026-09-23T18:15:19Z",
+        "platform": "Amazon",
+        "price": 63000.0
+      },
+      {
+        "timestamp": "2026-09-23T18:15:19Z",
         "platform": "Flipkart",
         "price": 64400.0
-      }
-    ],
-    "iphone 16": [
+      },
       {
-        "timestamp": "2026-09-22T19:21:23Z",
+        "timestamp": "2026-09-23T18:18:54Z",
         "platform": "Blinkit",
-        "price": 75000.0
+        "price": 70000.0
       },
       {
-        "timestamp": "2026-09-22T19:21:23Z",
+        "timestamp": "2026-09-23T18:18:54Z",
         "platform": "Zepto",
-        "price": 72750.0
+        "price": 67900.0
       },
       {
-        "timestamp": "2026-09-22T19:21:23Z",
+        "timestamp": "2026-09-23T18:18:54Z",
         "platform": "Instamart",
-        "price": 73500.0
+        "price": 68600.0
       },
       {
-        "timestamp": "2026-09-22T19:21:23Z",
+        "timestamp": "2026-09-23T18:18:54Z",
         "platform": "BigBasket Now",
-        "price": 70500.0
+        "price": 65800.0
       },
       {
-        "timestamp": "2026-09-22T19:21:23Z",
+        "timestamp": "2026-09-23T18:18:54Z",
         "platform": "JioMart",
-        "price": 68250.0
+        "price": 63700.0
       },
       {
-        "timestamp": "2026-09-22T19:21:23Z",
+        "timestamp": "2026-09-23T18:18:54Z",
         "platform": "Amazon",
-        "price": 67500.0
+        "price": 63000.0
       },
       {
-        "timestamp": "2026-09-22T19:21:23Z",
+        "timestamp": "2026-09-23T18:18:54Z",
         "platform": "Flipkart",
-        "price": 69000.0
-      }
-    ],
-    "allen solly men t-shirt": [
-      {
-        "timestamp": "2025-09-23T01:28:18Z",
-        "platform": "Amazon",
-        "price": 1107.32
+        "price": 64400.0
       },
       {
-        "timestamp": "2025-11-17T01:28:18Z",
-        "platform": "JioMart",
-        "price": 1105.68
-      },
-      {
-        "timestamp": "2026-01-06T01:28:18Z",
-        "platform": "Instamart",
-        "price": 1172.5
-      },
-      {
-        "timestamp": "2026-02-25T01:28:18Z",
-        "platform": "Zepto",
-        "price": 1074.81
-      },
-      {
-        "timestamp": "2026-04-16T01:28:18Z",
-        "platform": "JioMart",
-        "price": 970.17
-      },
-      {
-        "timestamp": "2026-05-26T01:28:18Z",
-        "platform": "Zepto",
-        "price": 881.94
-      },
-      {
-        "timestamp": "2026-06-25T01:28:18Z",
-        "platform": "Amazon",
-        "price": 952.64
-      },
-      {
-        "timestamp": "2026-07-25T01:28:18Z",
-        "platform": "BigBasket",
-        "price": 1033.9
-      },
-      {
-        "timestamp": "2026-08-09T01:28:18Z",
-        "platform": "Flipkart",
-        "price": 875.23
-      },
-      {
-        "timestamp": "2026-08-24T01:28:18Z",
-        "platform": "Flipkart",
-        "price": 925.4
-      },
-      {
-        "timestamp": "2026-09-02T01:28:18Z",
-        "platform": "Zepto",
-        "price": 1041.69
-      },
-      {
-        "timestamp": "2026-09-09T01:28:18Z",
-        "platform": "BigBasket",
-        "price": 936.79
-      },
-      {
-        "timestamp": "2026-09-16T01:28:18Z",
-        "platform": "BigBasket",
-        "price": 1008.72
-      },
-      {
-        "timestamp": "2026-09-18T01:28:18Z",
-        "platform": "BigBasket",
-        "price": 982.33
-      },
-      {
-        "timestamp": "2026-09-20T01:28:18Z",
-        "platform": "Amazon",
-        "price": 1000.27
-      },
-      {
-        "timestamp": "2026-09-21T01:28:18Z",
-        "platform": "Instamart",
-        "price": 980.2
-      },
-      {
-        "timestamp": "2026-09-22T01:28:18Z",
-        "platform": "Amazon",
-        "price": 975.48
-      },
-      {
-        "timestamp": "2026-09-22T07:28:18Z",
-        "platform": "Amazon",
-        "price": 1014.9
-      },
-      {
-        "timestamp": "2026-09-22T13:28:18Z",
-        "platform": "Amazon",
-        "price": 997.47
-      },
-      {
-        "timestamp": "2026-09-23T01:25:43Z",
+        "timestamp": "2026-09-23T18:18:57Z",
         "platform": "Blinkit",
-        "price": 1079.0
+        "price": 70000.0
       },
       {
-        "timestamp": "2026-09-23T01:25:43Z",
+        "timestamp": "2026-09-23T18:18:57Z",
         "platform": "Zepto",
-        "price": 1047.0
+        "price": 67900.0
       },
       {
-        "timestamp": "2026-09-23T01:25:43Z",
+        "timestamp": "2026-09-23T18:18:57Z",
         "platform": "Instamart",
-        "price": 1057.0
+        "price": 68600.0
       },
       {
-        "timestamp": "2026-09-23T01:25:43Z",
+        "timestamp": "2026-09-23T18:18:57Z",
         "platform": "BigBasket Now",
-        "price": 1014.0
+        "price": 65800.0
       },
       {
-        "timestamp": "2026-09-23T01:25:43Z",
+        "timestamp": "2026-09-23T18:18:57Z",
         "platform": "JioMart",
-        "price": 982.0
+        "price": 63700.0
       },
       {
-        "timestamp": "2026-09-23T01:25:43Z",
+        "timestamp": "2026-09-23T18:18:57Z",
         "platform": "Amazon",
-        "price": 971.0
+        "price": 63000.0
       },
       {
-        "timestamp": "2026-09-23T01:25:43Z",
+        "timestamp": "2026-09-23T18:18:57Z",
         "platform": "Flipkart",
-        "price": 993.0
-      },
-      {
-        "timestamp": "2026-09-23T01:28:18Z",
-        "platform": "Blinkit",
-        "price": 1079.0
-      },
-      {
-        "timestamp": "2026-09-23T01:28:18Z",
-        "platform": "Zepto",
-        "price": 1047.0
-      },
-      {
-        "timestamp": "2026-09-23T01:28:18Z",
-        "platform": "Instamart",
-        "price": 1057.0
-      },
-      {
-        "timestamp": "2026-09-23T01:28:18Z",
-        "platform": "BigBasket Now",
-        "price": 1014.0
-      },
-      {
-        "timestamp": "2026-09-23T01:28:18Z",
-        "platform": "JioMart",
-        "price": 982.0
-      },
-      {
-        "timestamp": "2026-09-23T01:28:18Z",
-        "platform": "Amazon",
-        "price": 971.0
-      },
-      {
-        "timestamp": "2026-09-23T01:28:18Z",
-        "platform": "Flipkart",
-        "price": 993.0
-      },
-      {
-        "timestamp": "2026-09-23T01:28:18Z",
-        "platform": "Blinkit",
-        "price": 1079.0
-      },
-      {
-        "timestamp": "2026-09-23T01:28:18Z",
-        "platform": "Zepto",
-        "price": 1047.0
-      },
-      {
-        "timestamp": "2026-09-23T01:28:18Z",
-        "platform": "Instamart",
-        "price": 1057.0
-      },
-      {
-        "timestamp": "2026-09-23T01:28:18Z",
-        "platform": "BigBasket Now",
-        "price": 1014.0
-      },
-      {
-        "timestamp": "2026-09-23T01:28:18Z",
-        "platform": "JioMart",
-        "price": 982.0
-      },
-      {
-        "timestamp": "2026-09-23T01:28:18Z",
-        "platform": "Amazon",
-        "price": 971.0
-      },
-      {
-        "timestamp": "2026-09-23T01:28:18Z",
-        "platform": "Flipkart",
-        "price": 993.0
+        "price": 64400.0
       }
     ]
   },
-  "alerts": [
-    {
-      "id": "alert_1790085035",
-      "product": "iphone 15",
-      "target_price": 57960.0,
-      "user_email": "rajsha@gmail.com",
-      "created_at": "2026-09-22 19:20:35"
-    }
-  ]
+  "alerts": []
 }

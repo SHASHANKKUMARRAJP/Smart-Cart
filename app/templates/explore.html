@@ -154,21 +154,29 @@
 
         .glass-nav-item {
             padding: 8px 16px;
-            border-radius: 10px;
+            border-radius: 12px;
             transition: all 0.3s ease;
             position: relative;
-            color: rgba(255, 255, 255, 0.6);
+            color: rgba(255, 255, 255, 0.7);
             font-weight: 500;
+            font-size: 0.875rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+            border: 1px solid transparent;
         }
 
         .glass-nav-item:hover {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             color: white;
         }
 
         .glass-nav-item.active {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.18);
             color: white;
             font-weight: 700;
         }
@@ -213,14 +221,12 @@
                 </a>
 
                 <!-- Desktop Menu -->
-                <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-2">
                     <a href="{{ url_for('main.index') }}" class="glass-nav-item">Home</a>
-                    <a href="{{ url_for('main.explore') }}" class="glass-nav-item active">
-                        Explore
-                        <span
-                            class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-indigo-500 rounded-full shadow-[0_0_8px_rgba(99,102,241,0.8)]"></span>
-                    </a>
+                    <a href="{{ url_for('main.style_outfit') }}" class="glass-nav-item">Style Your Outfit</a>
+                    <a href="{{ url_for('main.find_dress') }}" class="glass-nav-item">Find This Dress</a>
+                    <a href="{{ url_for('main.price_history') }}" class="glass-nav-item">Price History</a>
+                    <a href="{{ url_for('main.plan_trip') }}" class="glass-nav-item">Plan My Trip</a>
                 </div>
 
                 <div class="hidden md:flex items-center space-x-4 flex-1 justify-end max-w-sm ml-8">
@@ -259,23 +265,17 @@
                 <a href="{{ url_for('main.index') }}" class="py-2.5 px-4 rounded-xl hover:bg-white/10 text-white flex items-center gap-3">
                     <i data-lucide="home" class="w-5 h-5 text-indigo-400"></i> Home
                 </a>
-                <a href="{{ url_for('main.explore') }}" class="py-2.5 px-4 rounded-xl hover:bg-white/10 text-white flex items-center gap-3">
-                    <i data-lucide="compass" class="w-5 h-5 text-indigo-400"></i> Explore
-                </a>
-                <a href="{{ url_for('main.shop') }}" class="py-2.5 px-4 rounded-xl hover:bg-white/10 text-white flex items-center gap-3">
-                    <i data-lucide="shopping-bag" class="w-5 h-5 text-indigo-400"></i> Smart Shop
-                </a>
                 <a href="{{ url_for('main.style_outfit') }}" class="py-2.5 px-4 rounded-xl hover:bg-white/10 text-white flex items-center gap-3">
-                    <i data-lucide="shirt" class="w-5 h-5 text-indigo-400"></i> Style Your Outfit
+                    <i data-lucide="sparkles" class="w-5 h-5 text-purple-400"></i> Style Your Outfit
                 </a>
                 <a href="{{ url_for('main.find_dress') }}" class="py-2.5 px-4 rounded-xl hover:bg-white/10 text-white flex items-center gap-3">
-                    <i data-lucide="camera" class="w-5 h-5 text-indigo-400"></i> Find Dress
+                    <i data-lucide="camera" class="w-5 h-5 text-pink-400"></i> Find This Dress
                 </a>
                 <a href="{{ url_for('main.price_history') }}" class="py-2.5 px-4 rounded-xl hover:bg-white/10 text-white flex items-center gap-3">
-                    <i data-lucide="line-chart" class="w-5 h-5 text-indigo-400"></i> Price History
+                    <i data-lucide="line-chart" class="w-5 h-5 text-emerald-400"></i> Price History
                 </a>
                 <a href="{{ url_for('main.plan_trip') }}" class="py-2.5 px-4 rounded-xl hover:bg-white/10 text-white flex items-center gap-3">
-                    <i data-lucide="plane" class="w-5 h-5 text-indigo-400"></i> Plan My Trip
+                    <i data-lucide="plane" class="w-5 h-5 text-teal-400"></i> Plan My Trip
                 </a>
                 <div class="pt-4 border-t border-white/10">
                     {% if session.get('user') %}
@@ -371,12 +371,11 @@
                         class="text-xl font-bold text-gray-200 mb-2 tracking-tight group-hover:text-emerald-100 transition-colors">
                         Price History</h3>
                     <p class="text-gray-400 mb-5 text-sm leading-relaxed group-hover:text-gray-300 transition-colors">
-                        Track product prices over time and ensure you're getting the best deal with interactive price
-                        drop charts.</p>
+                        Track verified price trends, analyze platform statistics, set target alerts, and get AI price intelligence.</p>
 
                     <span
                         class="mt-auto inline-flex items-center justify-center px-5 py-2 rounded-full bg-emerald-500/10 text-emerald-300 font-bold text-sm tracking-wide group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300 ring-1 ring-emerald-500/20 group-hover:ring-emerald-500 relative z-10">
-                        View Trends <i data-lucide="arrow-right" size="16"
+                        View Price History <i data-lucide="arrow-right" size="16"
                             class="ml-2 group-hover:translate-x-1 transition-transform"></i>
                     </span>
                 </a>
@@ -398,12 +397,11 @@
                         class="text-xl font-bold text-gray-200 mb-2 tracking-tight group-hover:text-pink-100 transition-colors">
                         Plan My Trip</h3>
                     <p class="text-gray-400 mb-5 text-sm leading-relaxed group-hover:text-gray-300 transition-colors">
-                        Compare prices for Flights, Trains, Buses, and Movies all in one place. Ensure you get the best
-                        deal.</p>
+                        Explore global destination ideas, build smart travel budgets, plan custom itineraries, and manage stay options.</p>
 
                     <span
                         class="mt-auto inline-flex items-center justify-center px-5 py-2 rounded-full bg-pink-500/10 text-pink-300 font-bold text-sm tracking-wide group-hover:bg-pink-600 group-hover:text-white transition-all duration-300 ring-1 ring-pink-500/20 group-hover:ring-pink-500 relative z-10">
-                        Compare Tickets <i data-lucide="arrow-right" size="16"
+                        Start Planning <i data-lucide="arrow-right" size="16"
                             class="ml-2 group-hover:translate-x-1 transition-transform"></i>
                     </span>
                 </a>
