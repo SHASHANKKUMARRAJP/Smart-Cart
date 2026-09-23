@@ -471,24 +471,47 @@
             </div>
         </div>
 
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden glass-dark-premium">
-            <div class="px-2 pt-2 pb-3 space-y-1">
-                <a href="{{ url_for('main.index') }}" class="block px-3 py-2 text-gray-300 hover:text-white font-medium">Home</a>
-                <a href="#compare" class="block px-3 py-2 text-gray-300 hover:text-white font-medium">Compare</a>
-                <a href="{{ url_for('main.price_history') }}" class="block px-3 py-2 text-gray-300 hover:text-white font-medium">Price History</a>
-                <a href="#how-it-works" class="block px-3 py-2 text-gray-300 hover:text-white font-medium">How It Works</a>
-                {% if session.get('user') %}
-                <button onclick="logout()"
-                    class="text-white block w-full text-left px-3 py-2 rounded-lg font-medium transition-all bg-rose-500/20 border border-rose-500/40">
-                    Logout
-                </button>
-                {% else %}
-                <a href="{{ url_for('main.login') }}"
-                    class="text-white block px-3 py-2 rounded-lg font-medium transition-all bg-indigo-600">
-                    Login
+        <!-- Mobile Menu Drawer -->
+        <div id="mobile-menu" class="hidden md:hidden fixed inset-x-0 top-20 glass-dark-premium z-50 p-6 border-b border-white/10 shadow-2xl">
+            <div class="flex flex-col space-y-3">
+                <a href="{{ url_for('main.index') }}" class="px-4 py-3 rounded-xl bg-white/10 text-white font-bold flex items-center justify-between">
+                    <span>Home</span>
+                    <i data-lucide="home" class="w-4 h-4 text-indigo-400"></i>
                 </a>
-                {% endif %}
+                <a href="{{ url_for('main.shop') }}" class="px-4 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 font-semibold flex items-center justify-between transition-colors">
+                    <span>10 Min Delivery</span>
+                    <i data-lucide="zap" class="w-4 h-4 text-amber-400"></i>
+                </a>
+                <a href="{{ url_for('main.ecommerce') }}" class="px-4 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 font-semibold flex items-center justify-between transition-colors">
+                    <span>E-Commerce</span>
+                    <i data-lucide="shopping-bag" class="w-4 h-4 text-pink-400"></i>
+                </a>
+                <a href="{{ url_for('main.price_history') }}" class="px-4 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 font-semibold flex items-center justify-between transition-colors">
+                    <span>Price History</span>
+                    <i data-lucide="line-chart" class="w-4 h-4 text-sky-400"></i>
+                </a>
+                <a href="{{ url_for('main.style_outfit') }}" class="px-4 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 font-semibold flex items-center justify-between transition-colors">
+                    <span>AI Outfit Assistant</span>
+                    <i data-lucide="sparkles" class="w-4 h-4 text-purple-400"></i>
+                </a>
+                <a href="{{ url_for('main.tickets') }}" class="px-4 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 font-semibold flex items-center justify-between transition-colors">
+                    <span>Tickets & Travel</span>
+                    <i data-lucide="ticket" class="w-4 h-4 text-rose-400"></i>
+                </a>
+                
+                <div class="pt-4 border-t border-white/10">
+                    {% if session.get('user') %}
+                    <button onclick="logout()"
+                        class="w-full py-3 rounded-xl bg-rose-500/20 text-rose-300 border border-rose-500/40 text-xs font-bold uppercase tracking-widest hover:bg-rose-500/30 transition-all text-center">
+                        Logout
+                    </button>
+                    {% else %}
+                    <a href="{{ url_for('main.login') }}"
+                        class="w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white font-bold text-sm tracking-wide text-center block shadow-lg shadow-indigo-500/30">
+                        Login / Sign Up
+                    </a>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </nav>
@@ -567,18 +590,18 @@
             </div>
 
             <!-- Right Hero 3D Smartphone & Live Price Stack -->
-            <div class="lg:col-span-6 relative flex items-center justify-center min-h-[520px]">
+            <div class="lg:col-span-6 relative flex flex-col items-center justify-center min-h-[460px] sm:min-h-[520px] w-full overflow-hidden sm:overflow-visible">
                 
                 <!-- Background Aura Glow System -->
-                <div class="absolute w-[420px] h-[420px] bg-gradient-to-tr from-purple-600/30 via-indigo-600/20 to-blue-500/20 rounded-full blur-[110px] pointer-events-none -z-10 animate-pulse"></div>
-                <div class="absolute w-72 h-72 bg-indigo-500/25 rounded-full blur-[70px] pointer-events-none -z-10"></div>
+                <div class="absolute w-[300px] sm:w-[420px] h-[300px] sm:h-[420px] bg-gradient-to-tr from-purple-600/30 via-indigo-600/20 to-blue-500/20 rounded-full blur-[90px] sm:blur-[110px] pointer-events-none -z-10 animate-pulse"></div>
+                <div class="absolute w-56 sm:w-72 h-56 sm:h-72 bg-indigo-500/25 rounded-full blur-[50px] sm:blur-[70px] pointer-events-none -z-10"></div>
 
                 <!-- Handwritten Curve Annotation -->
-                <div class="absolute -top-12 sm:-top-16 left-1/2 -translate-x-1/2 lg:left-auto lg:right-12 z-30 flex items-center gap-3 pointer-events-none">
-                    <span class="font-serif italic text-xl sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-pink-300 to-amber-300 tracking-wide drop-shadow-[0_2px_12px_rgba(168,85,247,0.6)]">
+                <div class="absolute -top-10 sm:-top-16 left-1/2 -translate-x-1/2 lg:left-auto lg:right-12 z-30 flex items-center gap-2 sm:gap-3 pointer-events-none">
+                    <span class="font-serif italic text-lg sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-pink-300 to-amber-300 tracking-wide drop-shadow-[0_2px_12px_rgba(168,85,247,0.6)]">
                         Compare before you buy!
                     </span>
-                    <svg class="w-16 h-16 text-pink-400 filter drop-shadow-[0_0_12px_rgba(236,72,153,0.8)] animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 100 80">
+                    <svg class="w-12 h-12 sm:w-16 sm:h-16 text-pink-400 filter drop-shadow-[0_0_12px_rgba(236,72,153,0.8)] animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 100 80">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M 15 15 C 45 5, 80 15, 75 55"></path>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M 60 45 L 75 55 L 85 42"></path>
                     </svg>
@@ -588,16 +611,16 @@
                 <div class="relative z-10 flex items-center justify-center">
                     <img src="{{ url_for('static', filename='hero_iphone_showcase.png') }}" 
                         alt="3D iPhone Product Comparison" 
-                        class="w-64 sm:w-72 lg:w-[340px] max-h-[460px] object-contain filter drop-shadow-[0_20px_40px_rgba(0,0,0,0.85)] transform -rotate-2 hover:rotate-0 transition-transform duration-700">
+                        class="w-56 sm:w-72 lg:w-[340px] max-h-[380px] sm:max-h-[460px] object-contain filter drop-shadow-[0_20px_40px_rgba(0,0,0,0.85)] transform -rotate-2 hover:rotate-0 transition-transform duration-700">
                 </div>
 
-                <!-- Floating Live Price Comparison Cards Stack -->
-                <div class="absolute right-0 sm:-right-2 lg:-right-6 top-1/2 -translate-y-1/2 z-30 flex flex-col gap-3.5">
+                <!-- Live Price Comparison Cards Stack -->
+                <div class="relative sm:absolute right-auto sm:right-0 lg:-right-6 top-auto sm:top-1/2 sm:-translate-y-1/2 z-30 flex flex-col gap-2.5 sm:gap-3.5 mt-4 sm:mt-0 w-full max-w-xs sm:w-auto items-center sm:items-stretch">
                     
                     <!-- Blinkit Card (Best Price) -->
-                    <div class="glass-card-premium p-3.5 rounded-2xl border border-emerald-500/50 bg-gray-950/90 shadow-[0_10px_30px_rgba(16,185,129,0.2)] flex items-center justify-between gap-4 w-60 sm:w-64 transform hover:scale-105 transition-all duration-300">
+                    <div class="glass-card-premium p-3 sm:p-3.5 rounded-2xl border border-emerald-500/50 bg-gray-950/90 shadow-[0_10px_30px_rgba(16,185,129,0.2)] flex items-center justify-between gap-3 w-full sm:w-64 transform hover:scale-105 transition-all duration-300">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl bg-yellow-400 flex items-center justify-center p-1 font-black text-black text-xs tracking-tighter shrink-0 shadow-md shadow-yellow-500/20">
+                            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-yellow-400 flex items-center justify-center p-1 font-black text-black text-xs tracking-tighter shrink-0 shadow-md shadow-yellow-500/20">
                                 blinkit
                             </div>
                             <div>
@@ -612,9 +635,9 @@
                     </div>
 
                     <!-- Zepto Card -->
-                    <div class="glass-card-premium p-3.5 rounded-2xl border border-white/12 bg-gray-950/90 shadow-2xl flex items-center justify-between gap-4 w-60 sm:w-64 transform hover:scale-105 transition-all duration-300">
+                    <div class="glass-card-premium p-3 sm:p-3.5 rounded-2xl border border-white/12 bg-gray-950/90 shadow-2xl flex items-center justify-between gap-3 w-full sm:w-64 transform hover:scale-105 transition-all duration-300">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl bg-purple-600 flex items-center justify-center font-black text-white text-base shrink-0 shadow-md shadow-purple-500/20">
+                            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-purple-600 flex items-center justify-center font-black text-white text-base shrink-0 shadow-md shadow-purple-500/20">
                                 Z
                             </div>
                             <div>
@@ -628,9 +651,9 @@
                     </div>
 
                     <!-- Instamart Card -->
-                    <div class="glass-card-premium p-3.5 rounded-2xl border border-white/12 bg-gray-950/90 shadow-2xl flex items-center justify-between gap-4 w-60 sm:w-64 transform hover:scale-105 transition-all duration-300">
+                    <div class="glass-card-premium p-3 sm:p-3.5 rounded-2xl border border-white/12 bg-gray-950/90 shadow-2xl flex items-center justify-between gap-3 w-full sm:w-64 transform hover:scale-105 transition-all duration-300">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl bg-orange-500 flex items-center justify-center font-black text-white text-base shrink-0 shadow-md shadow-orange-500/20">
+                            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-orange-500 flex items-center justify-center font-black text-white text-base shrink-0 shadow-md shadow-orange-500/20">
                                 9
                             </div>
                             <div>
@@ -644,10 +667,10 @@
                     </div>
 
                     <!-- Amazon Card -->
-                    <div class="glass-card-premium p-3.5 rounded-2xl border border-white/12 bg-gray-950/90 shadow-2xl flex items-center justify-between gap-4 w-60 sm:w-64 transform hover:scale-105 transition-all duration-300">
+                    <div class="glass-card-premium p-3 sm:p-3.5 rounded-2xl border border-white/12 bg-gray-950/90 shadow-2xl flex items-center justify-between gap-3 w-full sm:w-64 transform hover:scale-105 transition-all duration-300">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl bg-slate-900 border border-amber-500/30 flex items-center justify-center p-1.5 shrink-0 shadow-md">
-                                <svg class="w-6 h-6 text-amber-400 fill-current" viewBox="0 0 24 24">
+                            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-slate-900 border border-amber-500/30 flex items-center justify-center p-1.5 shrink-0 shadow-md">
+                                <svg class="w-5 h-5 sm:w-6 sm:h-6 text-amber-400 fill-current" viewBox="0 0 24 24">
                                     <path d="M13.94 11.08c-2.07.19-3.48.65-4.23 1.38-.75.73-1.12 1.76-1.12 3.09 0 1.25.38 2.22 1.14 2.91.76.69 1.83 1.04 3.2 1.04 1.28 0 2.37-.36 3.27-1.08.9-.72 1.35-1.74 1.35-3.06v-5.26h-3.61v1zm1.26 5.86c-.53.53-1.22.8-2.07.8-.75 0-1.32-.2-1.71-.6-.39-.4-.59-.97-.59-1.71 0-.8.26-1.39.78-1.77.52-.38 1.35-.61 2.49-.69v1.2c0 .94.37 1.87 1.1 2.77zM20.25 19.86c-4.47 2.1-9.98 2.14-14.73-.27-1.01-.51-2.48-1.51-2.48-1.51s-.11-.08-.05-.14c.06-.06.18-.04.28.02 1.79 1.11 3.91 1.78 6.09 1.95 2.68.21 5.37-.41 7.78-1.75.25-.14.47.16.2.32zM21.2 18.25c.34-.41.98-1.11 1.22-1.51.1-.16.03-.29-.14-.24-.49.16-1.63.49-2.22.56-.25.03-.26-.14-.04-.27 1.38-.85 2.82-1.7 4.25-2.5.21-.12.38.03.26.23-.74 1.25-1.74 2.75-2.61 4.09-.15.23-.39.2-.72-.36z"/>
                                 </svg>
                             </div>
@@ -663,10 +686,10 @@
 
                 </div>
 
-                <!-- Floating Glassmorphic Savings Card (Bottom Left) -->
-                <div class="absolute -left-2 sm:left-2 bottom-2 z-30 glass-card-premium p-4 rounded-2xl border border-indigo-500/50 bg-indigo-950/90 shadow-[0_10px_35px_rgba(99,102,241,0.3)] backdrop-blur-xl hover:scale-105 transition-transform">
+                <!-- Savings Card (Bottom Left on Desktop, Relative on Mobile) -->
+                <div class="relative sm:absolute left-auto sm:-left-2 lg:left-2 bottom-auto sm:bottom-2 mt-4 sm:mt-0 z-30 glass-card-premium p-3.5 sm:p-4 rounded-2xl border border-indigo-500/50 bg-indigo-950/90 shadow-[0_10px_35px_rgba(99,102,241,0.3)] backdrop-blur-xl hover:scale-105 transition-transform text-center sm:text-left">
                     <p class="text-[10px] font-bold text-indigo-300 uppercase tracking-widest">Save up to</p>
-                    <p class="text-3xl font-black text-white tracking-tight">₹5,000</p>
+                    <p class="text-2xl sm:text-3xl font-black text-white tracking-tight">₹5,000</p>
                 </div>
 
             </div>

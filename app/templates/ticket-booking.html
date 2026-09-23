@@ -285,7 +285,7 @@
                         class="w-10 h-10 bg-gradient-to-br from-gray-800 to-slate-900 rounded-xl flex items-center justify-center border border-white/10 shadow-xl group-hover:border-sky-500/50 transition-all">
                         <i data-lucide="ticket" class="w-6 h-6 text-sky-400"></i>
                     </div>
-                    <span class="text-xl font-bold text-white tracking-tight uppercase">Express Booking</span>
+                    <span class="text-lg sm:text-xl font-bold text-white tracking-tight uppercase">Express Booking</span>
                 </a>
 
                 <!-- Desktop Menu -->
@@ -313,6 +313,59 @@
                         class="glass-button-premium px-6 py-2.5 rounded-xl text-sm font-bold uppercase tracking-widest hover:bg-sky-500/10 hover:border-sky-500/40 hover:text-sky-400 transition-all text-white">
                         Login
                     </a>
+                    {% endif %}
+                </div>
+
+                <button class="md:hidden text-white p-2" onclick="toggleMobileMenu()">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Drawer -->
+        <div id="mobileMenu" class="hidden md:hidden fixed inset-0 glass-dark-premium z-50 pt-20 p-6 overflow-y-auto">
+            <div class="absolute top-4 right-4">
+                <button onclick="toggleMobileMenu()" class="p-2.5 glass-button-premium rounded-xl text-white">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div class="flex flex-col space-y-3 max-w-sm mx-auto">
+                <a href="{{ url_for('main.index') }}" onclick="toggleMobileMenu()"
+                    class="px-4 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 font-semibold flex items-center justify-between text-base">
+                    <span>Home</span>
+                    <i data-lucide="home" class="w-5 h-5 text-indigo-400"></i>
+                </a>
+                <a href="{{ url_for('main.tickets') }}" onclick="toggleMobileMenu()"
+                    class="px-4 py-3.5 rounded-xl bg-white/10 text-white font-bold flex items-center justify-between text-base">
+                    <span>Tickets & Travel</span>
+                    <i data-lucide="ticket" class="w-5 h-5 text-rose-400"></i>
+                </a>
+                <a href="{{ url_for('main.plan_trip') }}" onclick="toggleMobileMenu()"
+                    class="px-4 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 font-semibold flex items-center justify-between text-base">
+                    <span>Plan My Trip</span>
+                    <i data-lucide="plane" class="w-5 h-5 text-teal-400"></i>
+                </a>
+                <a href="{{ url_for('main.shop') }}" onclick="toggleMobileMenu()"
+                    class="px-4 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 font-semibold flex items-center justify-between text-base">
+                    <span>10 Min Delivery</span>
+                    <i data-lucide="zap" class="w-5 h-5 text-amber-400"></i>
+                </a>
+                <a href="{{ url_for('main.ecommerce') }}" onclick="toggleMobileMenu()"
+                    class="px-4 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 font-semibold flex items-center justify-between text-base">
+                    <span>E-Commerce</span>
+                    <i data-lucide="shopping-bag" class="w-5 h-5 text-pink-400"></i>
+                </a>
+                <a href="{{ url_for('main.price_history') }}" onclick="toggleMobileMenu()"
+                    class="px-4 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 font-semibold flex items-center justify-between text-base">
+                    <span>Price History</span>
+                    <i data-lucide="line-chart" class="w-5 h-5 text-sky-400"></i>
+                </a>
+
+                <div class="pt-4 border-t border-white/10">
+                    {% if session.get('user') %}
+                    <button onclick="fetch('{{ url_for('main.auth_logout') }}', {method: 'POST'}).then(() => window.location.href='/');" class="w-full py-3.5 rounded-xl bg-rose-500/20 text-rose-300 border border-rose-500/40 text-sm font-bold uppercase tracking-widest text-center">
+                        Logout
+                    </button>
                     {% endif %}
                 </div>
             </div>

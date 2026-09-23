@@ -313,9 +313,54 @@
                     </a>
                     {% endif %}
                 </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden text-white p-2" onclick="toggleMobileMenu()">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
             </div>
         </div>
     </nav>
+
+    <!-- Mobile Drawer -->
+    <div id="mobileMenu" class="hidden md:hidden fixed inset-0 glass-dark-premium z-50 pt-20 p-6 overflow-y-auto">
+        <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
+            <span class="text-lg font-bold text-white uppercase tracking-wider">Navigation</span>
+            <button onclick="toggleMobileMenu()" class="p-2.5 glass-button-premium rounded-xl text-white">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+        </div>
+        <div class="flex flex-col space-y-4 text-base font-semibold">
+            <a href="{{ url_for('main.index') }}" onclick="toggleMobileMenu()" class="py-2.5 px-4 rounded-xl hover:bg-white/10 text-white flex items-center gap-3">
+                <i data-lucide="home" class="w-5 h-5 text-sky-400"></i> Home
+            </a>
+            <a href="{{ url_for('main.plan_trip') }}" onclick="toggleMobileMenu()" class="py-2.5 px-4 rounded-xl hover:bg-white/10 text-white flex items-center gap-3">
+                <i data-lucide="plane" class="w-5 h-5 text-sky-400"></i> Plan My Trip
+            </a>
+            <a href="{{ url_for('main.destination_ideas') }}" onclick="toggleMobileMenu()" class="py-2.5 px-4 rounded-xl hover:bg-white/10 text-white flex items-center gap-3">
+                <i data-lucide="compass" class="w-5 h-5 text-sky-400"></i> Destination Ideas
+            </a>
+            <a href="{{ url_for('main.budget_planner') }}" onclick="toggleMobileMenu()" class="py-2.5 px-4 rounded-xl hover:bg-white/10 text-white flex items-center gap-3">
+                <i data-lucide="calculator" class="w-5 h-5 text-sky-400"></i> Budget Planner
+            </a>
+            <a href="{{ url_for('main.travel_itinerary') }}" onclick="toggleMobileMenu()" class="py-2.5 px-4 rounded-xl hover:bg-white/10 text-white flex items-center gap-3">
+                <i data-lucide="calendar" class="w-5 h-5 text-sky-400"></i> Travel Itinerary
+            </a>
+            <a href="{{ url_for('main.hotels') }}" onclick="toggleMobileMenu()" class="py-2.5 px-4 rounded-xl hover:bg-white/10 text-white flex items-center gap-3">
+                <i data-lucide="building" class="w-5 h-5 text-sky-400"></i> Hotels
+            </a>
+            <a href="{{ url_for('main.how_it_works') }}" onclick="toggleMobileMenu()" class="py-2.5 px-4 rounded-xl hover:bg-white/10 text-white flex items-center gap-3">
+                <i data-lucide="help-circle" class="w-5 h-5 text-sky-400"></i> How It Works
+            </a>
+            <div class="pt-4 border-t border-white/10">
+                {% if session.get('user') %}
+                <a href="#" onclick="event.preventDefault(); toggleMobileMenu(); fetch('{{ url_for('main.auth_logout') }}', {method: 'POST'}).then(() => window.location.href='/');" class="w-full py-3 rounded-xl bg-rose-500/20 border border-rose-500/30 text-rose-400 font-bold text-center block">Logout</a>
+                {% else %}
+                <a href="{{ url_for('main.login') }}" onclick="toggleMobileMenu()" class="w-full py-3 rounded-xl bg-sky-500 text-white font-bold text-center block">Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 
     <!-- Main Content -->
     <main class="flex-grow pt-32 pb-20 px-4 relative z-10 flex flex-col items-center">
@@ -779,6 +824,13 @@
             } else if (target === 'form') {
                 document.getElementById('results-section').classList.add('hidden');
                 document.getElementById('search-section').classList.remove('hidden');
+            }
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            if (menu) {
+                menu.classList.toggle('hidden');
             }
         }
 

@@ -196,18 +196,58 @@
     <nav class="sticky top-0 z-40 glass-morphism">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
-                <a href="{{ url_for('main.explore') }}" class="flex items-center space-x-3 group">
+                <a href="{{ url_for('main.index') }}" class="flex items-center space-x-3 group">
                     <div class="w-9 h-9 glass-card-premium rounded-xl flex items-center justify-center border border-white/10 group-hover:border-indigo-500/50 transition-all">
                         <i data-lucide="arrow-left" class="w-5 h-5 text-gray-300 group-hover:text-white transition-colors"></i>
                     </div>
-                    <span class="text-lg font-bold text-white tracking-wide">Back to Explore</span>
+                    <span class="text-lg font-bold text-white tracking-wide hidden sm:inline">Home</span>
                 </a>
                 <div class="flex items-center space-x-3">
                     <div class="w-9 h-9 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/30">
                         <i data-lucide="line-chart" class="w-5 h-5 text-white"></i>
                     </div>
-                    <span class="text-xl font-extrabold text-white tracking-tight">Price <span class="gradient-text-premium">Intelligence</span></span>
+                    <span class="text-lg sm:text-xl font-extrabold text-white tracking-tight">Price <span class="gradient-text-premium">Intelligence</span></span>
                 </div>
+                <!-- Mobile menu button -->
+                <button class="md:hidden text-white p-2" onclick="toggleMobileMenu()">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Drawer -->
+        <div id="mobileMenu" class="hidden md:hidden fixed inset-0 glass-dark-premium z-50 pt-20 p-6 overflow-y-auto">
+            <div class="absolute top-4 right-4">
+                <button onclick="toggleMobileMenu()" class="p-2.5 glass-button-premium rounded-xl text-white">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div class="flex flex-col space-y-3 max-w-sm mx-auto">
+                <a href="{{ url_for('main.index') }}" onclick="toggleMobileMenu()"
+                    class="px-4 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 font-semibold flex items-center justify-between text-base">
+                    <span>Home</span>
+                    <i data-lucide="home" class="w-5 h-5 text-indigo-400"></i>
+                </a>
+                <a href="{{ url_for('main.shop') }}" onclick="toggleMobileMenu()"
+                    class="px-4 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 font-semibold flex items-center justify-between text-base">
+                    <span>10 Min Delivery</span>
+                    <i data-lucide="zap" class="w-5 h-5 text-amber-400"></i>
+                </a>
+                <a href="{{ url_for('main.ecommerce') }}" onclick="toggleMobileMenu()"
+                    class="px-4 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 font-semibold flex items-center justify-between text-base">
+                    <span>E-Commerce</span>
+                    <i data-lucide="shopping-bag" class="w-5 h-5 text-pink-400"></i>
+                </a>
+                <a href="{{ url_for('main.price_history') }}" onclick="toggleMobileMenu()"
+                    class="px-4 py-3.5 rounded-xl bg-white/10 text-white font-bold flex items-center justify-between text-base">
+                    <span>Price Intelligence</span>
+                    <i data-lucide="line-chart" class="w-5 h-5 text-sky-400"></i>
+                </a>
+                <a href="{{ url_for('main.tickets') }}" onclick="toggleMobileMenu()"
+                    class="px-4 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 font-semibold flex items-center justify-between text-base">
+                    <span>Tickets & Travel</span>
+                    <i data-lucide="ticket" class="w-5 h-5 text-rose-400"></i>
+                </a>
             </div>
         </div>
     </nav>
@@ -838,6 +878,13 @@
             } catch (err) {
                 closeAlertModal();
                 showToast(`Price alert saved!`);
+            }
+        }
+
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            if (mobileMenu) {
+                mobileMenu.classList.toggle('hidden');
             }
         }
 

@@ -248,26 +248,42 @@
         </div>
 
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden"
-            style="background: rgba(3, 7, 18, 0.95); backdrop-filter: blur(20px);">
-            <div class="px-2 pt-2 pb-3 space-y-1">
-                <a href="{{ url_for('main.index') }}"
-                    class="block px-3 py-2 text-gray-300 hover:text-white font-medium">Home</a>
-                <a href="{{ url_for('main.explore') }}" class="block px-3 py-2 text-white font-bold">Explore</a>
-                {% if session.get('user') %}
-                <a href="#"
-                    onclick="event.preventDefault(); fetch('{{ url_for('main.auth_logout') }}', {method: 'POST'}).then(() => window.location.href='/');"
-                    class="glass-card-premium text-white block px-3 py-2 rounded-lg font-medium transition-all hover:bg-red-500/20 hover:border-red-500/50"
-                    style="background: rgba(255,255,255,0.05)">
-                    Logout
+        <div id="mobile-menu" class="hidden md:hidden fixed inset-0 glass-dark-premium z-50 pt-20 p-6 overflow-y-auto">
+            <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
+                <span class="text-lg font-bold text-white uppercase tracking-wider">Navigation</span>
+                <button id="mobile-menu-close" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="p-2.5 glass-button-premium rounded-xl text-white">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div class="flex flex-col space-y-4 text-base font-semibold">
+                <a href="{{ url_for('main.index') }}" class="py-2.5 px-4 rounded-xl hover:bg-white/10 text-white flex items-center gap-3">
+                    <i data-lucide="home" class="w-5 h-5 text-indigo-400"></i> Home
                 </a>
-                {% else %}
-                <a href="{{ url_for('main.login') }}"
-                    class="glass-card-premium text-white block px-3 py-2 rounded-lg font-medium transition-all"
-                    style="background: rgba(255,255,255,0.05)">
-                    Login
+                <a href="{{ url_for('main.explore') }}" class="py-2.5 px-4 rounded-xl hover:bg-white/10 text-white flex items-center gap-3">
+                    <i data-lucide="compass" class="w-5 h-5 text-indigo-400"></i> Explore
                 </a>
-                {% endif %}
+                <a href="{{ url_for('main.shop') }}" class="py-2.5 px-4 rounded-xl hover:bg-white/10 text-white flex items-center gap-3">
+                    <i data-lucide="shopping-bag" class="w-5 h-5 text-indigo-400"></i> Smart Shop
+                </a>
+                <a href="{{ url_for('main.style_outfit') }}" class="py-2.5 px-4 rounded-xl hover:bg-white/10 text-white flex items-center gap-3">
+                    <i data-lucide="shirt" class="w-5 h-5 text-indigo-400"></i> Style Your Outfit
+                </a>
+                <a href="{{ url_for('main.find_dress') }}" class="py-2.5 px-4 rounded-xl hover:bg-white/10 text-white flex items-center gap-3">
+                    <i data-lucide="camera" class="w-5 h-5 text-indigo-400"></i> Find Dress
+                </a>
+                <a href="{{ url_for('main.price_history') }}" class="py-2.5 px-4 rounded-xl hover:bg-white/10 text-white flex items-center gap-3">
+                    <i data-lucide="line-chart" class="w-5 h-5 text-indigo-400"></i> Price History
+                </a>
+                <a href="{{ url_for('main.plan_trip') }}" class="py-2.5 px-4 rounded-xl hover:bg-white/10 text-white flex items-center gap-3">
+                    <i data-lucide="plane" class="w-5 h-5 text-indigo-400"></i> Plan My Trip
+                </a>
+                <div class="pt-4 border-t border-white/10">
+                    {% if session.get('user') %}
+                    <a href="#" onclick="event.preventDefault(); fetch('{{ url_for('main.auth_logout') }}', {method: 'POST'}).then(() => window.location.href='/');" class="w-full py-3 rounded-xl bg-rose-500/20 border border-rose-500/30 text-rose-400 font-bold text-center block">Logout</a>
+                    {% else %}
+                    <a href="{{ url_for('main.login') }}" class="w-full py-3 rounded-xl bg-indigo-500 text-white font-bold text-center block">Login</a>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </nav>

@@ -180,24 +180,76 @@
     <nav
         class="sticky top-0 z-50 glass-card rounded-none border-t-0 border-l-0 border-r-0 border-b border-white/10 backdrop-blur-xl">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
-            <a href="{{ url_for('main.explore') }}" class="flex items-center space-x-2 group">
+            <a href="{{ url_for('main.index') }}" class="flex items-center space-x-2 group">
                 <div
                     class="w-8 h-8 rounded-lg flex items-center justify-center border border-white/20 bg-white/5 group-hover:bg-white/10 transition-colors">
                     <i data-lucide="arrow-left" size="18" class="text-white"></i>
                 </div>
-                <span class="text-xl font-bold text-white">Back</span>
+                <span class="text-lg font-bold text-white hidden sm:inline">Home</span>
             </a>
-            <div class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-400">
+            <div class="text-lg sm:text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-400">
                 Style Your Outfit
             </div>
-            <div class="flex items-center">
+            <div class="flex items-center space-x-3">
                 {% if session.get('user') %}
                 <a href="#"
                     onclick="event.preventDefault(); fetch('{{ url_for('main.auth_logout') }}', {method: 'POST'}).then(() => window.location.href='/');"
-                    class="text-red-400 hover:text-red-300 font-medium text-sm transition-colors whitespace-nowrap">
+                    class="hidden md:inline-block text-red-400 hover:text-red-300 font-medium text-sm transition-colors whitespace-nowrap">
                     Logout
                 </a>
                 {% endif %}
+                <button class="md:hidden text-white p-1" onclick="toggleMobileMenu()">
+                    <i data-lucide="menu" size="24"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Drawer -->
+        <div id="mobileMenu" class="hidden md:hidden fixed inset-0 glass-dark-premium z-50 pt-20 p-6 overflow-y-auto">
+            <div class="absolute top-4 right-4">
+                <button onclick="toggleMobileMenu()" class="p-2.5 glass-button-premium rounded-xl text-white">
+                    <i data-lucide="x" size="24"></i>
+                </button>
+            </div>
+            <div class="flex flex-col space-y-3 max-w-sm mx-auto">
+                <a href="{{ url_for('main.index') }}" onclick="toggleMobileMenu()"
+                    class="px-4 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 font-semibold flex items-center justify-between text-base">
+                    <span>Home</span>
+                    <i data-lucide="home" size="18" class="text-indigo-400"></i>
+                </a>
+                <a href="{{ url_for('main.shop') }}" onclick="toggleMobileMenu()"
+                    class="px-4 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 font-semibold flex items-center justify-between text-base">
+                    <span>10 Min Delivery</span>
+                    <i data-lucide="zap" size="18" class="text-amber-400"></i>
+                </a>
+                <a href="{{ url_for('main.ecommerce') }}" onclick="toggleMobileMenu()"
+                    class="px-4 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 font-semibold flex items-center justify-between text-base">
+                    <span>E-Commerce</span>
+                    <i data-lucide="shopping-bag" size="18" class="text-pink-400"></i>
+                </a>
+                <a href="{{ url_for('main.style_outfit') }}" onclick="toggleMobileMenu()"
+                    class="px-4 py-3.5 rounded-xl bg-white/10 text-white font-bold flex items-center justify-between text-base">
+                    <span>AI Outfit Assistant</span>
+                    <i data-lucide="sparkles" size="18" class="text-purple-400"></i>
+                </a>
+                <a href="{{ url_for('main.find_dress') }}" onclick="toggleMobileMenu()"
+                    class="px-4 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 font-semibold flex items-center justify-between text-base">
+                    <span>Find Dress</span>
+                    <i data-lucide="search" size="18" class="text-indigo-400"></i>
+                </a>
+                <a href="{{ url_for('main.price_history') }}" onclick="toggleMobileMenu()"
+                    class="px-4 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 font-semibold flex items-center justify-between text-base">
+                    <span>Price History</span>
+                    <i data-lucide="line-chart" size="18" class="text-sky-400"></i>
+                </a>
+
+                <div class="pt-4 border-t border-white/10">
+                    {% if session.get('user') %}
+                    <button onclick="fetch('{{ url_for('main.auth_logout') }}', {method: 'POST'}).then(() => window.location.href='/');" class="w-full py-3.5 rounded-xl bg-rose-500/20 text-rose-300 border border-rose-500/40 text-sm font-bold uppercase tracking-widest text-center">
+                        Logout
+                    </button>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </nav>
@@ -591,6 +643,13 @@
 
             lucide.createIcons();
             switchState('results');
+        }
+
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            if (mobileMenu) {
+                mobileMenu.classList.toggle('hidden');
+            }
         }
 
         function showError(msg) {

@@ -445,28 +445,56 @@
     </nav>
 
     <!-- Mobile Menu (hidden by default) -->
-    <div id="mobileMenu" class="hidden fixed inset-0 glass-dark-premium z-50 pt-20"
-        style="background: rgba(3, 7, 18, 0.95); backdrop-filter: blur(20px);">
+    <div id="mobileMenu" class="hidden fixed inset-0 glass-dark-premium z-50 pt-20 p-6 overflow-y-auto">
         <div class="absolute top-4 right-4">
-            <button onclick="toggleMobileMenu()" class="p-2 glass-button-premium rounded-lg text-white">
+            <button onclick="toggleMobileMenu()" class="p-2.5 glass-button-premium rounded-xl text-white">
                 <i data-lucide="x" class="w-6 h-6"></i>
             </button>
         </div>
-        <div class="flex flex-col p-4 space-y-4 text-center">
+        <div class="flex flex-col space-y-3 max-w-sm mx-auto">
             <a href="{{ url_for('main.index') }}" onclick="toggleMobileMenu()"
-                class="text-gray-300 hover:text-white font-medium py-4 text-xl">Home</a>
+                class="px-4 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 font-semibold flex items-center justify-between text-base">
+                <span>Home</span>
+                <i data-lucide="home" class="w-5 h-5 text-indigo-400"></i>
+            </a>
             <a href="{{ url_for('main.shop') }}" onclick="toggleMobileMenu()"
-                class="text-gray-300 hover:text-white font-medium py-4 text-xl">10 min shopping</a>
+                class="px-4 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 font-semibold flex items-center justify-between text-base">
+                <span>10 Min Delivery</span>
+                <i data-lucide="zap" class="w-5 h-5 text-amber-400"></i>
+            </a>
             <a href="{{ url_for('main.ecommerce') }}" onclick="toggleMobileMenu()"
-                class="text-white font-bold py-4 text-xl border-b border-white/10">Smart Cart</a>
+                class="px-4 py-3.5 rounded-xl bg-white/10 text-white font-bold flex items-center justify-between text-base">
+                <span>E-Commerce</span>
+                <i data-lucide="shopping-bag" class="w-5 h-5 text-pink-400"></i>
+            </a>
+            <a href="{{ url_for('main.price_history') }}" onclick="toggleMobileMenu()"
+                class="px-4 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 font-semibold flex items-center justify-between text-base">
+                <span>Price History</span>
+                <i data-lucide="line-chart" class="w-5 h-5 text-sky-400"></i>
+            </a>
+            <a href="{{ url_for('main.style_outfit') }}" onclick="toggleMobileMenu()"
+                class="px-4 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 font-semibold flex items-center justify-between text-base">
+                <span>AI Outfit Assistant</span>
+                <i data-lucide="sparkles" class="w-5 h-5 text-purple-400"></i>
+            </a>
+            <a href="{{ url_for('main.find_dress') }}" onclick="toggleMobileMenu()"
+                class="px-4 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 font-semibold flex items-center justify-between text-base">
+                <span>Find Dress</span>
+                <i data-lucide="search" class="w-5 h-5 text-indigo-400"></i>
+            </a>
             <a href="{{ url_for('main.tickets') }}" onclick="toggleMobileMenu()"
-                class="text-gray-300 hover:text-white font-medium py-4 text-xl">Ticket Booking</a>
-            {% if session.get('user') %}
-            <button onclick="logout()"
-                class="text-red-400 hover:text-red-300 font-medium py-4 text-xl block w-full text-center">
-                Logout
-            </button>
-            {% endif %}
+                class="px-4 py-3.5 rounded-xl text-gray-300 hover:text-white hover:bg-white/5 font-semibold flex items-center justify-between text-base">
+                <span>Ticket Booking</span>
+                <i data-lucide="ticket" class="w-5 h-5 text-rose-400"></i>
+            </a>
+
+            <div class="pt-4 border-t border-white/10">
+                {% if session.get('user') %}
+                <button onclick="logout()" class="w-full py-3.5 rounded-xl bg-rose-500/20 text-rose-300 border border-rose-500/40 text-sm font-bold uppercase tracking-widest text-center">
+                    Logout
+                </button>
+                {% endif %}
+            </div>
         </div>
     </div>
 
