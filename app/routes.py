@@ -30,19 +30,19 @@ def index():
 @main.route("/dashboard")
 def dashboard():
     if not session.get("user"):
-        session["user"] = {"id": "guest-user", "name": "Guest User", "email": "guest@smartcart.com"}
+        return redirect(url_for("main.login"))
     return render_template("index-premium.html")
 
 @main.route("/shop")
 def shop():
     if not session.get("user"):
-        session["user"] = {"id": "guest-user", "name": "Guest User", "email": "guest@smartcart.com"}
+        return redirect(url_for("main.login"))
     return render_template("index-premium.html")
 
 @main.route("/ecommerce")
 def ecommerce():
     if not session.get("user"):
-        session["user"] = {"id": "guest-user", "name": "Guest User", "email": "guest@smartcart.com"}
+        return redirect(url_for("main.login"))
     return render_template("ecommerce.html")
 
 
@@ -50,7 +50,7 @@ def ecommerce():
 @main.route("/tickets/<category>")
 def tickets(category=None):
     if not session.get("user"):
-        session["user"] = {"id": "guest-user", "name": "Guest User", "email": "guest@smartcart.com"}
+        return redirect(url_for("main.login"))
     return render_template("ticket-booking.html", category=category)
 
 @main.route("/api/tickets/search")
@@ -201,67 +201,67 @@ def landing():
 @main.route("/explore")
 def explore():
     if not session.get("user"):
-        session["user"] = {"id": "guest-user", "name": "Guest Traveler", "email": "guest@smartcart.com"}
+        return redirect(url_for("main.login"))
     return render_template("explore.html")
 
 @main.route("/plan-my-trip")
 def plan_trip():
     if not session.get("user"):
-        session["user"] = {"id": "guest-user", "name": "Guest Traveler", "email": "guest@smartcart.com"}
+        return redirect(url_for("main.login"))
     return render_template("plan-my-trip.html")
 
 @main.route("/plan-my-trip/destination-ideas")
 def destination_ideas():
     if not session.get("user"):
-        session["user"] = {"id": "guest-user", "name": "Guest Traveler", "email": "guest@smartcart.com"}
+        return redirect(url_for("main.login"))
     return render_template("destination-ideas.html")
 
 @main.route("/plan-my-trip/budget-planner")
 def budget_planner():
     if not session.get("user"):
-        session["user"] = {"id": "guest-user", "name": "Guest Traveler", "email": "guest@smartcart.com"}
+        return redirect(url_for("main.login"))
     return render_template("budget-planner.html")
 
 @main.route("/plan-my-trip/travel-itinerary")
 def travel_itinerary():
     if not session.get("user"):
-        session["user"] = {"id": "guest-user", "name": "Guest Traveler", "email": "guest@smartcart.com"}
+        return redirect(url_for("main.login"))
     return render_template("travel-itinerary.html")
 
 @main.route("/plan-my-trip/hotels")
 def hotels():
     if not session.get("user"):
-        session["user"] = {"id": "guest-user", "name": "Guest Traveler", "email": "guest@smartcart.com"}
+        return redirect(url_for("main.login"))
     return render_template("hotels.html")
 
 @main.route("/plan-my-trip/how-it-works")
 def how_it_works():
     if not session.get("user"):
-        session["user"] = {"id": "guest-user", "name": "Guest Traveler", "email": "guest@smartcart.com"}
+        return redirect(url_for("main.login"))
     return render_template("how-it-works.html")
 
 @main.route("/plan-my-trip/packing-list")
 def packing_list():
     if not session.get("user"):
-        session["user"] = {"id": "guest-user", "name": "Guest Traveler", "email": "guest@smartcart.com"}
+        return redirect(url_for("main.login"))
     return render_template("travel-packing-list.html")
 
 @main.route("/style-outfit")
 def style_outfit():
     if not session.get("user"):
-        session["user"] = {"id": "guest-user", "name": "Guest User", "email": "guest@smartcart.com"}
+        return redirect(url_for("main.login"))
     return render_template("style-outfit.html")
 
 @main.route("/find-dress")
 def find_dress():
     if not session.get("user"):
-        session["user"] = {"id": "guest-user", "name": "Guest User", "email": "guest@smartcart.com"}
+        return redirect(url_for("main.login"))
     return render_template("find-dress.html")
 
 @main.route("/price-history")
 def price_history():
     if not session.get("user"):
-        session["user"] = {"id": "guest-user", "name": "Guest User", "email": "guest@smartcart.com"}
+        return redirect(url_for("main.login"))
     return render_template("price-history.html")
 
 @main.route("/api/price-history")
@@ -617,21 +617,23 @@ def auth_register():
     }
     return jsonify({"message": "Registration successful", "user": session["user"]})
 
-@main.route("/auth/logout", methods=["POST"])
+@main.route("/auth/logout", methods=["POST", "GET"])
+@main.route("/logout", methods=["POST", "GET"])
 def auth_logout():
     try:
         if supabase:
             supabase.auth.sign_out()
-        session.pop("user", None)
-        return jsonify({"message": "Logged out"})
     except Exception as e:
-        session.pop("user", None)
-        return jsonify({"message": "Logged out"})
+        pass
+    session.clear()
+    if request.method == "GET":
+        return redirect(url_for("main.login"))
+    return jsonify({"message": "Logged out"})
 
 @main.route("/10minute-delivery")
 def ten_minute_delivery():
     if not session.get("user"):
-        session["user"] = {"id": "guest-user", "name": "Guest User", "email": "guest@smartcart.com"}
+        return redirect(url_for("main.login"))
     return render_template("10minute-delivery.html")
 
 @main.route("/favicon.ico")
