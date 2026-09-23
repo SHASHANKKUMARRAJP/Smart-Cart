@@ -30,19 +30,19 @@ def index():
 @main.route("/dashboard")
 def dashboard():
     if not session.get("user"):
-        return redirect(url_for("main.login"))
+        session["user"] = {"id": "guest-user", "name": "Guest User", "email": "guest@smartcart.com"}
     return render_template("index-premium.html")
 
 @main.route("/shop")
 def shop():
     if not session.get("user"):
-        return redirect(url_for("main.login"))
+        session["user"] = {"id": "guest-user", "name": "Guest User", "email": "guest@smartcart.com"}
     return render_template("index-premium.html")
 
 @main.route("/ecommerce")
 def ecommerce():
     if not session.get("user"):
-        return redirect(url_for("main.login"))
+        session["user"] = {"id": "guest-user", "name": "Guest User", "email": "guest@smartcart.com"}
     return render_template("ecommerce.html")
 
 
@@ -50,7 +50,7 @@ def ecommerce():
 @main.route("/tickets/<category>")
 def tickets(category=None):
     if not session.get("user"):
-        return redirect(url_for("main.login"))
+        session["user"] = {"id": "guest-user", "name": "Guest User", "email": "guest@smartcart.com"}
     return render_template("ticket-booking.html", category=category)
 
 @main.route("/api/tickets/search")
@@ -249,19 +249,19 @@ def packing_list():
 @main.route("/style-outfit")
 def style_outfit():
     if not session.get("user"):
-        return redirect(url_for("main.login"))
+        session["user"] = {"id": "guest-user", "name": "Guest User", "email": "guest@smartcart.com"}
     return render_template("style-outfit.html")
 
 @main.route("/find-dress")
 def find_dress():
     if not session.get("user"):
-        return redirect(url_for("main.login"))
+        session["user"] = {"id": "guest-user", "name": "Guest User", "email": "guest@smartcart.com"}
     return render_template("find-dress.html")
 
 @main.route("/price-history")
 def price_history():
     if not session.get("user"):
-        return redirect(url_for("main.login"))
+        session["user"] = {"id": "guest-user", "name": "Guest User", "email": "guest@smartcart.com"}
     return render_template("price-history.html")
 
 @main.route("/api/price-history")
@@ -631,7 +631,7 @@ def auth_logout():
 @main.route("/10minute-delivery")
 def ten_minute_delivery():
     if not session.get("user"):
-        return redirect(url_for("main.login"))
+        session["user"] = {"id": "guest-user", "name": "Guest User", "email": "guest@smartcart.com"}
     return render_template("10minute-delivery.html")
 
 @main.route("/favicon.ico")
