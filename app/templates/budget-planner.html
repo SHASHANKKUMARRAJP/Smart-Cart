@@ -258,7 +258,7 @@
                         <i data-lucide="home" class="w-4 h-4 text-sky-400"></i> Home
                     </a>
                     {% if session.get('user') %}
-                    <button onclick="fetch('{{ url_for(\'main.auth_logout\') }}', {method: 'POST'}).then(() => window.location.href='/');"
+                    <button onclick="fetch('{{ url_for('main.auth_logout') }}', {method: 'POST'}).then(() => window.location.href='/');"
                         class="px-5 py-2.5 rounded-xl bg-rose-500/20 text-rose-300 border border-rose-500/40 text-xs font-bold uppercase tracking-widest hover:bg-rose-500/30 transition-all">
                         Logout
                     </button>
@@ -304,7 +304,7 @@
             </a>
             <div class="pt-3 border-t border-white/10">
                 {% if session.get('user') %}
-                <button onclick="toggleMobileMenu(); fetch('{{ url_for(\'main.auth_logout\') }}', {method: 'POST'}).then(() => window.location.href='/');" class="w-full py-3 rounded-xl bg-rose-500/20 border border-rose-500/40 text-rose-300 font-bold text-center block">Logout</button>
+                <button onclick="toggleMobileMenu(); fetch('{{ url_for('main.auth_logout') }}', {method: 'POST'}).then(() => window.location.href='/');" class="w-full py-3 rounded-xl bg-rose-500/20 border border-rose-500/40 text-rose-300 font-bold text-center block">Logout</button>
                 {% else %}
                 <a href="{{ url_for('main.login') }}" onclick="toggleMobileMenu()" class="w-full py-3 rounded-xl bg-sky-500 text-white font-bold text-center block">Login</a>
                 {% endif %}
@@ -350,7 +350,7 @@
                                     <i data-lucide="map-pin" class="w-3.5 h-3.5 text-sky-400"></i> Destination / Location
                                 </label>
                                 <div class="relative">
-                                    <select id="destination" class="appearance-none pr-10 cursor-pointer font-medium">
+                                    <select id="destination" onchange="generateAIBudget()" class="appearance-none pr-10 cursor-pointer font-medium">
                                         <optgroup label="🇮🇳 Popular India Destinations">
                                             <option value="goa" selected>Goa, India (Beach & Nightlife)</option>
                                             <option value="manali">Manali / Himachal, India (Mountains & Snow)</option>
@@ -378,13 +378,13 @@
                                     <label class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
                                         <i data-lucide="calendar" class="w-3.5 h-3.5 text-sky-400"></i> Start Date
                                     </label>
-                                    <input type="date" id="startDate" onchange="calculateDurationFromDates()" class="font-medium cursor-pointer" required>
+                                    <input type="date" id="startDate" onchange="calculateDurationFromDates(); recalculateSummaryAndUI(); updateAIInsights();" class="font-medium cursor-pointer" required>
                                 </div>
                                 <div class="space-y-2">
                                     <label class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
                                         <i data-lucide="calendar" class="w-3.5 h-3.5 text-sky-400"></i> End Date
                                     </label>
-                                    <input type="date" id="endDate" onchange="calculateDurationFromDates()" class="font-medium cursor-pointer" required>
+                                    <input type="date" id="endDate" onchange="calculateDurationFromDates(); recalculateSummaryAndUI(); updateAIInsights();" class="font-medium cursor-pointer" required>
                                 </div>
                             </div>
 
@@ -394,13 +394,13 @@
                                     <label class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
                                         <i data-lucide="clock" class="w-3.5 h-3.5 text-sky-400"></i> Duration (Days)
                                     </label>
-                                    <input type="number" id="tripDays" min="1" max="90" value="7" oninput="updateDatesFromDuration()" class="font-bold text-center" required>
+                                    <input type="number" id="tripDays" min="1" max="90" value="7" oninput="updateDatesFromDuration(); recalculateSummaryAndUI(); updateAIInsights();" class="font-bold text-center" required>
                                 </div>
                                 <div class="space-y-2">
                                     <label class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
                                         <i data-lucide="users" class="w-3.5 h-3.5 text-sky-400"></i> Travelers
                                     </label>
-                                    <input type="number" id="travelersCount" min="1" max="30" value="2" class="font-bold text-center" required>
+                                    <input type="number" id="travelersCount" min="1" max="30" value="2" oninput="recalculateSummaryAndUI();" class="font-bold text-center" required>
                                 </div>
                             </div>
 
@@ -410,7 +410,7 @@
                                     <label class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
                                         <i data-lucide="wallet" class="w-3.5 h-3.5 text-sky-400"></i> Total Budget
                                     </label>
-                                    <input type="number" id="totalBudget" min="1000" step="500" value="80000" class="font-black text-lg text-emerald-400" required>
+                                    <input type="number" id="totalBudget" min="1000" step="500" value="80000" oninput="generateAIBudget()" class="font-black text-lg text-emerald-400" required>
                                 </div>
                                 <div class="col-span-4 space-y-2">
                                     <label class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
@@ -433,21 +433,21 @@
                                 </label>
                                 <div class="grid grid-cols-3 gap-2">
                                     <label class="cursor-pointer">
-                                        <input type="radio" name="travelStyle" value="budget" class="hidden peer">
+                                        <input type="radio" name="travelStyle" value="budget" onchange="generateAIBudget()" class="hidden peer">
                                         <div class="p-2.5 rounded-xl border border-white/10 bg-white/5 text-center peer-checked:border-sky-400 peer-checked:bg-sky-500/20 peer-checked:text-white transition-all">
                                             <span class="block text-base">🎒</span>
                                             <span class="text-[11px] font-bold uppercase tracking-wider block mt-1">Budget</span>
                                         </div>
                                     </label>
                                     <label class="cursor-pointer">
-                                        <input type="radio" name="travelStyle" value="comfort" checked class="hidden peer">
+                                        <input type="radio" name="travelStyle" value="comfort" checked onchange="generateAIBudget()" class="hidden peer">
                                         <div class="p-2.5 rounded-xl border border-white/10 bg-white/5 text-center peer-checked:border-sky-400 peer-checked:bg-sky-500/20 peer-checked:text-white transition-all">
                                             <span class="block text-base">🧳</span>
                                             <span class="text-[11px] font-bold uppercase tracking-wider block mt-1">Comfort</span>
                                         </div>
                                     </label>
                                     <label class="cursor-pointer">
-                                        <input type="radio" name="travelStyle" value="luxury" class="hidden peer">
+                                        <input type="radio" name="travelStyle" value="luxury" onchange="generateAIBudget()" class="hidden peer">
                                         <div class="p-2.5 rounded-xl border border-white/10 bg-white/5 text-center peer-checked:border-sky-400 peer-checked:bg-sky-500/20 peer-checked:text-white transition-all">
                                             <span class="block text-base">👑</span>
                                             <span class="text-[11px] font-bold uppercase tracking-wider block mt-1">Luxury</span>
@@ -869,7 +869,10 @@
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
             initDefaultDates();
-            loadSavedPlanFromStorage();
+            const hasSaved = loadSavedPlanFromStorage();
+            if (!hasSaved) {
+                generateAIBudget();
+            }
         });
 
         function initDefaultDates() {
@@ -915,6 +918,7 @@
             const sym = CURRENCY_SYMBOLS[curr] || '₹';
             document.querySelectorAll('.curr-sym').forEach(el => el.textContent = sym);
             recalculateSummaryAndUI();
+            updateAIInsights();
         }
 
         function getSelectedTravelStyle() {
@@ -953,6 +957,7 @@
             document.getElementById(`pct_${cat}`).textContent = sliderVal + '%';
 
             recalculateSummaryAndUI();
+            updateAIInsights();
         }
 
         // Live Category Input Callback
@@ -965,6 +970,7 @@
             document.getElementById(`pct_${cat}`).textContent = pct + '%';
 
             recalculateSummaryAndUI();
+            updateAIInsights();
         }
 
         // Main Recalculation Engine
@@ -1167,7 +1173,7 @@
 
         function loadSavedPlanFromStorage() {
             const saved = localStorage.getItem('smart_cart_saved_budget_plan');
-            if (!saved) return;
+            if (!saved) return false;
 
             try {
                 const data = JSON.parse(saved);
@@ -1185,8 +1191,10 @@
                 }
 
                 generateAIBudget();
+                return true;
             } catch (err) {
                 console.error('Error loading saved plan:', err);
+                return false;
             }
         }
 
